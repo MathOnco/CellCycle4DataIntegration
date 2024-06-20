@@ -5,7 +5,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_knit$set(root.dir = "~/Projects/PMO/MeasuringFitnessPerClone/code/3D_Imaging/R/data4paper")
+knitr::opts_knit$set(root.dir = "~/Projects/PMO/MeasuringFitnessPerClone/discussion/Bioinformatics/Imaging_Sequencing_Integration_NCIN87/code/data4paper")
 # knitr::opts_knit$set(root.dir = "C:/Users/80027908/Desktop/CC_project/PMO_MeasuringFitnessperClone-master/3D_Imaging/R/data4paper")
 library(xlsx)
 library(dyno)
@@ -456,10 +456,9 @@ for(cell in coi){
   plot3D::points3D(a_$x, a_$y, a_$z,pch3d=20,  axes=F, xlab="",ylab="", zlab="",col="cyan",alpha=0.2, add=T)
   
   dev.off()
+  la=plotPNGorTIF(figname)
 }
 
-la=plotPNGorTIF(paste0(OUTFIGS, filesep, "Fig3B_2024-06-14.png"))
-la=plotPNGorTIF(paste0(OUTFIGS, filesep, "Fig3C_2024-06-14.png"))
 ```
 
 
@@ -592,7 +591,7 @@ d <- (list_plots[[11]] + list_plots[[10]])
 
 
 figname <- paste0(OUTFIGS, filesep, "Fig3D_",thedate,".png")
-ggsave(figname,units="px",width = 480, height = 480, plot=list_plots[[1]] + list_plots[[2]], dpi=140)
+ggsave(figname,units="px",width = 480, height = 480, plot=list_plots[[1]], dpi=140)
 la=plotPNGorTIF(figname)
 
 a/b/c/d
@@ -1094,13 +1093,13 @@ den_column <- color_branches(den_column, k = 5, col = cols_branches[1:5])
 # eval(hm$call)
 # dev.off()
 
-# hm=heatmap.2(as.matrix(hm_df), trace="n", margins = c(19.7, 31.9), key = F,
-#              col = colorRampPalette(rev(brewer.pal(11, "Spectral"))),
-#              cexCol = 1.4,
-#              cexRow = 1.2,
-#              Rowv = den_row,
-#              Colv = den_column
-# )
+hm=heatmap.2(as.matrix(hm_df), trace="n", margins = c(19.7, 31.9), key = F,
+             col = colorRampPalette(rev(brewer.pal(11, "Spectral"))),
+             cexCol = 1.4,
+             cexRow = 1.2,
+             Rowv = den_row,
+             Colv = den_column
+)
 
 # print(cc[p.adjust(pval, method = "fdr")<0.05])
 MINCC=sort(abs(cc), decreasing = T)[9]
@@ -1222,7 +1221,7 @@ panels = list(
 )
 
 plots = list()
-for (fig in names(panels)[1:3]) {
+for (fig in names(panels)[1:4]) {
   plots[[fig]] = list()
   for (panel in panels[[fig]]) {
     f = list.files(OUTFIGS, pattern = paste0("^", fig, panel, "_2024"), full.names = TRUE)
