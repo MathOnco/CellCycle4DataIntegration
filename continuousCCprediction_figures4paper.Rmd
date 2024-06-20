@@ -424,34 +424,44 @@ coi=as.character(c(63, 43, 239, 26, 89, 86))
 coi=setdiff(coi, rownames(imgStats_)[imgStats_$segmentationError])
 coord__=coord_[coord_$id %in% coi,]
 
-for(cell in coi){
-  figname = paste0(OUTFIGS, filesep, "Fig2_", cell,"_",thedate,".png")
+list_plots <- vector('list', length(coi))
+for (i in seq_along(list_plots)) {
+  figname = paste0(OUTFIGS, filesep, "Fig2_", coi[i], "_", thedate, ".png")
   png(figname, width = 600,height = 600)
   par(mfrow=c(1,1), mai=c(0,0,0,0))
   
   col=which(cell==coi)
-  a= coord__[coord__$id == cell,]
+  a= coord__[coord__$id == coi[i],]
   a[,xyz]=sweep(a[,xyz],MARGIN = 2,STATS = apply(a[,xyz],2, min),FUN = "-")
   a[,xyz] = 1+ a[,xyz]
   xyzlim=apply(a[,xyz],2, quantile, c(0,1))
   a$z=z_interval*a$z
   
   a_ <-  a %>% 
-    filter(id == cell, signal=="nucleus.p")
+    filter(id == coi[i], signal=="nucleus.p")
   Plot_ConcaveHull(a_$x, a_$y, a_$z, xlim = xyzlim[,"x"], ylim = xyzlim[,"y"], zlim = xyzlim[,"z"],level = 10, lcolor = "magenta", alpha=0.25,add = F, phi = 90,theta = 0)
   
   a_ <-  a %>% 
-    filter(id == cell, signal=="mito.p")
+    filter(id == coi[i], signal=="mito.p")
   plot3D::points3D(a_$x, a_$y, a_$z,pch3d=20,  axes=F, xlab="",ylab="", zlab="",col="yellow",alpha=0.2, add=T)
   
   a_ <-  a %>% 
-    filter(id == cell, signal=="cytoplasm.p")
+    filter(id == coi[i], signal=="cytoplasm.p")
   plot3D::points3D(a_$x, a_$y, a_$z,pch3d=20,  axes=F, xlab="",ylab="", zlab="",col="cyan",alpha=0.2, add=T)
   
   dev.off()
-  la=plotPNGorTIF(figname)
+  
+  p <- magick::image_read(figname)
+  plot <- magick::image_trim(p)
+  list_plots[[i]] <- magick::image_ggplot(plot)
 }
 
+# Cells arranged correctly from left to right; relative spacing produced by hand 
+list_plots[[1]]+list_plots[[3]]+list_plots[[2]]
+ggsave(paste0(OUTFIGS, filesep, "Fig3B_", thedate, ".png"))
+
+list_plots[[4]]+list_plots[[5]]+list_plots[[6]]
+ggsave(paste0(OUTFIGS, filesep, "Fig3C_", thedate, ".png"))
 ```
 
 
@@ -749,15 +759,18 @@ target_cells <- target_df %>%
   summarise(pseudotime = mean(pseudotime))
 
 # Graph cells
-for(coi in unique(target_df$id)){
-  a <- coord_[coord_$id %in% coi,]
+target_cells_list <- unique(target_df$id)
+list_plots <- vector('list', length(target_cells_list))
+for(j in seq_along(list_plots)) {
+  a <- coord_[coord_$id %in% target_cells_list[j],]
   a[,xyz] <- sweep(a[,xyz], MARGIN = 2, STATS = apply(a[,xyz], 2, min), FUN = "-")
   a[,xyz] <- 1 + a[,xyz]
   xyzlim <- apply(a[,xyz], 2, quantile, c(0,1))
   a$z <- z_interval * a$z
   a_ <-  a %>% 
-    filter(id == coi, signal == "nucleus.p")
-  png(paste0(OUTFIGS, filesep, "Fig4E_", coi, ".png"), width = 600, height = 600)
+    filter(id == target_cells_list[j], signal == "nucleus.p")
+  figname <- paste0(OUTFIGS, filesep, "Fig4E_", target_cells_list[j], ".png")
+  png(figname, width = 600, height = 600)
   Plot_ConcaveHull(a_$x, a_$y, a_$z, xlim = xyzlim[,"x"], ylim = xyzlim[,"y"], zlim = xyzlim[,"z"], level = 10, lcolor = "gray", alpha = 0.25, add = F, phi = 30, theta = 140)
   a_$fucci_ch00 <- round(a_$fucci_ch00, 1)
   a_$fucci_ch02 <- round(a_$fucci_ch02, 2)
@@ -772,7 +785,62 @@ for(coi in unique(target_df$id)){
   dev.off()
 }
 
-# Assemble
+for(j in seq_along(list_plots)) {
+  figname <- paste0(OUTFIGS, filesep, "Fig4E_", target_cells_list[j], ".png")
+  p <- magick::image_read(figname)
+  plot <- magick::image_trim(p)
+  plot <- magick::image_ggplot(plot)
+  
+  q <- target_cells %>% 
+    filter(id == target_cells_list[j])
+  xlab <- round(q$pseudotime[1], digits = 4)
+  list_plots[[j]] <- plot +
+    ggtitle(xlab)
+}
+
+# Create legend image
+pal = colorRampPalette(c("green", "white", "red"))
+png(paste0(OUTFIGS, filesep, "legend_3.png"), width = 300, height = 250)
+plot.new()
+lgd_ = rep(NA, 3)
+lgd_[c(1,3)] = c("fucci_ch00", "fucci_ch02")
+legend(x = 0, y = 1.02,
+       legend = lgd_,
+       fill = pal(3),
+       border = NA,
+       y.intersp = 0.5,
+       bty = "n",
+       cex = 2, text.font = 0.2)
+dev.off()
+
+p <- magick::image_read(paste0(OUTFIGS, filesep, "legend_3.png"))
+plot <- magick::image_trim(p)
+legend <- magick::image_ggplot(plot)
+
+
+# Assemble figure: order determined manually for ascending pseudotime top to bottom, left to right
+png(paste0(OUTFIGS, filesep, "Fig4E_", thedate, ".png"), width = 1500, height = 750)
+grid.arrange(
+  arrangeGrob(
+    textGrob("A", x = 0, y = 1, vjust = 1, hjust = 0, gp = gpar(fontsize = 12, fontface = "bold")),
+    list_plots[[5]], list_plots[[4]], list_plots[[3]], list_plots[[1]], list_plots[[15]], legend,
+    ncol = 7,
+    widths = unit(c(0.1, rep(0.5, 5), 0.3), "null")
+  ),
+  arrangeGrob(
+    textGrob("B", x = 0, y = 1, vjust = 1, hjust = 0, gp = gpar(fontsize = 12, fontface = "bold")),
+    list_plots[[14]], list_plots[[8]], list_plots[[6]], list_plots[[2]], list_plots[[9]], legend,
+    ncol = 7,
+    widths = unit(c(0.1, rep(0.5, 5), 0.3), "null")
+  ),
+  arrangeGrob(
+    textGrob("C", x = 0, y = 1, vjust = 1, hjust = 0, gp = gpar(fontsize = 12, fontface = "bold")),
+    list_plots[[10]], list_plots[[12]], list_plots[[7]], list_plots[[13]], list_plots[[11]],legend,
+    ncol = 7,
+    widths = unit(c(0.1, rep(0.5, 5), 0.3), "null")
+  ),
+  nrow = 3
+)
 ```
 
 
@@ -912,7 +980,6 @@ grid.arrange(
   nrow = 3
 )
 dev.off()
-
 ```
 
 
