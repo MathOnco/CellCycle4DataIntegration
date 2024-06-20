@@ -1,0 +1,1416 @@
+---
+title: "Figures for paper"
+date: "2024-05-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = "~/Projects/PMO/MeasuringFitnessPerClone/code/3D_Imaging/R/data4paper")
+# knitr::opts_knit$set(root.dir = "C:/Users/80027908/Desktop/CC_project/PMO_MeasuringFitnessperClone-master/3D_Imaging/R/data4paper")
+library(xlsx)
+library(dyno)
+library(gplots)
+library(caret)
+library(xtable)
+library(tidyverse)
+library(matlab)
+library(RColorBrewer)
+library(flexclust)
+library(ggplot2)
+library(e1071)
+library(slingshot)
+library(umap)
+library(patchwork)
+library(grid)
+library(gridExtra)
+# devtools::source_url("https://github.com/noemiandor/Utils/master/grpstats.R?raw=TRUE")
+OUTLINKED="A06_multiSignals_Linked"
+OUTPSEUDOTIME="A08_Pseudotime"
+OUTSTATS="A07_LinkedSignals_Stats"
+RAWDATA="A01_rawData"
+
+OUTFIGS = "../figs4paper"
+
+xydim = 255
+pixelsize_xy = 0.232 # um 
+z_interval = 0.29 #  um 
+xyz=c("x","y","z")
+zslice=35
+
+
+grpstats <- function(x,g,statscols,q1=0.5){
+  allOut=list()
+  o=matrix(NA, length(unique(g)),ncol(x) )
+  rownames(o)=unique(g); colnames(o)=colnames(x);
+  for(col in statscols){
+    for(m in unique(g)){
+      ii=which(g==m);
+      v=NA;
+      if(col=='mean'){
+        v=apply(x[ii,,drop=F],2,mean,na.rm=T)
+      }else if(col=='sum'){
+        v=apply(x[ii,,drop=F],2,sum,na.rm=T)
+      }else if(col=='var'){
+        v=apply(x[ii,,drop=F],2,var)
+      }else if(col=='max'){
+        v=apply(x[ii,,drop=F],2,max,na.rm=T)
+      }else if(col=='min'){
+        v=apply(x[ii,,drop=F],2,min,na.rm=T)
+      }else if(col=='quantile'){
+        v=apply(x[ii,,drop=F],2,quantile,q1,na.rm=T)
+      }else if(col=='median'){
+        v=apply(x[ii,,drop=F],2,median,na.rm=T)
+      }else if(col=='numel+'){##Count elements >0 
+        v=apply(x[ii,,drop=F]>0,2,sum,na.rm=T)
+      }else if(col=='numel_u'){##Count unique elements 
+        v=apply(x[ii,,drop=F],2, function(k) length(unique(k)))
+      }else if(col=='fraction+'){##Fraction of elements> 0 out of all finite elements
+        v1=apply(!is.na(x[ii,,drop=F]),2,sum,na.rm=T)
+        v=apply(x[ii,,drop=F]>0,2,sum,na.rm=T)/v1
+      }else if(col=='maxcount'){##Most frequent value
+        v1=plyr::count(x[ii])
+        v=v1$x[which.max(v1$freq)]
+      }else{
+        v=get(col)(x[ii,,drop=F])
+      }
+      o[as.character(m),]=v;
+    }
+    allOut[[col]]=o;
+  }
+  return(allOut)
+}
+```
+
+Define local functions and read image coordinates and features used in multiple Figures:
+```{r}
+plotPNGorTIF<-function(figname){
+  if(fileparts(figname)$ext!=".png"){
+    la=tiff::readTIFF(figname)
+  }else{
+    la=png::readPNG(figname,native = F)
+  }
+  plot(NA, xlim = c(0, ncol(la)/nrow(la)), ylim = c(0, 1), type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "")
+  rasterImage(la, 0, 0, ncol(la)/nrow(la),1)
+  return(la)
+}
+
+# Convert matrix to a data frame with row names, column names, and matrix entry
+convert_matrix_to_df <- function(mat, pval) {
+  # Create a data frame with all combinations of row and column names
+  grid <- expand.grid(Pathway = rownames(mat), "Cell.Feature" = colnames(mat))
+  # Add the matrix values as a new column
+  grid$r <- as.vector(mat)
+  grid$pval <- as.vector(pval)
+  return(grid)
+}
+
+# Function to truncate strings to a specified length
+truncate_string <- function(x, max_length) {
+  if (nchar(x) > max_length) {
+    return(paste0(substr(x, 1, max_length), "..."))
+  } else {
+    return(x)
+  }
+}
+
+getZLIM<- function(coord__){
+  tmp = quantile(coord__$z,c(0,1))
+  space=tmp[2]-tmp[1]
+  zlim=c(tmp[1]-space/2, tmp[2]+space/2)
+  return(zlim)
+}
+
+readOrganelleCoordinates<-function(signals_per_id, signals, IN){
+  coord=NULL;
+  for(cell in signals_per_id$x){
+    for(s in signals){
+      x=paste0(s,"_cell_",cell,"_coordinates.csv")
+      a=read.csv(paste0(IN,filesep,x))
+      ## pixel to um conversion: @TODO
+      a$z=a$z*z_interval
+      a$x=a$x*pixelsize_xy
+      a$y=a$y*pixelsize_xy
+      # id=strsplit(fileparts(x)$name,"_")[[1]]
+      a$organelle = a[,ncol(a)] 
+      a$intensity = a$signal
+      a$signal=s
+      # id=id[length(id)-1]
+      a$id=cell
+      ## add missing columns
+      if(!is.null(coord)){
+        for(mc in setdiff(colnames(a), colnames(coord))){
+          coord[,mc]=NA
+        }
+        tmp=matrix(NA,nrow(a), ncol(coord))
+        colnames(tmp) = colnames(coord)
+        coord=rbind(tmp, coord)
+        coord[1:nrow(a),colnames(a)] = a
+      }else{
+        coord=a
+      }
+      # a[,c("y", "x", "z", "organelle", "id","signal")]
+    }
+  }
+  coord$id=as.numeric(coord$id)
+  return(coord)
+}
+
+Plot_ConcaveHull <- function(xx, yy, zz, lcolor="black", alpha=0.4, add=T, phi = 40, theta = 40, level=0.5/length(xx),xlim=quantile(xx,c(0,1)),ylim=quantile(yy,c(0,1)),zlim=quantile(zz,c(0,1))) {
+  library(MASS)
+  # print("datapoints nucleus:"); print(length(xx))
+  # print("datapoints mito:"); print(nrow(other))
+  
+  ##Remove outliers
+  # hQ=0.975; lQ=0.025
+  hQ=1; lQ=0
+  iK1=which(xx<=quantile(xx,hQ) & xx>=quantile(xx,lQ))
+  iK2=which(yy<=quantile(yy,hQ) & yy>=quantile(yy,lQ))
+  iK3=which(zz<=quantile(zz,hQ) & zz>=quantile(zz,lQ))
+  iK=intersect(iK1,iK2)
+  iK=intersect(iK,iK3)
+  xx=xx[iK]; yy=yy[iK]; zz = zz[iK]
+  qx=quantile(xx,c(0,1))
+  qy=quantile(yy,c(0,1))
+  qz=quantile(zz,c(0,1))
+  
+  ##Contour
+  n=1+c(qx[2]-qx[1], qy[2]-qy[1], qz[2]-qz[1])
+  # print("nucleus:"); print(n)
+  dens2 <- misc3d::kde3d(xx, yy, zz,n=round(n) ) 
+  RES=c(x=dens2$x[2]-dens2$x[1],y=dens2$y[2]-dens2$y[1],z=dens2$z[2]-dens2$z[1])
+  
+  ## Embed in larger array to render plots comparable across cells
+  dens <- array(0,dim=ceil(cbind(xlim,ylim,zlim)[2,]/RES))
+  # print("all:"); 
+  print(dim(dens))
+  dens[ceil(dens2$x/RES["x"]),ceil(dens2$y/RES["y"]), ceil(dens2$z/RES["z"])]=dens2$d
+  # print(quantile(dens2$x,c(0,1)))## Plot
+  
+  plot3D::isosurf3D(x=1:nrow(dens),y=1:ncol(dens),z=1:dim(dens)[3],colvar = dens, col=lcolor, add=add, alpha=alpha,bty="n",phi = phi, theta = theta); #,drawlabels=F,lwd=2
+  # rgl::plot3d(1:nrow(dens), 1:ncol(dens), 1:dim(dens)[3], pch3d=20, size=2, axes=F, xlab="",ylab="", zlab="",col=lcolor, add=add, alpha=alpha)
+  
+}
+
+
+FoFs=c("FoF1_231005_fluorescent.nucleus", "FoF2_231005_fluorescent.nucleus", "FoF3_231005_fluorescent.nucleus", "FoF4_231005_fluorescent.nucleus")
+
+signals=list(nucleus.p="nucleus.p_Cells_Centers.csv",mito.p="mito.p_Cells_Centers.csv",cytoplasm.p="cytoplasm.p_Cells_Centers.csv")
+signals_per_id=list()
+for(FoF in FoFs){
+  OUTLINKED_=paste0(OUTLINKED,filesep,FoF,filesep)
+  f=list.files(OUTLINKED_,full.names = T, pattern = ".csv")
+  signals_per_id[[FoF]]=plyr::count(sapply(strsplit(f,"_"), function(x) x[length(x)-1]))
+}
+
+thedate=strsplit(as.character(Sys.time())," ")[[1]][1]
+FoF=FoFs[3]
+OUTLINKED_=paste0(OUTLINKED,filesep,FoF,filesep)
+
+load(paste0(OUTPSEUDOTIME, filesep,"pseudotime_2024-05-15.RObj")) ## loads unsupervised pseudotime *model* list
+load(paste0(OUTPSEUDOTIME, filesep,"cellCyclePredictionFromImgFeatures_svm_2024-05-15.RObj"))  ## load *svm* details
+
+fucci_raw=read.table( paste0(OUTPSEUDOTIME,filesep,"Fucci_stats.txt"),sep="\t", header = T)
+imgStats = read.table(paste0(OUTPSEUDOTIME,filesep,"LabelFree_stats.txt"),sep="\t",header = T)
+```
+
+
+
+Figure 1: FUCCI to characterize discrete and continuous cell cycle progression in NCI-N87. Setup first:
+
+```{r}
+fuccicol=fliplr(rainbow(max(fucci_raw$cellCycle)*1.2)[1:max(fucci_raw$cellCycle)])
+names(fuccicol) = c("G1", "G1/S","S","G2/M")
+fucci_=fucci_raw[fucci_raw$FoF==FoF,]
+coord_=readOrganelleCoordinates(signals_per_id[[FoF]], "nucleus.p", OUTLINKED_)
+coord_[,c("x","y")] = coord_[,c("x","y")]/pixelsize_xy
+coord_ = coord_[coord_$z == zslice*z_interval, ]
+coord_$x=-coord_$x
+coord_$x=-max(coord_$x)+coord_$x-min(coord_$x)
+coord_1 <- coord_
+TIF=list.files(paste0(RAWDATA,filesep,FoF), pattern=paste0("_z",zslice), full.names = T)
+img=sapply(TIF, function(x) bioimagetools::readTIF(x), simplify = F)
+img=sapply(img, function(x) EBImage::rotate(x,-180), simplify = F)
+```
+
+Figure 1A: Green and red Fucci channels overlaid. 
+```{r}
+## Jordan - brighter - Done
+
+# figname = paste0(OUTFIGS, filesep, "Fig1A_1_",thedate,".png")
+# png(figname)
+# bioimagetools::img(img[[1]][,,1]);
+# dev.off()
+# 
+# figname = paste0(OUTFIGS, filesep, "Fig1A_3_",thedate,".png")
+# png(figname)
+# bioimagetools::img(img[[3]][,,1]);
+# dev.off()
+
+## ImageJ macro for edits
+# open("Fig1A_1_2024-05-21.png")
+# run("Auto Crop");
+# run("Green");
+# run("RGB Color");
+# open("Fig1A_3_2024-05-21.png")
+# run("Auto Crop");
+# run("Red");
+# run("RGB Color");
+# imageCalculator("Add create", "Fig1A_1_2024-05-21.png","Fig1A_3_2024-05-21.png");
+# selectImage("Result of Fig1A_1_2024-05-21.png");
+# saveAs("Tiff", "Fig1A_overlay.tif");
+
+figname = paste0(OUTFIGS, filesep, "Fig1A_",thedate,".png")
+png(figname)
+im <- bioimagetools::readTIF(paste0(OUTFIGS, filesep,"Fig1A_overlay.tif"))
+im <- EBImage::resize(im, dim(im)[1]/1)
+plot(raster::as.raster(im[,,,1]))
+dev.off()
+
+la=plotPNGorTIF(figname)
+
+```
+
+
+
+Figure 1B,C: Fucci based descrete cell cycle classification. 
+```{r}
+palette(c("#FDE725FF", "#35B779FF", "#31688E", "#440154"))
+
+figname = paste0(OUTFIGS, filesep, "Fig1B_",thedate,".png")
+png(figname)
+plot(fucci_raw$Intensity_IntegratedIntensity_green, fucci_raw$Intensity_IntegratedIntensity_red, col=fucci_raw$cellCycle, pch=20, log="xy", xlab="green signal", ylab="red signal", cex.lab=2, cex.axis=2)
+legend("bottomright", names(fuccicol), fill=1:4)
+dev.off()
+
+la=plotPNGorTIF(figname)
+fr = plyr::count(names(fuccicol)[fucci_raw$cellCycle])
+fr$pct = fr$freq/sum(fr$freq)
+print(fr)
+
+## Create two input images for loading into imagej
+# cc <-  fucci_ %>% 
+#   select(ID, cellCycle)
+# coord_ <- left_join(coord_, cc, by = join_by(id == ID))
+# 
+# pal = colorRampPalette(c("#FDE725FF", "#35B779FF", "#31688E", "#440154"))
+# figname = paste0(OUTFIGS, filesep,"overlay.png") 
+# png(figname)
+# im <- bioimagetools::readTIF(paste0(OUTFIGS, filesep,"black_blank.tif"))
+# im <- EBImage::resize(im, dim(im)[1]/1)
+# plot(raster::as.raster(im[,,,1]))
+# # points(coord_$x,coord_$y,col=coord_$cellCycle,main=paste(FoF,"fucci"),xaxt='n',yaxt='n', ann=FALSE)
+# points(coord_$x,coord_$y,col=scales::alpha(pal(4)[coord_$cellCycle], 0.02),main=paste(FoF,"fucci"),xaxt='n',yaxt='n', ann=FALSE)
+# dev.off()
+# 
+# figname = paste0(OUTFIGS, filesep,"image.png") 
+# png(figname)
+# bioimagetools::img(img[[2]][,,1]);
+# legend("bottomleft", names(fuccicol) , fill=c("#FDE725FF", "#35B779FF", "#31688E", "#440154"))
+# dev.off()
+
+## Imagej macro for edits; direct from recorder
+# open("C:/Users/80027908/Desktop/CC_project/image.png");
+# open("C:/Users/80027908/Desktop/CC_project/overlay.png");
+## For threshold, pass all colors and take all but the brightest and darkest intensities
+# run("Color Threshold...");
+# run("Make Inverse");
+# setForegroundColor(0, 0, 0);
+## For fill, make sure you fill with black
+# run("Fill", "slice");
+# selectImage("overlay_2024-05-19.png");
+# run("Select None");
+## Again fill with black
+# //setTool("rectangle");
+# makeRectangle(68, 352, 32, 33);
+# run("Fill", "slice");
+# makeRectangle(77, 111, 4, 18);
+# run("Fill", "slice");
+# selectImage("image.png");
+# run("Add Image...", "image=overlay.png x=0 y=0 opacity=60 zero");
+# run("Flatten");
+# saveAs("Tiff", "C:/Users/80027908/Desktop/CC_project/Fig1B_contour.tif");
+
+figname = paste0(OUTFIGS, filesep, "Fig1C_",thedate,".png")
+png(figname)
+im <- bioimagetools::readTIF(paste0(OUTFIGS, filesep,"Fig1C_contour.tif"))
+im <- EBImage::resize(im, dim(im)[1]/1)
+plot(raster::as.raster(im[,,,1]))
+dev.off()
+
+la=plotPNGorTIF(figname)
+```
+
+
+Figure 1D: Fucci based pseudotime trajectory in PCA space. 
+```{r}
+tmp=plot_dimred(model[[paste0("Fucci_",FoF)]],color_cells = "pseudotime", size_cells=1.84,size_milestones=5)
+tmp
+ggsave(paste0(OUTFIGS,filesep,"Fig1D_",thedate,"_Fucci_",FoF,"_pseudotimeTSNE.png"),units="px",width =480, height = 380, plot=tmp, dpi=100)
+```
+
+
+Figure 1E: Fucci based pseudotime inference reveals cell cycle progression
+```{r}
+cc <-  fucci_ %>% 
+  select(ID, pseudotime)
+coord_a <- left_join(coord_, cc, by = join_by(id == ID))
+coord_a$order <- findInterval(coord_a$pseudotime, sort(coord_a$pseudotime))
+
+# Create legend image -> manually crop borders before producing the next graph
+# pal = colorRampPalette(c("#FDE725FF", "#35B779FF", "#31688EFF", "#440154FF"))
+# png(paste0(OUTFIGS, filesep, "legend.png"), width = 250, height = 300)
+# plot.new()
+# lgd_ = rep(NA, 9)
+# lgd_[c(1,5,9)] = c("G1", "S", "G2/M")
+# legend(x = 0, y = 1.02,
+#        legend = lgd_,
+#        fill = pal(9),
+#        border = NA,
+#        y.intersp = 0.5,
+#        bty = "n",
+#        cex = 2, text.font = 4)
+# dev.off()
+
+pal = colorRampPalette(c("#440154", "#31688E", "#35B779FF", "#FDE725FF"))
+figname = paste0(OUTFIGS, filesep,"Fig1E_",thedate,".png")
+png(figname)
+bioimagetools::img(img[[2]][,,1]);
+fucci_[,"pseudotimeCol"]=round(fucci_[,"pseudotime"]*10)
+points(coord_a$x,coord_a$y,col=scales::alpha(pal(nrow(coord_a))[coord_a$order], 0.03),xaxt='n',yaxt='n', ann=FALSE,main=paste(FoF,"fucci pseudotime"))
+legend <- png::readPNG(paste0(OUTFIGS, filesep, "legend.png"))
+rasterImage(legend,0,0,150,200)
+dev.off()
+
+la=plotPNGorTIF(figname)
+```
+
+
+
+Figure 1F + supplementary Fig: Pseudotime is differentially distributed across the four discrete cell cycle classes. 
+```{r}
+figname = paste0(OUTFIGS, filesep,"Fig1F_",thedate,"_plusSIFig.png")
+png( figname, width = 1400, height = 400)
+par(mfrow=c(1,4))
+ii = sapply(FoFs[c(1,2,4,3)], function(x) grep(x,names(model$Fucci_All$pseudotime),value=T))
+sapply(names(ii), function(x) boxplot(model$Fucci_All$pseudotime[ii[[x]]]~fucci_raw[ii[[x]],"cellCycle"], xlab="", names=names(fuccicol), ylab="fucci pseudotime", main=x,cex.lab=2,cex.main=1.2, cex.axis=2)); #
+dev.off()
+la=plotPNGorTIF(figname)
+
+
+figname = paste0(OUTFIGS, filesep,"Fig1F_",thedate,".png")
+png( figname,width = 480,height = 480)
+boxplot(model$Fucci_All$pseudotime[rownames(fucci_raw)]~fucci_raw[,"cellCycle"], xlab="", names=names(fuccicol), ylab="fucci pseudotime", main="",cex.main=0.6, cex.axis=2, cex.lab=2)
+dev.off()
+la=plotPNGorTIF(figname)
+```
+
+
+Figure 2: Allen model training
+```{r}
+
+```
+
+
+Figure 3: Quantification of nuclei, mitochondria and cytoplasm features at single-cell resolution with label free imaging. Setup first:
+```{r}
+coord_=readOrganelleCoordinates(signals_per_id[[FoF]], names(signals), OUTLINKED_)
+imgStats_=imgStats[imgStats$FoF==FoF,]
+doplotcentercoord=c(200, 200)
+ii=which(coord_$signal=="nucleus.p")
+centroids=grpstats(coord_[ii,c("x","y","z","id")], g = coord_$id[ii],statscols = "median")$median
+o2=flexclust::dist2(centroids[,c("x","y")],doplotcentercoord)
+alpha=list(cytoplasm.p=0.035,cytoplasm.t=0.01,nucleus.t=1,nucleus.p=0.135,mito.t=0.035,mito.p=0.035)
+```
+
+
+
+
+Figure 3B,C: Nuclei, mitochondria and cytoplasm of 10 representative cells from region highlighted in (A). Every data point is color-coded according to its cell membership. 
+```{r}
+coi=as.character(c(63, 43, 239, 26, 89, 86))
+coi=setdiff(coi, rownames(imgStats_)[imgStats_$segmentationError])
+coord__=coord_[coord_$id %in% coi,]
+
+for(cell in coi){
+  figname = paste0(OUTFIGS, filesep, "Fig2_", cell,"_",thedate,".png")
+  png(figname, width = 600,height = 600)
+  par(mfrow=c(1,1), mai=c(0,0,0,0))
+  
+  col=which(cell==coi)
+  a= coord__[coord__$id == cell,]
+  a[,xyz]=sweep(a[,xyz],MARGIN = 2,STATS = apply(a[,xyz],2, min),FUN = "-")
+  a[,xyz] = 1+ a[,xyz]
+  xyzlim=apply(a[,xyz],2, quantile, c(0,1))
+  a$z=z_interval*a$z
+  
+  a_ <-  a %>% 
+    filter(id == cell, signal=="nucleus.p")
+  Plot_ConcaveHull(a_$x, a_$y, a_$z, xlim = xyzlim[,"x"], ylim = xyzlim[,"y"], zlim = xyzlim[,"z"],level = 10, lcolor = "magenta", alpha=0.25,add = F, phi = 90,theta = 0)
+  
+  a_ <-  a %>% 
+    filter(id == cell, signal=="mito.p")
+  plot3D::points3D(a_$x, a_$y, a_$z,pch3d=20,  axes=F, xlab="",ylab="", zlab="",col="yellow",alpha=0.2, add=T)
+  
+  a_ <-  a %>% 
+    filter(id == cell, signal=="cytoplasm.p")
+  plot3D::points3D(a_$x, a_$y, a_$z,pch3d=20,  axes=F, xlab="",ylab="", zlab="",col="cyan",alpha=0.2, add=T)
+  
+  dev.off()
+}
+
+la=plotPNGorTIF(paste0(OUTFIGS, filesep, "Fig3B_2024-06-14.png"))
+la=plotPNGorTIF(paste0(OUTFIGS, filesep, "Fig3C_2024-06-14.png"))
+```
+
+
+Figure 3A: Predicted nuclei, mitochondria and cytoplasm signals. 
+```{r}
+## ImageJ macro for all channels image
+# open("C:/Users/80027908/Downloads/cytoplasm.p.tif");
+# run("Cyan");
+# run("RGB Color");
+# open("C:/Users/80027908/Downloads/nucleus.p.tif");
+# run("Magenta");
+# run("RGB Color");
+# open("C:/Users/80027908/Downloads/mito.p.tif");
+# run("Yellow");
+# imageCalculator("Add create stack", "cytoplasm.p.tif","nucleus.p.tif");
+# selectImage("Result of cytoplasm.p.tif");
+# imageCalculator("Add create stack", "Result of cytoplasm.p.tif","mito.p.tif");
+# selectImage("Result of Result of cytoplasm.p.tif");
+# saveAs("Tiff", "C:/Users/80027908/Desktop/CC_project/Fig3A_stack.tif");
+# run("Slice Keeper", "first=14 last=14 increment=1");
+# saveAs("Tiff", "C:/Users/80027908/Desktop/CC_project/Fig3A_slice.tif");
+
+## Create legend image -> manually crop borders before producing the next graph
+# pal = colorRampPalette(c("magenta", "white", "yellow", "white", "cyan"))
+# png(paste0(OUTFIGS, filesep, "legend_2.png"), width = 300, height = 250)
+# plot.new()
+# lgd_ = rep(NA, 5)
+# lgd_[c(1,3,5)] = c("Nucleus", "Mitochondria", "Cytoplasm")
+# legend(x = 0, y = 1.02,
+#        legend = lgd_,
+#        fill = pal(5),
+#        border = NA,
+#        y.intersp = 0.5,
+#        bty = "n",
+#        cex = 2, text.font = 0.2)
+# dev.off()
+
+# Create reference image
+cent_df <- coord_ %>% 
+  group_by(id) %>% 
+  summarise(x = mean(x), y = mean(y)) %>% 
+  mutate(x = 1024 - (x*4.3103), y = y*4.3103)
+
+figname = paste0(OUTFIGS, filesep, "Fig3A_labeled.png")
+png(figname, width = 1024, height = 1024, units = "px")
+im <- bioimagetools::readTIF(paste0(OUTFIGS, filesep,"Fig3A_slice.tif"))
+im <- EBImage::resize(im, dim(im)[1]/1)
+plot(raster::as.raster(im[,,,1]))
+text(cent_df$x, cent_df$y+4, labels=cent_df$id, col="green", cex=1)
+dev.off()
+
+cent_df <- cent_df %>% 
+  filter(id %in% coi)
+
+cent_labels <- cent_df[order(-cent_df$y),]
+cent_labels <- cent_labels %>% 
+  mutate(cell = row_number())
+
+figname = paste0(OUTFIGS, filesep, "Fig3A_custom_labeled.png")
+png(figname, width = 1024, height = 1024, units = "px")
+im <- bioimagetools::readTIF(paste0(OUTFIGS, filesep,"Fig3A_slice.tif"))
+im <- EBImage::resize(im, dim(im)[1]/1)
+plot(raster::as.raster(im[,,,1]))
+text(cent_labels$x, cent_labels$y+4, labels=cent_labels$cell, col="green", cex=1)
+dev.off()
+
+figname = paste0(OUTFIGS, filesep, "Fig3A_",thedate,".png")
+png(figname, width = 1024, height = 1024, units = "px")
+im <- bioimagetools::readTIF(paste0(OUTFIGS, filesep,"Fig3A_slice.tif"))
+im <- EBImage::resize(im, dim(im)[1]/1)
+plot(raster::as.raster(im[,,,1]))
+legend <- png::readPNG(paste0(OUTFIGS, filesep, "legend_2.png"))
+rasterImage(legend,0,0,200,100)
+dev.off()
+la=plotPNGorTIF(figname)
+
+```
+
+
+
+Figure 3D: Cell features quantified from label free imaging correlate with cell cycle classes as defined by FUCCI. 
+```{r}
+var_list <- svm$svmFeatures
+cycle <- fucci_raw[rownames(imgStats),"cellCycle"]
+
+imgStats_b <- imgStats %>% 
+  rownames_to_column(var = "long_ID") %>% 
+  cbind(cycle) %>% 
+  dplyr::select(c(long_ID, ID, FoF, cellCycle = cycle, var_list))
+
+
+list_plots <- vector('list', length(var_list))
+for (i in seq_along(list_plots)) {
+  list_plots[[i]] <- ggplot(imgStats_b) +
+    geom_boxplot(aes(as.character(cellCycle), .data[[var_list[i]]], fill = FoF)) + # , color = as.character(cellCycle))) +
+    scale_fill_manual(values = c("FoF1_231005_fluorescent.nucleus" = "yellow", 
+                                 "FoF2_231005_fluorescent.nucleus" = "red",
+                                 "FoF3_231005_fluorescent.nucleus" = "green",
+                                 "FoF4_231005_fluorescent.nucleus" = "blue")) +
+    # scale_color_manual(values = c("1" = "#FDE725FF", 
+    #                              "2" = "#35B779FF", 
+    #                             "3" = "#31688EFF", 
+    #                            "4" = "#440154FF")) +
+    theme_light() +
+    theme(axis.title.x=element_blank(), legend.position = "none") +
+    scale_x_discrete(labels=c("1" = "G1", "2" = "G1/S", "3" = "S", "4" = "G2"))
+}
+
+list_plots[[11]] <- ggplot(imgStats_b) +
+    geom_boxplot(aes(as.character(cellCycle), vol_nucleus.p, fill = FoF)) + # , color = as.character(cellCycle))) +
+    scale_fill_manual(values = c("FoF1_231005_fluorescent.nucleus" = "yellow", 
+                                 "FoF2_231005_fluorescent.nucleus" = "red",
+                                 "FoF3_231005_fluorescent.nucleus" = "green",
+                                 "FoF4_231005_fluorescent.nucleus" = "blue")) +
+    # scale_color_manual(values = c("1" = "#FDE725FF", 
+    #                              "2" = "#35B779FF", 
+    #                             "3" = "#31688EFF", 
+    #                            "4" = "#440154FF")) +
+    theme_light() +
+    theme(axis.title.x=element_blank()) +
+    scale_x_discrete(labels=c("1" = "G1", "2" = "G1/S", "3" = "S", "4" = "G2"))
+
+e <- ggplot() +
+  theme_void()
+
+a <- (list_plots[[1]] + list_plots[[2]] + list_plots[[3]])
+b <- (list_plots[[4]] + list_plots[[5]] + list_plots[[6]])
+c <- (list_plots[[7]] + list_plots[[8]] + list_plots[[9]])
+d <- (list_plots[[11]] + list_plots[[10]])
+
+
+figname <- paste0(OUTFIGS, filesep, "Fig3D_",thedate,".png")
+ggsave(figname,units="px",width = 480, height = 480, plot=list_plots[[1]] + list_plots[[2]], dpi=140)
+la=plotPNGorTIF(figname)
+
+a/b/c/d
+figname <- paste0(OUTFIGS, filesep, "Fig3D_",thedate,"_plusSIFig.png")
+ggsave(figname,units="px",width = 1980, height = 2380, dpi=300)
+
+# figname=paste0(OUTFIGS, filesep, "Fig3D_fill+color.png")
+# la=plotPNGorTIF(figname)
+```
+
+
+Figure 4: Characterization of discrete and continuous cell cycle progression in NCI-N87 with label free imaging. 
+Figure 4A: Supervised approach to predict discrete cell cycle state from nuclei, mitochondria and cytoplasm features. 
+```{r}
+## Make diagram in pptx showing:
+print(paste("Total cells:",nrow(imgStats),"split into:"), quote = F)
+print(paste("Training:",length(unlist(svm$training)),"cells"), quote = F)
+print(paste("Testing:",length(unlist(svm$testing)),"cells"), quote = F)
+print(paste("SVM trained on",length(svm$svmFeatures),"features and applied on test set"))
+
+# Load the necessary packages
+library(DiagrammeR)
+library(glue)
+
+# Define the variable
+tot_cells = nrow(imgStats)
+num_cells_A <- length(unlist(svm$training))
+num_cells_B <- length(unlist(svm$testing))
+num_features <- length(svm$svmFeatures)
+
+
+figname = paste0(OUTFIGS, filesep, "Fig4A_",thedate,".png")
+# Create the diagram using the grViz function
+# Create the graph object using the create_graph function
+graph <- grViz(glue("
+  digraph diagram {{
+    # Define the graph attributes
+    graph [layout = dot, rankdir = TB]
+
+    # Define the node attributes
+    node [shape = box, style = filled, color = lightgrey, fontname = Helvetica]
+
+    # Define the nodes
+    node1 [label = '{tot_cells} Total cells']
+    node2 [label = '{num_cells_A} cells']
+    node3 [label = '{num_cells_B} cells']
+    node4 [label = 'SVM trained on {num_features} cell features']
+
+    # Define the edges (arrows) with labels on the opposite side
+    node1 -> node2 [label = 'Training', labeldistance = 2, labelangle = 180]
+    node1 -> node3 [label = 'Test', labeldistance = 2, labelangle = 180]
+    node2 -> node4
+    node4 -> node3 [label = 'application']
+
+    # Subgraph to control the layout
+    {{ rank = same; node2; node3 }}
+    {{ rank = max; node4 }}
+  }}
+"))
+# Export the graph to a PNG file
+# export_graph(graph, file_name = figname, file_type = "png")
+graph
+# Render the diagram in the RStudio Viewer
+# render_graph(graph)
+```
+
+
+Figure 4B: Performance of trained classifier on test set. 
+```{r}
+confMat = read.xlsx(paste0(OUTPSEUDOTIME, filesep,"cellCyclePrediction_svm_2024-05-15.xlsx"), sheetIndex = 1, row.names=T)
+tmp=sapply(c("Class..1","Class..2","Class..3","Class..4"), function(x) as.numeric(confMat[grep(x, rownames(confMat)),"Balanced.Accuracy"])) 
+
+figname=paste0(OUTFIGS, filesep,"Fig4B_",thedate,".png")
+png(figname )
+boxplot(tmp, names=names(fuccicol), ylab="Balanced.Accuracy",cex.axis=2, cex.lab=1.7)
+dev.off()
+
+la=plotPNGorTIF(figname)
+```
+
+
+Figure 4C: Unsupervised approach to predict continuous cell cycle progression from nuclei, mitochondria and cytoplasm features. . 
+```{r}
+tmp=plot_dimred(model[[FoF]],color_cells = "pseudotime", size_cells=1.84,size_milestones=5)
+tmp
+ggsave(paste0(OUTFIGS,filesep,"Fig4C_",thedate,"_labelFree_",FoF,"_pseudotimeTSNE.png"),units="px",width = 0.9*480, height = 480, plot=tmp, dpi=100)
+```
+
+
+Figure 4D + supplementary Fig: Pseudotime derived from label free imaging features is differentially distributed across the four FUCCI-informed cell cycle classes.   
+```{r}
+figname=paste0(OUTFIGS, filesep,"Fig4D_",thedate,".png")
+png(figname)
+par(mfrow=c(1,1))
+boxplot(model$All$pseudotime[rownames(fucci_raw)]~fucci_raw[,"cellCycle"], xlab="", names=names(fuccicol), ylab="label free pseudotime", main="",cex.main=0.6, cex.axis=1.506, cex.lab=1.7)
+dev.off()
+la=plotPNGorTIF(figname)
+
+
+figname=paste0(OUTFIGS, filesep,"Fig4D_",thedate,"_plusSIFig.png")
+png(figname, width = 1000, height = 800)
+par(mfrow=c(2,3))
+ii = sapply(FoFs[c(1,2,4,3)], function(x) grep(x,rownames(fucci_raw),value=T))
+# sapply(names(ii), function(x) boxplot(model[[x]]$pseudotime[ii[[x]]]~fucci_raw[ii[[x]],"cellCycle"], xlab="", names=names(fuccicol), ylab="label free pseudotime", main=x,cex.main=0.6))
+sapply(names(ii), function(x) boxplot(model$All$pseudotime[ii[[x]]]~fucci_raw[ii[[x]],"cellCycle"], xlab="", names=names(fuccicol), ylab="label free pseudotime", main=x,cex.lab=1.7, cex.axis=2,cex.main=1.2))
+
+ii=names(model$All$pseudotime)
+ii=grep(FoFs[1], ii, value=T, invert = T)
+te=cor.test(model$All$pseudotime[ii], model$Fucci_All$pseudotime[ii])
+col=rainbow(length(unique(fucci_raw[ii,"FoF"])))
+names(col)=unique(fucci_raw[ii,"FoF"])
+plot(model$All$pseudotime[ii], model$Fucci_All$pseudotime[ii], main=paste("r=",round(te$estimate,2),"P=",te$p.value), xlab="label free pseudotime",  ylab="fucci pseudotime",  col=col[fucci_raw[ii,"FoF"]])
+legend("bottomleft",sapply(strsplit(names(col),"_"),"[[",1),fill=col)
+dev.off()
+la=plotPNGorTIF(figname)
+
+
+```
+
+
+Figure 4E: representative cell across cell cycle: fucci. 
+```{r}
+'%!in%' <- function(x,y)!('%in%'(x,y))
+
+# Fucci signals
+fucci_df <- coord_[grep("nuc", coord_$signal),]
+# fucci_df <- coord_
+fucci_df$cell <- paste0("cell", fucci_df$id)
+rownames(fucci_df) <- NULL
+
+pseud_df <- model$Fucci_All$pseudotime
+pseud_df$cell_id <- rownames(pseud_df)
+pseud_df <- as_tibble(pseud_df)
+pseud_df <- pseud_df %>% 
+  pivot_longer(cols = everything()) %>%
+  separate(name, into = c("FoF", NA, NA, "cell"), sep = "_") %>% 
+  filter(FoF == "FoF3")
+
+fucci_pseud <- left_join(fucci_df, pseud_df, by = join_by(cell == cell))
+colnames(fucci_pseud)[colnames(fucci_pseud) == 'value'] <- 'pseudotime'
+
+target_list_1 <- pseud_df %>% 
+  filter(!if_any(value, is.na)) %>% 
+  filter(abs(value-0.1)==min(abs(value-0.1)) |
+           abs(value-0.3)==min(abs(value-0.3)) |
+           abs(value-0.5)==min(abs(value-0.5)) |
+           abs(value-0.7)==min(abs(value-0.7)) |
+           abs(value-0.9)==min(abs(value-0.9)))
+
+target_list_2 <- pseud_df %>% 
+  filter(!if_any(value, is.na)) %>% 
+  filter(cell %!in% unique(target_list_1$cell)) %>% 
+  filter(abs(value-0.1)==min(abs(value-0.1)) |
+           abs(value-0.3)==min(abs(value-0.3)) |
+           abs(value-0.5)==min(abs(value-0.5)) |
+           abs(value-0.7)==min(abs(value-0.7)) |
+           abs(value-0.9)==min(abs(value-0.9)))
+
+target_list_3 <- pseud_df %>% 
+  filter(!if_any(value, is.na)) %>% 
+  filter(cell %!in% unique(target_list_1$cell) & cell %!in% unique(target_list_2$cell)) %>% 
+  filter(abs(value-0.1)==min(abs(value-0.1)) |
+           abs(value-0.3)==min(abs(value-0.3)) |
+           abs(value-0.5)==min(abs(value-0.5)) |
+           abs(value-0.7)==min(abs(value-0.7)) |
+           abs(value-0.9)==min(abs(value-0.9)))
+
+target_df <- fucci_pseud %>% 
+  filter(cell %in% unique(target_list_1$cell) | 
+           cell %in% unique(target_list_2$cell) |
+           cell %in% unique(target_list_3$cell))
+
+target_cells <- target_df %>% 
+  group_by(id) %>% 
+  summarise(pseudotime = mean(pseudotime))
+
+for(coi in unique(target_df$id)){
+  a <- coord_[coord_$id %in% coi,]
+  a[,xyz] <- sweep(a[,xyz], MARGIN = 2, STATS = apply(a[,xyz], 2, min), FUN = "-")
+  a[,xyz] <- 1 + a[,xyz]
+  xyzlim <- apply(a[,xyz], 2, quantile, c(0,1))
+  a$z <- z_interval * a$z
+  a_ <-  a %>% 
+    filter(id == coi, signal == "nucleus.p")
+  png(paste0(OUTFIGS, filesep, "Fig4E_", coi, ".png"), width = 600, height = 600)
+  Plot_ConcaveHull(a_$x, a_$y, a_$z, xlim = xyzlim[,"x"], ylim = xyzlim[,"y"], zlim = xyzlim[,"z"], level = 10, lcolor = "gray", alpha = 0.25, add = F, phi = 30, theta = 140)
+  a_$fucci_ch00 <- round(a_$fucci_ch00, 1)
+  a_$fucci_ch02 <- round(a_$fucci_ch02, 2)
+  for(x in unique(a_$fucci_ch00)){
+    i <- which(a_$fucci_ch00 == x)
+    plot3D::points3D(a_$x[i], a_$y[i], a_$z[i], pch3d = 20, axes = F, xlab = "", ylab = "", zlab = "", col = "red", alpha = x, add = T)
+  }
+  for(x in unique(a_$fucci_ch02)){
+    i <- which(a_$fucci_ch02 == x)
+    plot3D::points3D(a_$x[i], a_$y[i], a_$z[i], pch3d = 20, axes = F, xlab = "", ylab = "", zlab = "", col = "green", alpha = x, add = T)
+  }
+  dev.off()
+}
+
+```
+
+
+Figure 4F: representative cell across cell cycle: label free. 
+```{r}
+'%!in%' <- function(x,y)!('%in%'(x,y))
+
+coord_df <- coord_
+coord_df$cell <- paste0("cell", coord_df$id)
+
+pseud_df <- model$All$pseudotime
+pseud_df$cell_id <- rownames(pseud_df)
+pseud_df <- as.tibble(pseud_df)
+pseud_df <- pseud_df %>% 
+  pivot_longer(cols = everything()) %>%
+  separate(name, into = c("FoF", NA, NA, "cell"), sep = "_") %>% 
+  filter(FoF == "FoF3")
+
+coord_pseud <- left_join(coord_df, pseud_df, by = join_by(cell == cell))
+colnames(coord_pseud)[colnames(coord_pseud) == 'value'] <- 'pseudotime'
+
+# write.csv(coord_pseud, file = paste0(OUTFIGS, filesep, FoF, "_label_free.csv"))
+
+target_list_1 <- pseud_df %>% 
+  filter(!if_any(value, is.na)) %>% 
+  filter(abs(value-0.1)==min(abs(value-0.1)) |
+           abs(value-0.3)==min(abs(value-0.3)) |
+           abs(value-0.5)==min(abs(value-0.5)) |
+           abs(value-0.7)==min(abs(value-0.7)) |
+           abs(value-0.9)==min(abs(value-0.9)))
+
+target_list_2 <- pseud_df %>% 
+  filter(!if_any(value, is.na)) %>% 
+  filter(cell %!in% unique(target_list_1$cell)) %>% 
+  filter(abs(value-0.1)==min(abs(value-0.1)) |
+           abs(value-0.3)==min(abs(value-0.3)) |
+           abs(value-0.5)==min(abs(value-0.5)) |
+           abs(value-0.7)==min(abs(value-0.7)) |
+           abs(value-0.9)==min(abs(value-0.9)))
+
+target_list_3 <- pseud_df %>% 
+  filter(!if_any(value, is.na)) %>% 
+  filter(cell %!in% unique(target_list_1$cell) & cell %!in% unique(target_list_2$cell)) %>% 
+  filter(abs(value-0.1)==min(abs(value-0.1)) |
+           abs(value-0.3)==min(abs(value-0.3)) |
+           abs(value-0.5)==min(abs(value-0.5)) |
+           abs(value-0.7)==min(abs(value-0.7)) |
+           abs(value-0.9)==min(abs(value-0.9)))
+
+target_df <- coord_pseud %>% 
+  filter(cell %in% unique(target_list_1$cell) | 
+           cell %in% unique(target_list_2$cell) |
+           cell %in% unique(target_list_3$cell))
+
+for(i in unique(target_df$cell)) {
+  p <- target_df %>% 
+    filter(cell == i)
+  
+  xlab <- round(p[1,14], digits = 4)
+  a <- ggplot(p) +
+    geom_tile(aes(x, y, fill = signal, alpha = signal)) +
+    scale_alpha_manual(values = c("nucleus.p" = 0.01, "mito.p" = 0.05, "cytoplasm.p" = 0.05)) +
+    theme_void() +
+    theme(legend.position = "none",
+          axis.title.x = element_text(),
+          panel.background = element_rect(fill = 'black', colour = 'black')) +
+    labs(x = xlab) +
+    scale_fill_manual(values = c("nucleus.p" = "magenta", "mito.p" = "yellow", "cytoplasm.p" = "cyan"))
+  
+  assign(paste0("plot_", i), a)
+}
+
+p <- target_df %>% 
+  filter(cell == "cell199")
+xlab <- round(p[1,14], digits = 4)
+plot_cell199 <- ggplot(p) +
+  geom_tile(aes(x, y, fill = signal, alpha = signal)) +
+  scale_alpha_manual(values = c("nucleus.p" = 0.01, "mito.p" = 0.05, "cytoplasm.p" = 0.03)) +
+  theme_void() +
+  theme(axis.title.x = element_text(),
+        panel.background = element_rect(fill = 'black', colour = 'black')) +
+  labs(x = xlab) +
+  guides(fill = guide_legend(override.aes = list(alpha = 1))) +
+  scale_fill_manual(values = c("nucleus.p" = "magenta", "mito.p" = "yellow", "cytoplasm.p" = "cyan"))
+
+p <- target_df %>% 
+  filter(cell == "cell216")
+xlab <- round(p[1,14], digits = 4)
+plot_cell216 <- ggplot(p) +
+  geom_tile(aes(x, y, fill = signal, alpha = signal)) +
+  scale_alpha_manual(values = c("nucleus.p" = 0.01, "mito.p" = 0.05, "cytoplasm.p" = 0.03)) +
+  theme_void() +
+  theme(axis.title.x = element_text(),
+        panel.background = element_rect(fill = 'black', colour = 'black')) +
+  labs(x = xlab) +
+  guides(fill = guide_legend(override.aes = list(alpha = 1))) +
+  scale_fill_manual(values = c("nucleus.p" = "magenta", "mito.p" = "yellow", "cytoplasm.p" = "cyan"))
+
+p <- target_df %>% 
+  filter(cell == "cell80")
+xlab <- round(p[1,14], digits = 4)
+plot_cell80 <- ggplot(p) +
+  geom_tile(aes(x, y, fill = signal, alpha = signal)) +
+  scale_alpha_manual(values = c("nucleus.p" = 0.01, "mito.p" = 0.05, "cytoplasm.p" = 0.03)) +
+  theme_void() +
+  theme(axis.title.x = element_text(),
+        panel.background = element_rect(fill = 'black', colour = 'black')) +
+  labs(x = xlab) +
+  guides(fill = guide_legend(override.aes = list(alpha = 1))) +
+  scale_fill_manual(values = c("nucleus.p" = "magenta", "mito.p" = "yellow", "cytoplasm.p" = "cyan"))
+
+# heights = unit(c(0.1, rep(0.05, 4), 0.05), "null")
+png(paste0(OUTFIGS, filesep, "Fig4F_", thedate, ".png"), width = 1500, height = 750)
+grid.arrange(
+  arrangeGrob(
+    textGrob("A", x = 0, y = 1, vjust = 1, hjust = 0, gp = gpar(fontsize = 12, fontface = "bold")),
+    plot_cell23, plot_cell160, plot_cell158, plot_cell140, plot_cell199, 
+    ncol = 6,
+    widths = unit(c(0.1, rep(0.5, 4), 0.8), "null")
+  ),
+  arrangeGrob(
+    textGrob("B", x = 0, y = 1, vjust = 1, hjust = 0, gp = gpar(fontsize = 12, fontface = "bold")),
+    plot_cell63, plot_cell270, plot_cell208, plot_cell301, plot_cell216, 
+    ncol = 6,
+    widths = unit(c(0.1, rep(0.5, 4), 0.8), "null")
+  ),
+  arrangeGrob(
+    textGrob("C", x = 0, y = 1, vjust = 1, hjust = 0, gp = gpar(fontsize = 12, fontface = "bold")),
+    plot_cell40, plot_cell149, plot_cell21, plot_cell189, plot_cell80, 
+    ncol = 6,
+    widths = unit(c(0.1, rep(0.5, 4), 0.8), "null")
+  ),
+  nrow = 3
+)
+dev.off()
+
+```
+
+
+
+
+Figure 5: Sequencing imaging integration
+
+Figure 5A: Sequencing derived pseudotime of cell cycle progression
+```{r}
+# cell_ID <- model$Seq$cell_ids
+# model_df <- cbind(pseudotime = model$Seq$pseudotime, cell_ID)
+
+tmp=plot_dimred(model$Seq,color_cells = "pseudotime", size_cells=1.84,size_milestones=5)
+tmp
+ggsave(paste0(OUTFIGS,filesep,"Fig5A_",thedate,"_scRNA_pseudotimeTSNE.png"),  units="px",width = 680, height = 480, plot=tmp, dpi=100)
+```
+
+
+Figure 5B: Co-clustering of sequenced and imaged cells based on pseudotime
+```{r}
+## co-cluster image and sequencing stats
+load(paste0(OUTPSEUDOTIME, filesep,"scRNAdataset_2024-05-15.RObj")); ## loads pq
+tmp=as.data.frame(model$All$pseudotime)
+colnames(tmp)="pseudotime"
+tmp$FoF=imgStats[rownames(tmp),]$FoF
+tmp$type="Img"
+pq$type="Seq"
+stats=rbind(pq[,c("pseudotime","FoF","type")],tmp)
+# rownames(stats) = paste0(rownames(stats), "_seq")
+ii=which(stats$FoF %in% FoFs)
+# rownames(stats)[ii]=gsub("_seq$", "_img",rownames(stats)[ii])
+stats=stats[order(stats$pseudotime),]
+
+# dd = as.matrix(dist(as.matrix(stats$pseudotime),method = "manhattan"))
+# rownames(dd)<-colnames(dd)<-rownames(stats)
+# tr = ape::bionj(dd)
+# tr=ape::root(tr, resolve.root=T, outgroup=tr$tip.label[1])
+# tr=phytools::force.ultrametric(tr,method = "extend")
+# # la=cutree(as.hclust(tr),h = 0.1)
+# col = rep("red", length(tr$tip.label))
+# col[grep("img",tr$tip.label) ] = "blue"
+# figname=paste0(OUTFIGS, filesep,"Fig5B_",thedate,".png") 
+# png(figname)
+# par(mfrow=c(1,1))
+# plot(tr,show.tip.label = T, tip.color = col, cex=0.36)
+# legend("topright",c("sequenced cell","imaged cell"),fill=c("red","blue"),cex=1.8)
+# dev.off()
+# la=plotPNGorTIF(figname)
+
+
+##for each img cell which seqed cells have this cell as nearest pseudotime neighbor and vice versa?
+cl=dbscan::dbscan(as.matrix(stats$pseudotime), eps=0.001,minPts =2)
+stats$cluster=cl$cluster
+typeRepr=sapply(0:max(stats$cluster), function(x) length(unique(stats$type[stats$cluster==x])))
+## Keep only cells that are members of multi-type clusters (Seq + Img):
+stats_=stats[typeRepr[stats$cluster+1]==2,]
+stats_=stats[stats$cluster>0,]; ## exclude noise
+print(paste(length(unique(stats$cluster)),"clusters identified" ))
+print(paste(100*length(unique(stats_$cluster))/length(unique(stats$cluster)),"% clusters contain both sequenced and imaged cells" ))
+## Average number of cells per cluster
+stats_split=sapply(c("Seq","Img"), function(x) stats_[stats_$type==x,], simplify = F)
+stats_split=sapply(names(stats_split), function(x) plyr::count(stats_split[[x]]$cluster)$freq, simplify = F)
+sapply(stats_split, hist)
+sapply(stats_split, mean)
+sapply(stats_split, median)
+sapply(stats_split, sum)
+
+
+figname=paste0(OUTFIGS, filesep,"Fig5B_",thedate,".png") 
+col=rainbow(max(stats_$cluster))
+png(figname, width = 680)
+ii=which(stats_$type=="Img")
+plot(1:length(ii), stats_$pseudotime[ii], col=col[stats_$cluster[ii]], xlab="cell", ylab="pseudotime", cex=2, pch=3, cex.axis=2, cex.lab=2)
+ij=setdiff(1:nrow(stats_),ii)
+ij=sort(sample(ij,length(ii)))
+points(1:length(ij), stats_$pseudotime[ij], col=col[stats_$cluster[ij]], pch=1,cex=2)
+legend("topleft",c("sequenced cell","imaged cell"),pch=c(1,3),cex=2.2)
+dev.off()
+
+la=plotPNGorTIF(figname)
+```
+
+
+Figure 5C: Correlation between gene expression and imaging-derived features
+```{r}
+## correlation btw gene expression and img features
+cc <- pval <- list()
+pairs=list()
+toExclude=c("FoF","frame","ID","count_nucleus.p","png","type","pseudotime","segmentationError","smv_cell","smv_nucleus.p","smv_mito.p","smv_cytoplasm.p",xyz[1:2]);
+for(sFeature in setdiff(colnames(pq),toExclude)){
+  cells=sapply(unique(stats_$cluster), function(x) rownames(stats_)[stats_$cluster==x])
+  seqCells=sapply(cells, function(x) grep("Clone_",x, value=T))
+  imgCells=sapply(cells, function(x) grep("FoF",x, value=T))
+
+  s = sapply(seqCells, function(x) mean(pq[x,sFeature]))
+  pairs[[sFeature]] = list()
+  for(iFeature in setdiff(colnames(imgStats), toExclude)){
+    i = sapply(imgCells, function(x) mean(imgStats[x,iFeature] ))
+    x=cor.test(s, i)
+    pair=paste(sFeature, iFeature, sep = "+")
+    cc[[sFeature]][[iFeature]] =x$estimate
+    pval[[sFeature]][[iFeature]] =x$p.value
+    pairs[[pair]] = list(s=s,i=i)
+  }
+}
+cc=do.call(rbind,cc)
+pval=do.call(rbind,pval)
+tmp=rownames(cc)
+cc = apply(cc,2,as.numeric)
+pval = apply(pval,2,as.numeric)
+rownames(cc) <- rownames(pval) <- tmp
+
+## Save as supplementary table
+tabname=paste0(OUTFIGS, filesep,"SupplementaryTable1_",thedate,".tex")
+cc_ <- convert_matrix_to_df(cc, pval)
+cc_$pval = p.adjust(cc_$pval,method = "bonferroni")
+ii=which(cc_$pval<=0.05);
+print(paste0("Comparing all imaging- and sequencing derived feature pairs across clusters identified ",length(ii)," significantly correlated feature pairs (Pearson r $\\geq$",round(min(abs(cc_$r)[ii]),2),"; Bonferroni-corrected p-value<0.05;"))
+cc_=cc_[order(cc_$pval)[1:150],]
+cc_$Pathway <- sapply(as.character(cc_$Pathway), truncate_string, 40)
+cc_ <- xtable(cc_)
+table_code <- print(cc_, type = "latex", include.rownames = FALSE, comment = FALSE, print.results = F)
+# Convert the original LaTeX table to the desired format
+modified_table <- gsub("\\\\begin\\{table\\}\\[ht\\]", "\\\\begin{longtable}[H]{| p{0.5\\\\textwidth} | p{.3\\\\textwidth} | p{.1\\\\textwidth} | p{.1\\\\textwidth} |}", table_code)
+modified_table <- gsub("\\\\end\\{table\\}", "\\\\caption{ Correlation between imaging and sequencing derived feature pairs. Only the top 150 most significant correlations are displayed. P-values are Bonferroni-corrected. }\n \\\\label{table_imgseq_corr}\n \\\\end{longtable}", modified_table)
+modified_table <- gsub("\\\\centering", "", modified_table)
+modified_table <- gsub("\\\\begin\\{tabular\\}\\{llrr\\}", "", modified_table)
+modified_table <- gsub("\\\\end\\{tabular\\}", "", modified_table)
+writeLines(modified_table, tabname)
+
+
+## sort and plot
+poi=unique(unlist(apply(abs(cc),2, function(x) which(x>0.5)), use.names = F))
+cc=cc[,!apply(is.na(cc[poi,]),2,all)]
+pval=pval[, colnames(cc)]
+hm_df <- as.tibble(cc[poi,])
+rownames(hm_df) <- rownames(cc[poi,])
+rownames(hm_df)[36] <- "PCNA replication complex recognition of DNA damage"
+rownames(hm_df)[38] <- "Resp. electrom transport/chemiosmotic ATP synthesis/protein heat"
+rownames(hm_df)[45] <- "Activate APC/C, APC/C:Cdc20 degradation of mitotic proteins"
+rownames(hm_df)[56] <- "Amplify signal of unattached kinetochores via MAD2 inhibiton"
+rownames(hm_df)[101] <- "Regulation of mRNA stability by AU-rich proteins"
+
+
+library(dendextend)
+distance = dist(as.matrix(hm_df), method = "manhattan")
+cluster_row = hclust(distance, method = "ward")
+distance = dist(t(as.matrix(hm_df)), method = "manhattan")
+cluster_col = hclust(distance, method = "ward")
+den_row <- as.dendrogram(cluster_row)
+den_column <- as.dendrogram(cluster_col)
+cols_branches <- c("gold", "blue", "forestgreen", "red", "purple3")
+den_row <- color_branches(den_row, k = 4, col = cols_branches[1:4])
+den_column <- color_branches(den_column, k = 5, col = cols_branches[1:5])
+
+# For just the key
+# hm=heatmap.2(as.matrix(hm_df), trace="n",
+#              dendrogram = "none",
+#              col = colorRampPalette(rev(brewer.pal(11, "Spectral"))),
+#              cexCol = 0.1,
+#              cexRow = 0.1)
+# figname=paste0(OUTFIGS, filesep,"Fig5C_legend.png")
+# png(figname, width = 1200, height = 700)
+# eval(hm$call)
+# dev.off()
+
+# hm=heatmap.2(as.matrix(hm_df), trace="n", margins = c(19.7, 31.9), key = F,
+#              col = colorRampPalette(rev(brewer.pal(11, "Spectral"))),
+#              cexCol = 1.4,
+#              cexRow = 1.2,
+#              Rowv = den_row,
+#              Colv = den_column
+# )
+
+# print(cc[p.adjust(pval, method = "fdr")<0.05])
+MINCC=sort(abs(cc), decreasing = T)[9]
+ii=which(abs(cc)>MINCC, arr.ind = T)
+ii=apply(ii,1, function(x) c(rownames(cc)[x[1]],colnames(cc)[x[2]]))
+colnames(ii)=apply(ii,2, paste, collapse="+")
+
+figname=paste0(OUTFIGS, filesep,"Fig5C_",thedate,".png")
+png(figname, width = 2500,height = 1500)
+eval(hm$call)
+dev.off()
+la=plotPNGorTIF(figname)
+
+figname=paste0(OUTFIGS, filesep,"Fig5C_",thedate,"_plusSIFig.png")
+png(figname,width = 1200,height = 1200)
+par(mfrow=c(3,3))
+sapply(colnames(ii), function(x) plot(pairs[[x]]$s, pairs[[x]]$i, main="", cex.main=2, xlab=ii[1,x], ylab=ii[2,x], pch=20,cex=2, cex.lab=2))
+dev.off()
+
+la=plotPNGorTIF(figname)
+
+
+tabname=paste0(OUTFIGS, filesep,"SupplementaryTable2_",thedate,".tex")
+cc_ <- convert_matrix_to_df(cc, pval)
+features <- unique(cc_$Cell.Feature)
+features <- as_tibble(features)
+
+descriptions <- c(
+  "volume of cytoplasm",
+  "volume of mitochondria",
+  "volume of nucleus",
+  "area of cytoplasm",
+  "area of mitochondria",
+  "area of nucleus",
+  "total pixel count of cytoplasm",
+  "total pixel count of mitochondria",
+  "total pixel count of nucleus",
+  "number of cytoplasm DBSCAN clusters",
+  "number of mitochondria DBSCAN clusters",
+  "slice depth",
+  "area of cell",
+  "volume of cell",
+  "height range of cell",                  
+  "relative area of cell lost to indentations",                            
+  "packing of cell",                                                   # !!
+  "roundness of cell: spheres have a sphericity of 1",                     
+  "sma cell",                                                          # !!
+  "maximum area of available crossections of the cell",
+  "degree of wrinkling of the cell",
+  "total pixel count of cell",
+  "height range of cytoplasm",
+  "relative area of cytoplasm lost to indentations",                            
+  "packing of cytoplasm",                                              # !!
+  "roundness of cytoplasm: spheres have a sphericity of 1",                     
+  "sma cytoplasm",                                                     # !!
+  "csf cytoplasm",                                                     # !!
+  "Distance between cytoplasm and mitochondria (minimum)",
+  "Distance between cytoplasm and mitochondria (maximum)",
+  "Distance between cytoplasm and mitochondria (median)",
+  "Distance between cytoplasm and nucleus (minimum)",
+  "Distance between cytoplasm and nucleus (maximum)",
+  "Distance between cytoplasm and nucleus (median)",
+  "height range of mitochondria",               
+  "relative area of mitochondria lost to indentations",                        
+  "packing of mitochondria",                                           # !!
+  "roundness of mitochondria: spheres have a sphericity of 1",                  
+  "sma mitochondria",                                                  # !!
+  "csf mitochondria",                                                  # !!
+  "Distance between mitochondria and nucleus (minimum)",
+  "Distance between mitochondria and nucleus (maximum)",
+  "Distance between mitochondria and nucleus (median)",
+  "height range of nucleus",
+  "relative area of nucleus lost to indentations",                             
+  "packing of nucleus",                                                # !!
+  "roundness of nucleus: spheres have a sphericity of 1",                        
+  "sma nucleus",                                                       # !!
+  "maximum area of available crossections of the nucleus",                      
+  "degree of wrinkling of the nucleus",
+  "average intensity of cytoplasm",
+  "median intensity of cytoplasm",
+  "maximum intensity of cytoplasm",
+  "minimum intensity of cytoplasm",
+  "average intensity of mitochondria",
+  "median intensity of mutochondria",
+  "maximum intensity of mitochondria",
+  "minimum intensity of mitochondria",
+  "average pixel count per mitochondria",                                      # how is this different from the other pixels per mitochondria -- it is the average
+  "resolution of mitochondria",
+  "ratio of nuclei count to mitochondrial count",             
+  "resolution of cytoplasm",
+  "resolution of mutitochondria",
+  "resolution of nucleus",
+  "ratio of nuclear volume to nuclear area"
+)
+
+table_df <- data.frame("Imaging feature" = features, "Description" = descriptions)
+cc_ <- xtable(table_df)
+table_code <- print(cc_, type = "latex", include.rownames = FALSE, comment = FALSE, print.results = T)
+
+# Convert the original LaTeX table to the desired format
+modified_table <- gsub("\\\\begin\\{table\\}\\[ht\\]", "\\\\begin{longtable}[H]{| p{0.35\\\\textwidth} | p{.65\\\\textwidth}}", table_code)
+modified_table <- gsub("\\\\end\\{table\\}", "\\\\caption{Definition of imaging features}\n \\\\label{table_imgfeature_def}\n \\\\end{longtable}", modified_table)
+modified_table <- gsub("\\\\centering", "", modified_table)
+modified_table <- gsub("\\\\begin\\{tabular\\}\\{ll\\}", "", modified_table)
+modified_table <- gsub("\\\\end\\{tabular\\}", "", modified_table)
+writeLines(modified_table, tabname)
+
+```
+
+
+Assemble panels to figure
+```{r}
+panels = list(
+  Fig1 = c("A", "B", "C", "D", "E", "F"), 
+  Fig3 = c("A", "B", "C", "D"), 
+  Fig4 = c("A", "B", "C", "D", "E", "F"), 
+  Fig5 = c("A", "B", "C"), 
+  Fig2 = c("A", "B", "C", "D", "E")
+)
+
+plots = list()
+for (fig in names(panels)[1:3]) {
+  plots[[fig]] = list()
+  for (panel in panels[[fig]]) {
+    f = list.files(OUTFIGS, pattern = paste0("^", fig, panel, "_2024"), full.names = TRUE)
+    f = grep(".pdf$", f, value = TRUE, invert = TRUE)
+    f = grep(".gif$", f, value = TRUE, invert = TRUE)
+    f = grep("_plusSI", f, value = TRUE, invert = TRUE)
+    dates = sapply(f, function(x) strsplit(fileparts(x)$name, "_")[[1]][2])
+    print(paste0(fig, panel))
+    f = f[order(as.Date(dates), decreasing = TRUE)[1]]
+    plots[[fig]][[panel]] = plotPNGorTIF(f)
+  }
+  print(sapply(plots[[fig]], dim))
+}
+
+```
+
+
+Assemble panels to figure
+```{r}
+
+# Calculate the number of rows and columns for a given number of panels
+calculate_layout <- function(fig) {
+  if (fig == "Fig1" || fig == "Fig4") {
+    return(c(3, 2))  # 3 rows, 2 columns
+  } else if (fig == "Fig3") {
+    return(c(2, 2))  # 2 rows, 2 columns for Fig. 3
+  } else if (fig == "Fig5") {
+    return(c(2, 2))  # 2 rows, 2 columns for Fig. 5 (A/B share first row, C occupies second row)
+  } else {
+    num_panels <- length(panels[[fig]])
+    ncol <- max(2, ceiling(sqrt(num_panels)))  # Ensure at least two columns
+    nrow <- ceiling(num_panels / ncol)
+    return(c(nrow, ncol))
+  }
+}
+
+# Assemble panels to figure
+captions = list(
+  Fig1 = "FUCCI to characterize discrete and continuous cell cycle progression in NCI-N87. A. Green and red Fucci channels overlayed. B,C: Fucci based discrete cell cycle classification. D: Fucci based pseudotime trajectory in PCA space. Every dot represents a cell. E: Fucci based pseudotime inference reveals cell cycle progression. F: Pseudotime is differentially distributed across the four discrete cell cycle classes.",
+  Fig3 = "Label-free quantification of nucleus, cytoplasm and mitochondria at single cell resolution. A: Predicted nuclei, mitochondria and cytoplasm signals. B: Nuclei, mitochondria and cytoplasm of 10 representative cells from region highlighted in (A). Every data point is color-coded according to its cell membership. C: Nuclei, mitochondria and cytoplasm of 1 representative cell from (B). Every data point is color-coded according to its organelle class. D: Cell features quantified from label free imaging correlate with cell cycle classes as defined by FUCCI.",
+  Fig4 = "Characterization of discrete and continuous cell cycle progression in NCI-N87 with label free imaging. A: Supervised approach to predict discrete cell cycle state from nuclei, mitochondria and cytoplasm features. B: Performance of trained classifier on test set. C: Unsupervised approach to predict continuous cell cycle progression from nuclei, mitochondria and cytoplasm features. D + supplementary Fig: Pseudotime derived from label free imaging features is differentially distributed across the four FUCCI-informed cell cycle classes. E: representative cell across cell cycle: fucci. F: representative cell across cell cycle: label free.",
+  Fig5 = "Sequencing imaging integration. A: Sequencing derived pseudotime of cell cycle progression. B: Co-clustering of sequenced and imaged cells based on pseudotime. Color code indicates cluster membership. C: Correlation between pathway activity and imaging-derived features.",
+  Fig2 = "Evaluating performance of a CNN to predict the spatial distribution of nuclei and mitochondria. (A-C) Representative paired sets from model training using nucleus (train (N=37) / test (N=5) and mitochondria train (N=24) / test (N=5) models showing bright-field input, target signal and predicted signal (A), with train/validation rolling mean square error loss graphs for nucleus (B) and mitochondria (C). (D) Correlation coefficient of target fluorescence vs predicted fluorescence images paired with correlation coefficient from brightfield for the organelles that were used to train the models."
+)
+
+BORDER = 30
+for (fig in names(plots)) {
+  # Get the sizes of the plots
+  sz = sapply(plots[[fig]], dim)
+  layout = calculate_layout(fig)
+  nrow = layout[1]
+  ncol = layout[2]
+  
+  # Calculate total figure dimensions
+  panel_width = max(sz[1,])
+  panel_height = max(sz[2,])
+  total_width = panel_width * ncol + (ncol - 1) * BORDER
+  total_height = panel_height * nrow + (nrow - 1) * BORDER
+  
+  if (fig == "Fig5") {
+    total_width <- panel_width * 2 + BORDER
+  }
+  
+  figname = paste0(OUTFIGS, filesep, fig, "_", thedate, ".png")
+  png(figname, width = total_width, height = total_height)
+  plot(NA, xlim = c(0, total_width), ylim = c(0, total_height), type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "")
+  
+  panel_index = 1
+  for (r in 1:nrow) {
+    for (c in 1:ncol) {
+      if (panel_index <= length(plots[[fig]])) {
+        panel = names(plots[[fig]])[panel_index]
+        img = plots[[fig]][[panel]]
+        img_width = dim(img)[2]
+        img_height = dim(img)[1]
+        aspect_ratio = img_width / img_height
+        
+        # Calculate the new dimensions while maintaining the aspect ratio
+        if (fig == "Fig5") {
+          if (r == 1 && (panel == "A" || panel == "B")) {
+            new_width <- panel_width
+            new_height <- panel_height
+            xleft <- (c - 1) * (panel_width + BORDER)
+            ybottom <- total_height - r * (panel_height + BORDER)
+          } else if (r == 2 && panel == "C") {
+            new_width <- panel_width * 2 + BORDER
+            new_height <- panel_height
+            xleft <- 0
+            ybottom <- total_height - r * (panel_height + BORDER)
+          } else {
+            panel_index <- panel_index + 1
+            next
+          }
+        } else if (fig == "Fig4" && panel == "A") {
+          if (img_width > panel_width) {
+            new_width <- panel_width
+            new_height <- panel_width / aspect_ratio
+          } else {
+            new_width <- img_width
+            new_height <- img_height
+          }
+          xleft <- (c - 1) * (panel_width + BORDER)
+          ybottom <- total_height - r * (panel_height + BORDER)
+        } else if (fig == "Fig3" && (panel == "A" || panel == "D")) {
+          new_height = (2/3) * total_height
+          new_width = new_height * aspect_ratio
+          if (new_width > panel_width) {
+            new_width = panel_width
+            new_height = new_width / aspect_ratio
+          }
+          xleft = (c - 1) * (panel_width + BORDER) + (panel_width - new_width) / 2
+          ybottom = total_height - r * (panel_height + BORDER) + (panel_height - new_height) / 2
+        } else if (fig == "Fig3" && (panel == "B" || panel == "C")) {
+          new_height = (1/3) * total_height
+          new_width = new_height * aspect_ratio
+          if (new_width > panel_width) {
+            new_width = panel_width
+            new_height = new_width / aspect_ratio
+          }
+          xleft = (c - 1) * (panel_width + BORDER) + (panel_width - new_width) / 2
+          ybottom = total_height - r * (panel_height + BORDER) + (panel_height - new_height) / 2
+        } else {
+          if (img_width > img_height) {
+            new_width = panel_width
+            new_height = panel_width / aspect_ratio
+          } else {
+            new_height = panel_height
+            new_width = panel_height * aspect_ratio
+          }
+          xleft = (c - 1) * (panel_width + BORDER) + (panel_width - new_width) / 2
+          ybottom = total_height - r * (panel_height + BORDER) + (panel_height - new_height) / 2
+        }
+        
+        xright = xleft + new_width
+        ytop = ybottom + new_height
+        
+        rasterImage(img, xleft, ybottom, xright, ytop)
+        # Calculate label size based on figure height
+        label_size <- 0.002 * total_height  # 2% of figure height
+        text(xleft + 5, ytop - 5, labels = panel, adj = c(0, 1), cex = label_size, col = "black", font = 2)
+        panel_index = panel_index + 1
+      }
+    }
+  }
+  
+  dev.off()
+  ## Print caption
+  print(cat("\\begin{figure}\n ",
+            '\\includegraphics[width=\\textwidth,height=\\dimexpr \\textheight - 5\\baselineskip\\relax,keepaspectratio]{', gsub("../", "", figname, fixed = T), "}\n ",
+            '\\caption{', captions[[fig]], ".}\n ",
+            '\\label{', fig, "}\n ",
+            '\\end{figure}\n"))', sep = ""))
+}
+
+
+
+```
+
+
+
+
+Supplementary figures
+```{r}
+captions = list(
+  Fig1E = "Fucci-derived pseudtime is differentially distributed across the four cell cycle phases.",
+  Fig5C = "Sequencing- and imaging derived features are correlated.",
+  Fig4D = "Pseudtime derived from label-free imaging is differentially distributed across the four cell cycle phases.",
+  Fig3D = "Cell features derived from label free imaging correlate with FUCCI derived cell cycle progression."
+)
+f = list.files(OUTFIGS, pattern = "_plusSI", full.names = TRUE)
+f = grep(".pdf$", f, value = TRUE, invert = TRUE)
+f = grep(".gif$", f, value = TRUE, invert = TRUE)
+figs = sapply(f, function(x) strsplit(fileparts(x)$name, "_")[[1]][1])
+for (fig in sort(unique(figs))) {
+  f_=grep(fig,f, value = T)
+  dates = sapply(f_, function(x) strsplit(fileparts(x)$name, "_")[[1]][2])
+  f_ = f_[order(as.Date(dates), decreasing = TRUE)][1]
+  # print(f_)
+  figname = paste0(OUTFIGS, filesep, "Supplementary",fig, "_", thedate, ".png")
+  file.copy(f_, figname, overwrite = T)
+  
+  ## Print caption
+  print(cat("\\begin{figure}[hbt!]\n",
+            '\\includegraphics[width=\\textwidth,height=\\dimexpr \\textheight - 5\\baselineskip\\relax,keepaspectratio]{',gsub("../","",figname, fixed = T),"}\n",
+            '\\caption{',captions[[fig]],".}\n",
+            '\\label{',gsub(fig, paste0("SI",fig),fig),"}\n",
+            '\\end{figure}\n', sep = ""))
+}
+```
+
+
