@@ -24,6 +24,8 @@ library(patchwork)
 library(grid)
 library(gridExtra)
 library(dendextend)
+library(DiagrammeR)
+library(glue)
 # devtools::source_url("https://github.com/noemiandor/Utils/master/grpstats.R?raw=TRUE")
 OUTLINKED="A06_multiSignals_Linked"
 OUTPSEUDOTIME="A08_Pseudotime"
@@ -84,7 +86,7 @@ readOrganelleCoordinates<-function(signals_per_id, signals, IN){
     for(s in signals){
       x=paste0(s,"_cell_",cell,"_coordinates.csv")
       a=read.csv(paste0(IN,filesep,x))
-      ## pixel to um conversion: @TODO
+      # pixel to um conversion: @TODO
       a$z=a$z*z_interval
       a$x=a$x*pixelsize_xy
       a$y=a$y*pixelsize_xy
@@ -94,7 +96,7 @@ readOrganelleCoordinates<-function(signals_per_id, signals, IN){
       a$signal=s
       # id=id[length(id)-1]
       a$id=cell
-      ## add missing columns
+      # add missing columns
       if(!is.null(coord)){
         for(mc in setdiff(colnames(a), colnames(coord))){
           coord[,mc]=NA
@@ -160,7 +162,7 @@ Plot_ConcaveHull <- function(xx, yy, zz, lcolor="black", alpha=0.4, add=T, phi =
   # print("datapoints nucleus:"); print(length(xx))
   # print("datapoints mito:"); print(nrow(other))
   
-  ##Remove outliers
+  # Remove outliers
   # hQ=0.975; lQ=0.025
   hQ=1; lQ=0
   iK1=which(xx<=quantile(xx,hQ) & xx>=quantile(xx,lQ))
@@ -173,13 +175,13 @@ Plot_ConcaveHull <- function(xx, yy, zz, lcolor="black", alpha=0.4, add=T, phi =
   qy=quantile(yy,c(0,1))
   qz=quantile(zz,c(0,1))
   
-  ##Contour
+  # Contour
   n=1+c(qx[2]-qx[1], qy[2]-qy[1], qz[2]-qz[1])
   # print("nucleus:"); print(n)
   dens2 <- misc3d::kde3d(xx, yy, zz,n=round(n) ) 
   RES=c(x=dens2$x[2]-dens2$x[1],y=dens2$y[2]-dens2$y[1],z=dens2$z[2]-dens2$z[1])
   
-  ## Embed in larger array to render plots comparable across cells
+  # Embed in larger array to render plots comparable across cells
   dens <- array(0,dim=ceil(cbind(xlim,ylim,zlim)[2,]/RES))
   # print("all:"); 
   print(dim(dens))
@@ -347,6 +349,7 @@ ggsave(paste0(OUTFIGS,filesep,"Fig1D_",thedate,"_Fucci_",FoF,"_pseudotimeTSNE.pn
 
 Figure 1E: Fucci based pseudotime inference reveals cell cycle progression
 ```{r}
+# Arrange data for applying custom continuous color scale
 cc <-  fucci_ %>% 
   select(ID, pseudotime)
 coord_a <- left_join(coord_, cc, by = join_by(id == ID))
@@ -419,7 +422,7 @@ alpha=list(cytoplasm.p=0.035,cytoplasm.t=0.01,nucleus.t=1,nucleus.p=0.135,mito.t
 
 Figure 3B,C: Nuclei, mitochondria and cytoplasm of 10 representative cells from region highlighted in (A). Every data point is color-coded according to its cell membership. 
 ```{r}
-# Cells were selected manually for both spatial and state variation
+# Cells were selected manually for both spatial proximity and cycle state variation
 coi=as.character(c(63, 43, 239, 26, 89, 86))
 coi=setdiff(coi, rownames(imgStats_)[imgStats_$segmentationError])
 coord__=coord_[coord_$id %in% coi,]
@@ -456,7 +459,7 @@ for (i in seq_along(list_plots)) {
   list_plots[[i]] <- magick::image_ggplot(plot)
 }
 
-# Cells arranged correctly from left to right; relative spacing produced by hand 
+# Cells arranged correctly from left to right; relative spacing and image flip produced by hand for publication 
 list_plots[[1]]+list_plots[[3]]+list_plots[[2]]
 ggsave(paste0(OUTFIGS, filesep, "Fig3B_", thedate, ".png"))
 
@@ -587,24 +590,17 @@ la=plotPNGorTIF(figname)
 a/b/c/d
 figname <- paste0(OUTFIGS, filesep, "Fig3D_",thedate,"_plusSIFig.png")
 ggsave(figname,units="px",width = 1980, height = 2380, dpi=300)
-
-# figname=paste0(OUTFIGS, filesep, "Fig3D_fill+color.png")
-# la=plotPNGorTIF(figname)
 ```
 
 
 Figure 4: Characterization of discrete and continuous cell cycle progression in NCI-N87 with label free imaging. 
 Figure 4A: Supervised approach to predict discrete cell cycle state from nuclei, mitochondria and cytoplasm features. 
 ```{r}
-## Make diagram in pptx showing:
+# Make diagram in pptx showing:
 print(paste("Total cells:",nrow(imgStats),"split into:"), quote = F)
 print(paste("Training:",length(unlist(svm$training)),"cells"), quote = F)
 print(paste("Testing:",length(unlist(svm$testing)),"cells"), quote = F)
 print(paste("SVM trained on",length(svm$svmFeatures),"features and applied on test set"))
-
-# Load the necessary packages
-library(DiagrammeR)
-library(glue)
 
 # Define the variable
 tot_cells = nrow(imgStats)
@@ -614,7 +610,6 @@ num_features <- length(svm$svmFeatures)
 
 figname = paste0(OUTFIGS, filesep, "Fig4A_",thedate,".png")
 # Create the diagram using the grViz function
-# Create the graph object using the create_graph function
 graph <- grViz(glue("
   digraph diagram {{
     # Define the graph attributes
@@ -640,11 +635,12 @@ graph <- grViz(glue("
     {{ rank = max; node4 }}
   }}
 "))
-# Export the graph to a PNG file
-# export_graph(graph, file_name = figname, file_type = "png")
 graph
-# Render the diagram in the RStudio Viewer
-# render_graph(graph)
+
+# Export the graph to a PNG file
+graph <- DiagrammeRsvg::export_svg(graph)
+graph <- charToRaw(graph)
+rsvg::rsvg_png(graph, figname)
 ```
 
 
@@ -785,6 +781,7 @@ for(j in seq_along(list_plots)) {
   dev.off()
 }
 
+# Add labels
 for(j in seq_along(list_plots)) {
   figname <- paste0(OUTFIGS, filesep, "Fig4E_", target_cells_list[j], ".png")
   p <- magick::image_read(figname)
@@ -853,7 +850,7 @@ coord_df$cell <- paste0("cell", coord_df$id)
 # Get label free pseudotimes
 pseud_df <- model$All$pseudotime
 pseud_df$cell_id <- rownames(pseud_df)
-pseud_df <- as.tibble(pseud_df)
+pseud_df <- as_tibble(pseud_df)
 pseud_df <- pseud_df %>% 
   pivot_longer(cols = everything()) %>%
   separate(name, into = c("FoF", NA, NA, "cell"), sep = "_") %>% 
@@ -997,7 +994,7 @@ ggsave(paste0(OUTFIGS,filesep,"Fig5A_",thedate,"_scRNA_pseudotimeTSNE.png"),  un
 
 Figure 5B: Co-clustering of sequenced and imaged cells based on pseudotime
 ```{r}
-# co-cluster image and sequencing stats
+# Co-cluster image and sequencing stats
 load(paste0(OUTPSEUDOTIME, filesep,"scRNAdataset_2024-05-15.RObj")); ## loads pq
 tmp=as.data.frame(model$All$pseudotime)
 colnames(tmp)="pseudotime"
