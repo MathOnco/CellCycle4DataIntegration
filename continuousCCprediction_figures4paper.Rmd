@@ -6,7 +6,9 @@ output: html_document
 
 ```{r setup, include=FALSE}
 # knitr::opts_knit$set(root.dir = "~/Projects/PMO/MeasuringFitnessPerClone/discussion/Bioinformatics/Imaging_Sequencing_Integration_NCIN87/code/data4paper")
-knitr::opts_knit$set(root.dir = "C:/Users/80027908/Desktop/CC_project/PMO_MeasuringFitnessperClone-master/3D_Imaging/R/data4paper")
+# setwd("~/Projects/PMO/MeasuringFitnessPerClone/data/GastricCancerCLs/3Dbrightfield/NCI-N87")
+knitr::opts_knit$set(root.dir = "~/Repositories/CellCycle4DataIntegration/data4paper")
+# knitr::opts_knit$set(root.dir = "C:/Users/80027908/Desktop/CC_project/PMO_MeasuringFitnessperClone-master/3D_Imaging/R/data4paper")
 library(xlsx)
 library(dyno)
 library(gplots)
@@ -219,8 +221,13 @@ Figure 1: FUCCI to characterize discrete and continuous cell cycle progression i
 ```{r}
 fuccicol=fliplr(rainbow(max(fucci_raw$cellCycle)*1.2)[1:max(fucci_raw$cellCycle)])
 names(fuccicol) = c("G1", "G1/S","S","G2/M")
-fucci_=fucci_raw[fucci_raw$FoF==FoF,]
-coord_=readOrganelleCoordinates(signals_per_id[[FoF]], "nucleus.p", OUTLINKED_)
+for(x in c(setdiff(FoFs, FoF),FoF)){
+  fucci_=fucci_raw[fucci_raw$FoF==x,]
+  coord_=readOrganelleCoordinates(signals_per_id[[x]], "nucleus.p", paste0(OUTLINKED,filesep,x,filesep) )
+  coord__=coord_[coord_$z>8.4 & coord_$z<11.5, ]
+  coord__$cellCycle=fucci_[coord__$id,]$cellCycle
+  write.table(coord__,file=paste0("~/Downloads/",x,"_fucciDiscreteCellCycle.txt"), sep="\t", quote = F, row.names = F)
+}
 coord_[,c("x","y")] = coord_[,c("x","y")]/pixelsize_xy
 coord_ = coord_[coord_$z == zslice*z_interval, ]
 coord_$x=-coord_$x
@@ -570,11 +577,11 @@ for (i in seq_along(list_plots)) {
 
 # Add legend
 list_plots[[11]] <- ggplot(imgStats_b) +
-    geom_boxplot(aes(as.character(cellCycle), vol_nucleus.p, fill = FoF)) + 
-    scale_fill_manual(values = col) +
-    theme_light() +
-    theme(axis.title.x=element_blank()) +
-    scale_x_discrete(labels = c("1" = "G1", "2" = "G1/S", "3" = "S", "4" = "G2"))
+  geom_boxplot(aes(as.character(cellCycle), vol_nucleus.p, fill = FoF)) + 
+  scale_fill_manual(values = col) +
+  theme_light() +
+  theme(axis.title.x=element_blank()) +
+  scale_x_discrete(labels = c("1" = "G1", "2" = "G1/S", "3" = "S", "4" = "G2"))
 
 # Assemble plots
 a <- (list_plots[[1]] + list_plots[[2]] + list_plots[[3]])
@@ -1065,7 +1072,7 @@ for(sFeature in setdiff(colnames(pq),toExclude)){
   cells=sapply(unique(stats_$cluster), function(x) rownames(stats_)[stats_$cluster==x])
   seqCells=sapply(cells, function(x) grep("Clone_",x, value=T))
   imgCells=sapply(cells, function(x) grep("FoF",x, value=T))
-
+  
   s = sapply(seqCells, function(x) mean(pq[x,sFeature]))
   pairs[[sFeature]] = list()
   for(iFeature in setdiff(colnames(imgStats), toExclude)){
