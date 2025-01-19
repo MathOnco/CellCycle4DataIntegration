@@ -1,18 +1,12 @@
-# Padding the patches to be 64x64 pixels for training ResNet NN. 
-
-import os 
+import os
 import numpy as np
 import cv2
-import tifffile as tifffile 
+import tifffile as tifffile
 from tqdm import tqdm
-import pandas as pd 
-
+import pandas as pd
+import argparse  # Add argparse to handle user arguments
 
 def pad_image_to_64x64(img, output_path):
-    # Load the image
-    #img = cv2.imread(image_path)
-    #img = tifffile.imread(image_path)
-
     # Get the size of the image
     if img.shape[0] == 3:
         height, width = img.shape[1:]
@@ -21,7 +15,7 @@ def pad_image_to_64x64(img, output_path):
     if height == 0 or width == 0:
         return
     elif img is None:
-        return 
+        return
     # Calculate padding
     top = (64 - height) // 2
     bottom = 64 - height - top
@@ -44,10 +38,8 @@ def pad_image_to_64x64(img, output_path):
         padded_img = np.stack([padded_img_R,padded_img_G,padded_img_B])
     else:
         padded_img = cv2.copyMakeBorder(img, top, bottom, left, right, cv2.BORDER_CONSTANT, value=[0, 0, 0])
-    #padded_img = cv2.copyMakeBorder(img, top, bottom, left, right, cv2.BORDER_REFLECT)
-    # Save the padded image
-    #cv2.imwrite(output_path, padded_img)
     tifffile.imwrite(output_path, padded_img)
+
 def get_max_cell(list_of_cells):
     df = pd.DataFrame()
     df['FoF'] = [i['FoF'] for i in list_of_cells]
@@ -55,12 +47,13 @@ def get_max_cell(list_of_cells):
     df_max = df.groupby(['FoF']).max()
     df_max2 = df_max.reset_index()
     return df_max2
+
 def get_cell_data(path2Patches):
     print('Getting cell shape maximum...')
     list_of_data = []
     for CellCycle in os.listdir(path2Patches):
         if CellCycle.startswith('._') or not os.path.isdir(os.path.join(path2Patches, CellCycle)):
-            continue # skip temp folders  and files 
+            continue # skip temp folders  and files
         if not os.path.exists(os.path.join(path2Patches,CellCycle,'images_padded')):
             os.makedirs(os.path.join(path2Patches,CellCycle,'images_padded')) # create a folder to save padded images
         for imageName in tqdm(os.listdir(os.path.join(path2Patches, CellCycle,'images'))):
@@ -77,7 +70,7 @@ def get_cell_data(path2Patches):
     df_max_cell = get_max_cell(list_of_data)
     return list_of_data, df_max_cell
 
-def pad_data(list_of_data,df_max_cell):
+def pad_data(list_of_data, df_max_cell):
     print('Padding the images, please wait...')
     for item in tqdm(list_of_data):
         percentage_reduction_x = 0
@@ -86,10 +79,7 @@ def pad_data(list_of_data,df_max_cell):
         path2Save = item['path2Save']
         image_shape = item['image_shape']
         FoF = item['FoF']
-        #print(df_max_cell.columns)
-        #print(df_max_cell.head())
         max_shape = df_max_cell.loc[df_max_cell['FoF'] == FoF, 'cell_shape'].values
-        #max_shape = df_max_cell[df_max_cell['FoF'] == FoF].cell_shape
         if len(max_shape[0]) > 2:
             if max_shape[0][1] > 64:
                 percentage_reduction_x = 64 / float(max_shape[0][1])
@@ -101,7 +91,6 @@ def pad_data(list_of_data,df_max_cell):
             if max_shape[0][1] > 64:
                 percentage_reduction_y = 64 / float(max_shape[0][1])
 
-        # Reduce the size of the images by percentage. cv2.resize
         image = tifffile.imread(path2Image)
         try:
             if percentage_reduction_x == 0 and percentage_reduction_y == 0:
@@ -123,6 +112,9 @@ def pad_data(list_of_data,df_max_cell):
         pad_image_to_64x64(image_resized, path2Save)
 
 if __name__ == '__main__':
-    path2Patches = '/Users/4470246/Projects/PMO/MeasuringFitnessPerClone/data/GastricCancerCLs/3Dbrightfield/MDA-MB-453/Cell_Patches'
-    list_of_data,df_max_cell = get_cell_data(path2Patches)
-    pad_data(list_of_data,df_max_cell)
+    parser = argparse.ArgumentParser(description='Pad image patches to 64x64 for training.')
+    parser.add_argument('path2Patches', type=str, help='Path to the patches directory.')
+    args = parser.parse_args()
+
+    list_of_data, df_max_cell = get_cell_data(args.path2Patches)
+    pad_data(list_of_data, df_max_cell)
