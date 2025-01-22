@@ -111,8 +111,19 @@ def extract_patchs_3ch(data_dict,slice_mask,cell_id,cell_Cycle,z,path2Save,FoF):
 
     tifffile.imwrite(os.path.join(path2Save,'cellCycle'+str(cell_Cycle),'images',FoF+'_slice'+str(z)+'_cellCycle'+str(cell_Cycle)+'_cell'+str(cell_id)+'.tif'),image_extracted,photometric='minisblack')
 
+""" 
+This function checks for the input image dtype if the code of not of type np.float32
+The function convert the images to type of np.float32 bits. 
+"""
+def check_image_dtype(image):
+    if image.dtype != np.float32:
+        print('Warning: input image of type {}, but the code require images of type {}'.format(image.dtype,np.float32))
+        image.astype(np.float32)
+    return image 
+
 def generate_mask(compartments_loc,path2Images,cell_id,FoF,cell_Cycle,path2Save):
     image_tif = tifffile.imread(os.path.join(path2Images,'nucleus.p.tif'))
+    image_tif = check_image_dtype(image_tif)
     image_tif_shape = image_tif.shape
     Flag_mito = False
     Flag_cyto = False
@@ -124,23 +135,24 @@ def generate_mask(compartments_loc,path2Images,cell_id,FoF,cell_Cycle,path2Save)
 
     if os.path.exists(os.path.join(path2Images,'mito.p.tif')) and compartments_loc["mito"] is not None:
         mito_tif = tifffile.imread(os.path.join(path2Images,'mito.p.tif'))
+        mito_tif = check_image_dtype(mito_tif)
+
         Flag_mito = True
         mito_cell_loc = pd.read_csv(compartments_loc["mito"])
-
+        #print('processing cyto')
         mito_mask = np.zeros((70,1024,1024))
         for x,y,z in zip(mito_cell_loc['x'],mito_cell_loc['y'],mito_cell_loc['z']):
             mito_mask[int(z-1),int(y-1),int(x-1)] = int(cell_id)
 
     if os.path.exists(os.path.join(path2Images,'cytoplasm.p.tif')) and compartments_loc["cytoplasm"] is not None:
         cyto_tif = tifffile.imread(os.path.join(path2Images,'cytoplasm.p.tif'))
+        cyto_tif = check_image_dtype(cyto_tif)
         Flag_cyto = True 
         cyto_cell_loc = pd.read_csv(compartments_loc["cytoplasm"])
-
+        #print('processing mito')
         cyto_mask = np.zeros((70,1024,1024))
         for x,y,z in zip(cyto_cell_loc['x'],cyto_cell_loc['y'],cyto_cell_loc['z']):
             cyto_mask[int(z-1),int(y-1),int(x-1)] = int(cell_id)
-    #print(image_tif_shape)
-
     for z in range(0,nucleus_mask.shape[0]):
         mask_n = nucleus_mask[z,:,:]
         data_dict = {'nucleus':image_tif}
@@ -155,14 +167,20 @@ def generate_mask(compartments_loc,path2Images,cell_id,FoF,cell_Cycle,path2Save)
             data_dict = {'nucleus':image_tif}
             slice_mask = mask_n
         extract_patchs_3ch(data_dict,slice_mask,cell_id,cell_Cycle,z,path2Save,FoF)
-def process_FoF(path2FoF, path2CellMasks, path2Save):
-    # for FoF in os.listdir(path2FoF):
-        # if not os.path.isdir(os.path.join(path2FoF,FoF)):
-        #     continue 
-        # label_file = glob(os.path.join(path2FoF,FoF,"assignedCompartments2Nucleus","*.txt"))
-        csv_files = glob(os.path.join(path2CellMasks, "nucleus.p*.csv"))
-        path2Images = os.path.join(path2FoF)
-        for csv_path in csv_files:
+"""
+This function loops over the FoFs and for each csv file, it generate the masks by calling generate_masks()
+"""
+def process_FoF(path2FoF,path2Save):
+    # deleting the path2Save if it is already exists. 
+    if os.path.exists(path2Save):
+        os.remove(path2Save)
+    for FoF in os.listdir(path2FoF):
+        if not os.path.isdir(os.path.join(path2FoF,FoF)):
+            continue 
+        csv_files = glob(os.path.join(path2FoF,FoF,"assignedCompartments2Nucleus","nucleus.p*.csv"))
+        #print('FoF: {}'.format(FoF))
+        path2Images = os.path.join(path2FoF,FoF)
+        for csv_path in tqdm(csv_files):
             csv_file = os.path.basename(csv_path)
             if csv_file.startswith('._*'):
                 continue # skip temp file 
@@ -175,7 +193,7 @@ def process_FoF(path2FoF, path2CellMasks, path2Save):
                 #print('Skipping ... No mito or cyto...')
                 mito_path = None
                 cyto_path = None
-            print('cell_id: {}'.format(cell_id))
+            #print('cell_id: {}'.format(cell_id))
             df = pd.read_csv(csv_path)
             if 'cellCycle' not in df.columns:
                 df['cellCycle'] = 0
@@ -184,14 +202,15 @@ def process_FoF(path2FoF, path2CellMasks, path2Save):
             if df.shape[0] != 0:
                 compartments_loc = {'nucleus':nucleus_path,'cytoplasm':cyto_path,'mito':mito_path}
                 cell_Cycle = df['cellCycle'].iloc[0]
-                # print('cell_Cycle:'.format(cell_Cycle))
-                generate_mask(compartments_loc,path2Images,cell_id,"FoF",cell_Cycle,path2Save)
+                #print('cell_Cycle:'.format(cell_Cycle))
+                generate_mask(compartments_loc,path2Images,cell_id,FoF,cell_Cycle,path2Save)
 
 if __name__ == '__main__':
     #path2FoF = '/Volumes/Expansion/Collaboration/Moffitt_Noemi/BioinformaticsPaper/data/NCI-N87/A05_Cellpose_SegmentationCorrected'
     #dir_name = os.path.dirname(path2FoF)
     #path2Save = os.path.join(dir_name, 'A06_patches')
     #process_FoF(path2FoF,path2Save)
+    
     parser = argparse.ArgumentParser(description="Process Fields of View (FoF)")
     parser.add_argument('path2FoF', type=str, help="Path to the folder of interest (FoF)")
     parser.add_argument('path2CellMasks', type=str, help="Path to the Cell_Masks folder")
@@ -204,4 +223,4 @@ if __name__ == '__main__':
     print(f"path2CellMasks: {path2CellMasks}")
     print(f"path2Save: {path2Save}")
     process_FoF(path2FoF, path2CellMasks, path2Save)
-    #"""
+    
