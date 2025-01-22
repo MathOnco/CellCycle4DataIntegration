@@ -174,13 +174,12 @@ def process_FoF(path2FoF,path2Save):
     # deleting the path2Save if it is already exists. 
     if os.path.exists(path2Save):
         os.remove(path2Save)
-    for FoF in os.listdir(path2FoF):
-        if not os.path.isdir(os.path.join(path2FoF,FoF)):
-            continue 
-        csv_files = glob(os.path.join(path2FoF,FoF,"assignedCompartments2Nucleus","nucleus.p*.csv"))
-        #print('FoF: {}'.format(FoF))
-        path2Images = os.path.join(path2FoF,FoF)
-        for csv_path in tqdm(csv_files):
+    # for FoF in os.listdir(path2FoF):
+    #     if not os.path.isdir(os.path.join(path2FoF,FoF)):
+    #         continue 
+        csv_files = glob(os.path.join(path2CellMasks, "nucleus.p*.csv"))
+        path2Images = os.path.join(path2FoF)
+        for csv_path in csv_files:
             csv_file = os.path.basename(csv_path)
             if csv_file.startswith('._*'):
                 continue # skip temp file 
@@ -202,8 +201,8 @@ def process_FoF(path2FoF,path2Save):
             if df.shape[0] != 0:
                 compartments_loc = {'nucleus':nucleus_path,'cytoplasm':cyto_path,'mito':mito_path}
                 cell_Cycle = df['cellCycle'].iloc[0]
-                #print('cell_Cycle:'.format(cell_Cycle))
-                generate_mask(compartments_loc,path2Images,cell_id,FoF,cell_Cycle,path2Save)
+                # print('cell_Cycle:'.format(cell_Cycle))
+                generate_mask(compartments_loc,path2Images,cell_id,"FoF",cell_Cycle,path2Save)
 
 if __name__ == '__main__':
     #path2FoF = '/Volumes/Expansion/Collaboration/Moffitt_Noemi/BioinformaticsPaper/data/NCI-N87/A05_Cellpose_SegmentationCorrected'
