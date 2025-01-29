@@ -170,46 +170,48 @@ def generate_mask(compartments_loc,path2Images,cell_id,FoF,cell_Cycle,path2Save)
 """
 This function loops over the FoFs and for each csv file, it generate the masks by calling generate_masks()
 """
-def process_FoF(path2FoF,path2Save):
+def process_FoF(path2FoF,path2CellMasks,path2Save):
     # deleting the path2Save if it is already exists. 
     if os.path.exists(path2Save):
         os.remove(path2Save)
     # for FoF in os.listdir(path2FoF):
     #     if not os.path.isdir(os.path.join(path2FoF,FoF)):
     #         continue 
-        csv_files = glob(os.path.join(path2CellMasks, "nucleus.p*.csv"))
-        path2Images = os.path.join(path2FoF)
-        for csv_path in csv_files:
-            csv_file = os.path.basename(csv_path)
-            if csv_file.startswith('._*'):
-                continue # skip temp file 
-            cell_id = csv_file.split('cell_')[1].split('_')[0]
-            nucleus_path = csv_path
+    csv_files = glob(os.path.join(path2CellMasks, "nucleus.p*.csv"))
+    path2Images = os.path.join(path2FoF)
+    for csv_path in csv_files:
+        csv_file = os.path.basename(csv_path)
+        if csv_file.startswith('._*'):
+            continue # skip temp file 
+        cell_id = csv_file.split('cell_')[1].split('_')[0]
+        nucleus_path = csv_path
 
-            mito_path = csv_path.replace('nucleus.p','mito.p')
-            cyto_path = csv_path.replace('nucleus.p','cytoplasm.p')
-            if not os.path.exists(mito_path) and not os.path.exists(cyto_path):
-                #print('Skipping ... No mito or cyto...')
-                mito_path = None
-                cyto_path = None
-            #print('cell_id: {}'.format(cell_id))
-            df = pd.read_csv(csv_path)
-            if 'cellCycle' not in df.columns:
-                df['cellCycle'] = 0
-                print('No cell cycle label provided. Setting to zero.')
-            #print(df.shape)
-            if df.shape[0] != 0:
-                compartments_loc = {'nucleus':nucleus_path,'cytoplasm':cyto_path,'mito':mito_path}
-                cell_Cycle = df['cellCycle'].iloc[0]
-                # print('cell_Cycle:'.format(cell_Cycle))
-                generate_mask(compartments_loc,path2Images,cell_id,"FoF",cell_Cycle,path2Save)
+        mito_path = csv_path.replace('nucleus.p','mito.p')
+        cyto_path = csv_path.replace('nucleus.p','cytoplasm.p')
+        if not os.path.exists(mito_path) and not os.path.exists(cyto_path):
+            #print('Skipping ... No mito or cyto...')
+            mito_path = None
+            cyto_path = None
+        #print('cell_id: {}'.format(cell_id))
+        df = pd.read_csv(csv_path)
+        if 'cellCycle' not in df.columns:
+            df['cellCycle'] = 0
+            print('No cell cycle label provided. Setting to zero.')
+        #print(df.shape)
+        if df.shape[0] != 0:
+            compartments_loc = {'nucleus':nucleus_path,'cytoplasm':cyto_path,'mito':mito_path}
+            cell_Cycle = df['cellCycle'].iloc[0]
+            # print('cell_Cycle:'.format(cell_Cycle))
+            generate_mask(compartments_loc,path2Images,cell_id,"FoF",cell_Cycle,path2Save)
 
 if __name__ == '__main__':
     #path2FoF = '/Volumes/Expansion/Collaboration/Moffitt_Noemi/BioinformaticsPaper/data/NCI-N87/A05_Cellpose_SegmentationCorrected'
     #dir_name = os.path.dirname(path2FoF)
     #path2Save = os.path.join(dir_name, 'A06_patches')
     #process_FoF(path2FoF,path2Save)
-    
+    #path2FoF="/Volumes/Expansion/Collaboration/Moffitt_Noemi/BioinformaticsPaper/data/NCI-N87-Dataset2/A04_CellposeOutput/FoF1_240918_fluorescent.nucleus"
+    #path2CellMasks="/Volumes/Expansion/Collaboration/Moffitt_Noemi/BioinformaticsPaper/data/NCI-N87-Dataset2/A06_multiSignals_Linked/FoF1_240918_fluorescent.nucleus"
+    #path2Save="/Volumes/Expansion/Collaboration/Moffitt_Noemi/BioinformaticsPaper/data/NCI-N87-Dataset2/A07_patches"
     parser = argparse.ArgumentParser(description="Process Fields of View (FoF)")
     parser.add_argument('path2FoF', type=str, help="Path to the folder of interest (FoF)")
     parser.add_argument('path2CellMasks', type=str, help="Path to the Cell_Masks folder")
