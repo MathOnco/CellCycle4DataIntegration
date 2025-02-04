@@ -38,7 +38,7 @@ def pad_image_to_64x64(img, output_path):
         padded_img = np.stack([padded_img_R,padded_img_G,padded_img_B])
     else:
         padded_img = cv2.copyMakeBorder(img, top, bottom, left, right, cv2.BORDER_CONSTANT, value=[0, 0, 0])
-    tifffile.imwrite(output_path, padded_img)
+    tifffile.imwrite(output_path, padded_img,photometric='minisblack')
 
 def get_max_cell(list_of_cells):
     df = pd.DataFrame()
@@ -48,20 +48,20 @@ def get_max_cell(list_of_cells):
     df_max2 = df_max.reset_index()
     return df_max2
 
-def get_cell_data(path2Patches):
+def get_cell_data(path2Patches,path2SaveDir):
     print('Getting cell shape maximum...')
     list_of_data = []
     for CellCycle in os.listdir(path2Patches):
         if CellCycle.startswith('._') or not os.path.isdir(os.path.join(path2Patches, CellCycle)):
             continue # skip temp folders  and files
-        if not os.path.exists(os.path.join(path2Patches,CellCycle,'images_padded')):
-            os.makedirs(os.path.join(path2Patches,CellCycle,'images_padded')) # create a folder to save padded images
+        if not os.path.exists(os.path.join(path2SaveDir,CellCycle,'images_padded')):
+            os.makedirs(os.path.join(path2SaveDir,CellCycle,'images_padded')) # create a folder to save padded images
         for imageName in tqdm(os.listdir(os.path.join(path2Patches, CellCycle,'images'))):
             if imageName.startswith('._') or not imageName.endswith('.tif'):
                 continue
             path2Image = os.path.join(path2Patches, CellCycle,'images',imageName)
-            path2Save = os.path.join(path2Patches,CellCycle,'images_padded',imageName)
-            
+            #path2Save = os.path.join(path2Patches,CellCycle,'images_padded',imageName)
+            path2Save = os.path.join(path2SaveDir,CellCycle,'images_padded',imageName)
             image = tifffile.imread(path2Image)
             image_shape = image.shape
             FoF = imageName.split('_slice')[0]
@@ -94,6 +94,7 @@ def pad_data(list_of_data, df_max_cell):
         image = tifffile.imread(path2Image)
         try:
             if percentage_reduction_x == 0 and percentage_reduction_y == 0:
+                image_resized = image
                 pass
             else:
                 if len(image.shape) > 2:
@@ -114,7 +115,7 @@ def pad_data(list_of_data, df_max_cell):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Pad image patches to 64x64 for training.')
     parser.add_argument('path2Patches', type=str, help='Path to the patches directory.')
+    parser.add_argument('path2Save',type=str,help='Path to directory for saving the patches')
     args = parser.parse_args()
-
-    list_of_data, df_max_cell = get_cell_data(args.path2Patches)
+    list_of_data, df_max_cell = get_cell_data(args.path2Patches,args.path2Save)
     pad_data(list_of_data, df_max_cell)
