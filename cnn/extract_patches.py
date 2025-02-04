@@ -7,7 +7,7 @@ import tifffile as tifffile
 from tqdm import tqdm
 from glob import glob
 import argparse
-
+import shutil
 
 def normalize8(I):
   mn = I.min()
@@ -172,14 +172,17 @@ This function loops over the FoFs and for each csv file, it generate the masks b
 """
 def process_FoF(path2FoF,path2CellMasks,path2Save):
     # deleting the path2Save if it is already exists. 
-    if os.path.exists(path2Save):
-        os.remove(path2Save)
+    try:
+        if os.path.exists(path2Save):
+            shutil.rmtree(path2Save)
+    except:
+        print('Error in removing previous output dir, skipping ...')
     # for FoF in os.listdir(path2FoF):
     #     if not os.path.isdir(os.path.join(path2FoF,FoF)):
     #         continue 
     csv_files = glob(os.path.join(path2CellMasks, "nucleus.p*.csv"))
     path2Images = os.path.join(path2FoF)
-    for csv_path in csv_files:
+    for csv_path in tqdm(csv_files):
         csv_file = os.path.basename(csv_path)
         if csv_file.startswith('._*'):
             continue # skip temp file 
@@ -205,13 +208,9 @@ def process_FoF(path2FoF,path2CellMasks,path2Save):
             generate_mask(compartments_loc,path2Images,cell_id,"FoF",cell_Cycle,path2Save)
 
 if __name__ == '__main__':
-    #path2FoF = '/Volumes/Expansion/Collaboration/Moffitt_Noemi/BioinformaticsPaper/data/NCI-N87/A05_Cellpose_SegmentationCorrected'
-    #dir_name = os.path.dirname(path2FoF)
-    #path2Save = os.path.join(dir_name, 'A06_patches')
-    #process_FoF(path2FoF,path2Save)
-    #path2FoF="/Volumes/Expansion/Collaboration/Moffitt_Noemi/BioinformaticsPaper/data/NCI-N87-Dataset2/A04_CellposeOutput/FoF1_240918_fluorescent.nucleus"
-    #path2CellMasks="/Volumes/Expansion/Collaboration/Moffitt_Noemi/BioinformaticsPaper/data/NCI-N87-Dataset2/A06_multiSignals_Linked/FoF1_240918_fluorescent.nucleus"
-    #path2Save="/Volumes/Expansion/Collaboration/Moffitt_Noemi/BioinformaticsPaper/data/NCI-N87-Dataset2/A07_patches"
+    #path2FoF="/Volumes/Expansion/Collaboration/Moffitt_Noemi/BioinformaticsPaper/data/NCI-N87-Dataset2/A04_CellposeOutput/FoF1_231005_fluorescent.nucleus/"
+    #path2CellMasks="/Volumes/Expansion/Collaboration/Moffitt_Noemi/BioinformaticsPaper/data/NCI-N87-Dataset2/A06_multiSignals_Linked/FoF1_231005_fluorescent.nucleus/"
+    #path2Save="/Volumes/Expansion/Collaboration/Moffitt_Noemi/BioinformaticsPaper/data/NCI-N87-Dataset2/A07_patches/FoF1_231005_fluorescent.nucleus/"
     parser = argparse.ArgumentParser(description="Process Fields of View (FoF)")
     parser.add_argument('path2FoF', type=str, help="Path to the folder of interest (FoF)")
     parser.add_argument('path2CellMasks', type=str, help="Path to the Cell_Masks folder")
@@ -224,4 +223,12 @@ if __name__ == '__main__':
     print(f"path2CellMasks: {path2CellMasks}")
     print(f"path2Save: {path2Save}")
     process_FoF(path2FoF, path2CellMasks, path2Save)
-    
+    """ 
+    for directory in os.listdir(path2FoF):
+        if not os.path.isdir(os.path.join(path2FoF,directory)):
+            continue
+        print(directory)
+        path2FoF_temp = os.path.join(path2FoF,directory)
+        path2CellMasks_temp = os.path.join(path2CellMasks,directory)
+        process_FoF(path2FoF_temp, path2CellMasks_temp, path2Save)
+    """
