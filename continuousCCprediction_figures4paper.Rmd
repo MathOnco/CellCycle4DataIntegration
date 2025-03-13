@@ -7,10 +7,10 @@ output: html_document
 ```{r setup, include=FALSE}
 # knitr::opts_knit$set(root.dir = "~/Projects/PMO/MeasuringFitnessPerClone/discussion/Bioinformatics/Imaging_Sequencing_Integration_NCIN87/code/data4paper")
 # setwd("~/Projects/PMO/MeasuringFitnessPerClone/data/GastricCancerCLs/3Dbrightfield/NCI-N87")
-knitr::opts_knit$set(root.dir = "~/Repositories/CellCycle4DataIntegration/data4paper")
+knitr::opts_knit$set(root.dir = "/Users/saeedalahmari/Downloads/BioInformaticsPaper/CellCycle4DataIntegration/data4paper")
 # knitr::opts_knit$set(root.dir = "C:/Users/80027908/Desktop/CC_project/PMO_MeasuringFitnessperClone-master/3D_Imaging/R/data4paper")
 library(xlsx)
-library(dyno)
+#library(dyno)
 library(gplots)
 library(caret)
 library(xtable)
@@ -195,7 +195,7 @@ Plot_ConcaveHull <- function(xx, yy, zz, lcolor="black", alpha=0.4, add=T, phi =
   
 }
 
-FoFs=c("FoF1_231005_fluorescent.nucleus", "FoF2_231005_fluorescent.nucleus", "FoF3_231005_fluorescent.nucleus", "FoF4_231005_fluorescent.nucleus")
+FoFs=c("FoF1_231005_fluorescent.nucleus", "FoF2_231005_fluorescent.nucleus", "FoF3_231005_fluorescent.nucleus", "FoF4_231005_fluorescent.nucleus","FoF1_240918_fluorescent.nucleus","FoF2_240918_fluorescent.nucleus","FoF3_240918_fluorescent.nucleus","FoF4_240918_fluorescent.nucleus")
 
 signals=list(nucleus.p="nucleus.p_Cells_Centers.csv",mito.p="mito.p_Cells_Centers.csv",cytoplasm.p="cytoplasm.p_Cells_Centers.csv")
 signals_per_id=list()
@@ -653,17 +653,39 @@ rsvg::rsvg_png(graph, figname)
 
 Figure 4B: Performance of trained classifier on test set. 
 ```{r}
-confMat = read.xlsx(paste0(OUTPSEUDOTIME, filesep,"cellCyclePrediction_svm_2024-05-15.xlsx"), sheetIndex = 1, row.names=T)
-tmp=sapply(c("Class..1","Class..2","Class..3","Class..4"), function(x) as.numeric(confMat[grep(x, rownames(confMat)),"Balanced.Accuracy"])) 
+confMat = read.xlsx(paste0(OUTPSEUDOTIME, filesep,"CNN_3ch_03032025_fl32_dataMerged_v2_test_accuracy_per_fof_and_class_id.txt"), sheetIndex = 1, row.names=T)
+tmp=sapply(c("class..1","class..2","class..3","class..4"), function(x) as.numeric(confMat[grep(x, rownames(confMat)),"accuracy"])) 
 
-figname=paste0(OUTFIGS, filesep,"Fig4B_",thedate,".png")
+figname=paste0(OUTFIGS, filesep,"Fig6B_",thedate,".png")
 png(figname )
-boxplot(tmp, names=names(fuccicol), ylab="Balanced.Accuracy",cex.axis=2, cex.lab=1.7)
+boxplot(tmp, names=names(fuccicol), ylab="accuracy",cex.axis=2, cex.lab=1.7)
 dev.off()
 
 la=plotPNGorTIF(figname)
 ```
+Figure 4B: Performance of trained classifier on test set. 
+```{r}
+#Modified code (ChatGPT)
+library(readr)
+library(ggplot2)
 
+# Read the CSV file
+data <- read.table(paste0(OUTPSEUDOTIME, filesep,"CNN_3ch_03032025_fl32_dataMerged_v2_test_accuracy_per_fof_and_class_id.txt"),header = TRUE, sep = "", stringsAsFactors = FALSE)
+
+# Convert accuracy to numeric
+data$accuracy <- as.numeric(data$accuracy)
+# Ensure Class_id is a factor and set custom labels
+data$Class_id <- factor(data$Class_id, labels = c("G1", "G1/S", "S", "G2/M"))
+# Create a boxplot
+figname <- paste0(OUTFIGS, filesep, "Fig4B_", thedate, ".png")
+png(figname)
+boxplot(accuracy ~ Class_id, data = data, ylab = "Accuracy",xlab="", cex.axis = 2, cex.lab = 1.7)
+dev.off()
+
+# Display the saved plot
+la <- plotPNGorTIF(figname)
+#########################
+```
 
 Figure 4C: Unsupervised approach to predict continuous cell cycle progression from nuclei, mitochondria and cytoplasm features. . 
 ```{r}
@@ -1259,7 +1281,7 @@ modified_table <- gsub("\\\\end\\{tabular\\}", "", modified_table)
 writeLines(modified_table, tabname)
 ```
 
-
+## Assemeble all figures into panels. 
 Assemble panels to figure
 ```{r}
 panels = list(
