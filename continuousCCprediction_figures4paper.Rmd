@@ -28,7 +28,7 @@ library(gridExtra)
 library(dendextend)
 library(DiagrammeR)
 library(glue)
-# devtools::source_url("https://github.com/noemiandor/Utils/master/grpstats.R?raw=TRUE")
+# devtools::source_url("https://github.com/noemiandor/Utils/blob/master/grpstats.R?raw=TRUE")
 OUTLINKED="A06_multiSignals_Linked"
 OUTPSEUDOTIME="A08_Pseudotime"
 OUTSTATS="A07_LinkedSignals_Stats"
