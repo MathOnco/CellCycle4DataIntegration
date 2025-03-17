@@ -5,12 +5,12 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-# knitr::opts_knit$set(root.dir = "~/Projects/PMO/MeasuringFitnessPerClone/discussion/Bioinformatics/Imaging_Sequencing_Integration_NCIN87/code/data4paper")
+knitr::opts_knit$set(root.dir = "~/Repositories/CellCycle4DataIntegration/data4paper")
 # setwd("~/Projects/PMO/MeasuringFitnessPerClone/data/GastricCancerCLs/3Dbrightfield/NCI-N87")
-knitr::opts_knit$set(root.dir = "/Users/saeedalahmari/Downloads/BioInformaticsPaper/CellCycle4DataIntegration/data4paper")
+# knitr::opts_knit$set(root.dir = "/Users/saeedalahmari/Downloads/BioInformaticsPaper/CellCycle4DataIntegration/data4paper")
 # knitr::opts_knit$set(root.dir = "C:/Users/80027908/Desktop/CC_project/PMO_MeasuringFitnessperClone-master/3D_Imaging/R/data4paper")
 library(xlsx)
-#library(dyno)
+library(dyno)
 library(gplots)
 library(caret)
 library(xtable)
@@ -195,6 +195,56 @@ Plot_ConcaveHull <- function(xx, yy, zz, lcolor="black", alpha=0.4, add=T, phi =
   
 }
 
+
+pseudotimeDirectionality <- function(pseudotime_img_, pseudotime_fucci_){
+  pseudotime_fucci_ = pseudotime_fucci_[names(pseudotime_img_)]
+  te= cor.test(pseudotime_img_,pseudotime_fucci_)
+  par(mfrow=c(2,2))
+  boxplot(pseudotime_img_ ~ pseudotime_fucci_)
+  
+  timeline=sort(unique(pseudotime_fucci_))
+  la=grpstats(as.matrix(pseudotime_img_), pseudotime_fucci_, "mean")$mean[as.character(timeline),]
+  te=list()
+  for(shift in 1:length(timeline)){
+    if(shift==1){
+      timeline_=timeline
+    }else{
+      timeline_ =timeline[c(shift:length(timeline), 1:(shift-1))]
+    }
+    te[[shift]]= cor.test(la,timeline_)$estimate
+  }
+  te=do.call(rbind,te)
+  ## First identify which pseudotimes must be reversed:
+  iM=which.max(abs(te))
+  if(te[iM]<0){
+    pseudotime_img_ = pseudotime_img_ *-1
+    pseudotime_img_ = pseudotime_img_ - min(pseudotime_img_)
+    te[iM] = te[iM]*-1
+  }
+  
+  
+  ##sort all again 
+  idx = order(pseudotime_img_)
+  pseudotime_img_ = pseudotime_img_[idx]
+  pseudotime_fucci_ = pseudotime_fucci_[idx]
+  
+  ## Next find max of circular cross correlation to shift pseudotime
+  cMax=which.max(abs(te))
+  cMax=cMax[cMax!=1]
+  if(!isempty(cMax)){
+    x=order(pseudotime_img_)
+    idx=which(x==round(mean(x[pseudotime_fucci_>=cMax])) )
+    x=x[c(idx:length(x), 1:(idx-1))]
+    pseudotime_img_=pseudotime_img_[x]
+  }
+  
+  ##plot after
+  boxplot(pseudotime_img_ ~ pseudotime_fucci_)
+  
+  return(pseudotime_img_)
+  
+} 
+
 FoFs=c("FoF1_231005_fluorescent.nucleus", "FoF2_231005_fluorescent.nucleus", "FoF3_231005_fluorescent.nucleus", "FoF4_231005_fluorescent.nucleus","FoF1_240918_fluorescent.nucleus","FoF2_240918_fluorescent.nucleus","FoF3_240918_fluorescent.nucleus","FoF4_240918_fluorescent.nucleus")
 
 signals=list(nucleus.p="nucleus.p_Cells_Centers.csv",mito.p="mito.p_Cells_Centers.csv",cytoplasm.p="cytoplasm.p_Cells_Centers.csv")
@@ -209,7 +259,7 @@ thedate=strsplit(as.character(Sys.time())," ")[[1]][1]
 FoF=FoFs[3]
 OUTLINKED_=paste0(OUTLINKED,filesep,FoF,filesep)
 
-load(paste0(OUTPSEUDOTIME, filesep,"pseudotime_2024-05-15.RObj")) ## loads unsupervised pseudotime *model* list
+load(paste0(OUTPSEUDOTIME, filesep,"pseudotime_2025-03-12.RObj")) ## loads unsupervised pseudotime *model* list
 load(paste0(OUTPSEUDOTIME, filesep,"cellCyclePredictionFromImgFeatures_svm_2024-05-15.RObj"))  ## load *svm* details
 
 fucci_raw=read.table( paste0(OUTPSEUDOTIME,filesep,"Fucci_stats.txt"),sep="\t", header = T)
@@ -650,19 +700,6 @@ graph <- charToRaw(graph)
 rsvg::rsvg_png(graph, figname)
 ```
 
-
-Figure 4B: Performance of trained classifier on test set. 
-```{r}
-confMat = read.xlsx(paste0(OUTPSEUDOTIME, filesep,"CNN_3ch_03032025_fl32_dataMerged_v2_test_accuracy_per_fof_and_class_id.txt"), sheetIndex = 1, row.names=T)
-tmp=sapply(c("class..1","class..2","class..3","class..4"), function(x) as.numeric(confMat[grep(x, rownames(confMat)),"accuracy"])) 
-
-figname=paste0(OUTFIGS, filesep,"Fig6B_",thedate,".png")
-png(figname )
-boxplot(tmp, names=names(fuccicol), ylab="accuracy",cex.axis=2, cex.lab=1.7)
-dev.off()
-
-la=plotPNGorTIF(figname)
-```
 Figure 4B: Performance of trained classifier on test set. 
 ```{r}
 #Modified code (ChatGPT)
@@ -689,9 +726,9 @@ la <- plotPNGorTIF(figname)
 
 Figure 4C: Unsupervised approach to predict continuous cell cycle progression from nuclei, mitochondria and cytoplasm features. . 
 ```{r}
-tmp=plot_dimred(model[[FoF]],color_cells = "pseudotime", size_cells=1.84,size_milestones=5)
+tmp=plot_dimred(model$All,color_cells = "pseudotime", size_cells=1.84,size_milestones=5)
 tmp
-ggsave(paste0(OUTFIGS,filesep,"Fig4C_",thedate,"_labelFree_",FoF,"_pseudotimeTSNE.png"),units="px",width = 0.9*480, height = 480, plot=tmp, dpi=100)
+ggsave(paste0(OUTFIGS,filesep,"Fig4C_",thedate,"_labelFree_pseudotimeTSNE.png"),units="px",width = 0.9*480, height = 480, plot=tmp, dpi=100)
 ```
 
 
@@ -1024,7 +1061,8 @@ ggsave(paste0(OUTFIGS,filesep,"Fig5A_",thedate,"_scRNA_pseudotimeTSNE.png"),  un
 Figure 5B: Co-clustering of sequenced and imaged cells based on pseudotime
 ```{r}
 # Co-cluster image and sequencing stats
-load(paste0(OUTPSEUDOTIME, filesep,"scRNAdataset_2024-05-15.RObj")); ## loads pq
+load(paste0(OUTPSEUDOTIME, filesep,"pseudotime_2025-03-12.RObj")); ## loads pq
+pseudotimeDirectionality(model$All$pseudotime, imgStats, cellcyclecolumn="FUCCI_cellCycle")
 tmp=as.data.frame(model$All$pseudotime)
 colnames(tmp)="pseudotime"
 tmp$FoF=imgStats[rownames(tmp),]$FoF
@@ -1072,7 +1110,7 @@ sapply(stats_split, sum)
 figname=paste0(OUTFIGS, filesep,"Fig5B_",thedate,".png") 
 col=rainbow(max(stats_$cluster))
 png(figname, width = 680)
-ii=which(stats_$type=="Img")
+ii=which(stats_$type=="Seq")
 plot(1:length(ii), stats_$pseudotime[ii], col=col[stats_$cluster[ii]], xlab="cell", ylab="pseudotime", cex=2, pch=3, cex.axis=2, cex.lab=2)
 ij=setdiff(1:nrow(stats_),ii)
 ij=sort(sample(ij,length(ii)))
@@ -1086,32 +1124,34 @@ la=plotPNGorTIF(figname)
 
 Figure 5C: Correlation between gene expression and imaging-derived features
 ```{r}
-# Correlation between gene expression and image features
-cc <- pval <- list()
-pairs=list()
-toExclude=c("FoF","frame","ID","count_nucleus.p","png","type","pseudotime","segmentationError","smv_cell","smv_nucleus.p","smv_mito.p","smv_cytoplasm.p",xyz[1:2]);
-for(sFeature in setdiff(colnames(pq),toExclude)){
-  cells=sapply(unique(stats_$cluster), function(x) rownames(stats_)[stats_$cluster==x])
-  seqCells=sapply(cells, function(x) grep("Clone_",x, value=T))
-  imgCells=sapply(cells, function(x) grep("FoF",x, value=T))
-  
-  s = sapply(seqCells, function(x) mean(pq[x,sFeature]))
-  pairs[[sFeature]] = list()
-  for(iFeature in setdiff(colnames(imgStats), toExclude)){
-    i = sapply(imgCells, function(x) mean(imgStats[x,iFeature] ))
-    x=cor.test(s, i)
-    pair=paste(sFeature, iFeature, sep = "+")
-    cc[[sFeature]][[iFeature]] =x$estimate
-    pval[[sFeature]][[iFeature]] =x$p.value
-    pairs[[pair]] = list(s=s,i=i)
-  }
-}
-cc=do.call(rbind,cc)
-pval=do.call(rbind,pval)
-tmp=rownames(cc)
-cc = apply(cc,2,as.numeric)
-pval = apply(pval,2,as.numeric)
-rownames(cc) <- rownames(pval) <- tmp
+# # Correlation between gene expression and image features
+# cc <- pval <- list()
+# pairs=list()
+# toExclude=c("FoF","frame","ID","count_nucleus.p","png","type","pseudotime","segmentationError","smv_cell","smv_nucleus.p","smv_mito.p","smv_cytoplasm.p",xyz[1:2]);
+# for(sFeature in setdiff(colnames(pq),toExclude)){
+#   cells=sapply(unique(stats_$cluster), function(x) rownames(stats_)[stats_$cluster==x])
+#   seqCells=sapply(cells, function(x) grep("Clone_",x, value=T))
+#   imgCells=sapply(cells, function(x) grep("FoF",x, value=T))
+#   
+#   s = sapply(seqCells, function(x) mean(pq[x,sFeature], na.rm=T))
+#   pairs[[sFeature]] = list()
+#   for(iFeature in setdiff(colnames(imgStats), toExclude)){
+#     i = sapply(imgCells, function(x) mean(imgStats[x,iFeature], na.rm=T ))
+#     x=cor.test(s, i)
+#     pair=paste(sFeature, iFeature, sep = "+")
+#     cc[[sFeature]][[iFeature]] =x$estimate
+#     pval[[sFeature]][[iFeature]] =x$p.value
+#     pairs[[pair]] = list(s=s,i=i)
+#   }
+# }
+# cc=do.call(rbind,cc)
+# pval=do.call(rbind,pval)
+# tmp=rownames(cc)
+# cc = apply(cc,2,as.numeric)
+# pval = apply(pval,2,as.numeric)
+# rownames(cc) <- rownames(pval) <- tmp
+# ## Backup
+# cc_B = cc;
 
 # Save as supplementary table
 tabname=paste0(OUTFIGS, filesep,"SupplementaryTable1_",thedate,".tex")
@@ -1119,7 +1159,7 @@ cc_ <- convert_matrix_to_df(cc, pval)
 cc_$pval = p.adjust(cc_$pval,method = "bonferroni")
 ii=which(cc_$pval<=0.05);
 print(paste0("Comparing all imaging- and sequencing derived feature pairs across clusters identified ",length(ii)," significantly correlated feature pairs (Pearson r $\\geq$",round(min(abs(cc_$r)[ii]),2),"; Bonferroni-corrected p-value<0.05;"))
-cc_=cc_[order(cc_$pval)[1:150],]
+cc_=cc_[order(cc_$pval)[1:min(150,nrow(cc_))],]
 cc_$Pathway <- sapply(as.character(cc_$Pathway), truncate_string, 40)
 cc_ <- xtable(cc_)
 table_code <- print(cc_, type = "latex", include.rownames = FALSE, comment = FALSE, print.results = F)
@@ -1132,23 +1172,23 @@ modified_table <- gsub("\\\\end\\{tabular\\}", "", modified_table)
 writeLines(modified_table, tabname)
 
 # Sort and plot
-poi=unique(unlist(apply(abs(cc),2, function(x) which(x>0.5)), use.names = F))
+poi=unique(unlist(apply(abs(cc),2, function(x) which(x>0.3)), use.names = F))
 cc=cc[,!apply(is.na(cc[poi,]),2,all)]
 pval=pval[, colnames(cc)]
 hm_df <- as.tibble(cc[poi,])
 rownames(hm_df) <- rownames(cc[poi,])
-# Shorten labels
-rownames(hm_df)[36] <- "PCNA replication complex recognition of DNA damage"
-rownames(hm_df)[38] <- "Resp. electrom transport/chemiosmotic ATP synthesis/protein heat"
-rownames(hm_df)[45] <- "Activate APC/C, APC/C:Cdc20 degradation of mitotic proteins"
-rownames(hm_df)[56] <- "Amplify signal of unattached kinetochores via MAD2 inhibiton"
-rownames(hm_df)[101] <- "Regulation of mRNA stability by AU-rich proteins"
+# # Shorten labels
+# rownames(hm_df)[36] <- "PCNA replication complex recognition of DNA damage"
+# rownames(hm_df)[38] <- "Resp. electrom transport/chemiosmotic ATP synthesis/protein heat"
+# rownames(hm_df)[45] <- "Activate APC/C, APC/C:Cdc20 degradation of mitotic proteins"
+# rownames(hm_df)[56] <- "Amplify signal of unattached kinetochores via MAD2 inhibiton"
+# rownames(hm_df)[101] <- "Regulation of mRNA stability by AU-rich proteins"
 
 # Make custom dendrograms
 distance = dist(as.matrix(hm_df), method = "manhattan")
-cluster_row = hclust(distance, method = "ward")
+cluster_row = hclust(distance, method = "ward.D")
 distance = dist(t(as.matrix(hm_df)), method = "manhattan")
-cluster_col = hclust(distance, method = "ward")
+cluster_col = hclust(distance, method = "ward.D")
 den_row <- as.dendrogram(cluster_row)
 den_column <- as.dendrogram(cluster_col)
 cols_branches <- c("gold", "blue", "forestgreen", "red", "purple3")
