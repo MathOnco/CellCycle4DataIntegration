@@ -1,0 +1,15 @@
+{
+  "effective_weighted_labels": {
+    "low_low": 0.18890908909462056,
+    "high_low": 10785.895340872506,
+    "low_high": 0.12258895690592118,
+    "high_high": 10866.793161081496
+  },
+  "minimum_effective_labels_diagnostic": 5,
+  "unsupported_states": [
+    "low_low",
+    "low_high"
+  ],
+  "biological_label_replacement_approved": false,
+  "reason": "No independent phase validation; weak state support and sensitivity to red-gate calibration"
+}

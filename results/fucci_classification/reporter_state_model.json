@@ -1,0 +1,92 @@
+{
+  "type": "gate_anchored_diagonal_gaussian_mixture",
+  "patterns": [
+    [
+      0,
+      0
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      1
+    ]
+  ],
+  "means": [
+    [
+      -0.005,
+      -0.027717265344227738
+    ],
+    [
+      0.23184804633004255,
+      -0.005
+    ],
+    [
+      -0.005,
+      0.014219921198428749
+    ],
+    [
+      0.6597189229347917,
+      0.1616389567730409
+    ]
+  ],
+  "variances": [
+    [
+      0.005491953485327896,
+      0.0001
+    ],
+    [
+      0.01718867228403867,
+      0.0013057479847006866
+    ],
+    [
+      0.011958133251483857,
+      0.0001
+    ],
+    [
+      0.14031108810776924,
+      0.03233944392844953
+    ]
+  ],
+  "weights": [
+    1.0370616388819818e-05,
+    0.4980211290220598,
+    6.492978239656529e-06,
+    0.5019620073833116
+  ],
+  "converged": true,
+  "effective_weighted_state_mass": [
+    0.2245549566671155,
+    10783.651506714661,
+    0.14059245782328283,
+    10868.983345870847
+  ],
+  "iterations": 28,
+  "training_rows": 21653,
+  "training_log_density": 0.670932131763824,
+  "means_at_constraint": [
+    [
+      true,
+      false
+    ],
+    [
+      false,
+      true
+    ],
+    [
+      true,
+      false
+    ],
+    [
+      false,
+      false
+    ]
+  ],
+  "interpretation": "Reporter-state density model conditional on supplied gates; no biological calibration"
+}

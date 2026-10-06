@@ -1,0 +1,15 @@
+variant,training_labels,evaluated_labels,changed_calls_fraction,mean_absolute_probability_change,confidence_coverage,converged,detail
+green_gate_x0.9,21653,21653,9.236595390938899e-05,0.00010404044038596553,0.8826490555581212,True,Both fit and prediction use perturbed supplied gates; no rows removed
+green_gate_x1.1,21653,21653,0.0029557105251004478,0.005576400025484686,0.8735971920750012,True,Both fit and prediction use perturbed supplied gates; no rows removed
+red_gate_x0.9,21653,21653,0.3360735232993119,0.17246621085094094,0.31995566434212347,True,Both fit and prediction use perturbed supplied gates; no rows removed
+red_gate_x1.1,21653,21653,0.10308040456287812,0.05741391367247916,0.8569713203713112,True,Both fit and prediction use perturbed supplied gates; no rows removed
+fit_volume_gt_8,21653,21653,0.0,1.5094489450281203e-14,0.8824181406733478,True,"Sensitivity only; excluded from this fit, predicted for every source label"
+fit_volume_gt_50,19384,21653,0.010945365538262596,0.0049442201217241325,0.8862513277605875,True,"Sensitivity only; excluded from this fit, predicted for every source label"
+fit_volume_gt_100,16894,21653,0.017641897196693297,0.00795889200654581,0.8882371957696393,True,"Sensitivity only; excluded from this fit, predicted for every source label"
+initialization_seed_plus_1,21653,21653,0.00018473190781877799,6.315604723237946e-05,0.8823257747194384,True,
+initialization_seed_plus_7,21653,21653,4.6182976954694497e-05,1.3774419765142315e-05,0.8824181406733478,True,
+initialization_seed_plus_29,21653,21653,0.00018473190781877799,5.462767057373768e-05,0.8824643236503025,True,
+largest_component_mean,21653,21653,0.03791622407980418,0.025637684725868515,0.8287073384750381,True,Largest-component measurement; median/core scale aligned on this dataset for descriptive comparison only
+largest_component_median,21653,21653,0.09278160070198126,0.05757859551599775,0.9639310949983836,True,Largest-component measurement; median/core scale aligned on this dataset for descriptive comparison only
+largest_component_core,21653,21653,0.4281623793469727,0.21933600645928433,0.6056897427608183,True,Largest-component measurement; median/core scale aligned on this dataset for descriptive comparison only
+pooled_labels_without_field_weights,21653,21653,0.0034637232716020873,0.0020254700371521517,0.8846811065441278,True,Checks influence of unequal field sizes

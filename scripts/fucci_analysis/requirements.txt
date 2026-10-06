@@ -1,0 +1,7 @@
+numpy==1.26.4
+pandas==2.2.3
+scipy==1.13.1
+matplotlib==3.6.3
+tifffile==2024.8.30
+scikit-image==0.24.0
+Pillow==9.4.0

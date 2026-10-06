@@ -1,0 +1,21 @@
+{
+  "archive": "~/Downloads/Archive (6).zip",
+  "folders": ["231005", "2409", "2410"],
+  "expected_rows": 48475,
+  "expected_fields": 31,
+  "upstream_revision": "f23b506e2ec3ed117db6cc42d21c89cef25f823b",
+  "thresholds": {
+    "231005": [0.005, 0.009, 0.01],
+    "2409": [0.003, 0.0095, 0.011],
+    "2410": [0.003, 0.0095, 0.011]
+  },
+  "seed": 20261006,
+  "confidence_threshold": 0.8,
+  "gate_perturbation_fraction": 0.1,
+  "minimum_component_effective_labels": 5,
+  "variance_floor": 0.0001,
+  "maximum_iterations": 250,
+  "convergence_tolerance": 0.000001,
+  "tiny_volume_diagnostic": 8,
+  "review_objects_per_field": 6
+}

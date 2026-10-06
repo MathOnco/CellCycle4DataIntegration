@@ -1,0 +1,14 @@
+{
+  "selected_model": "joint",
+  "criterion": "Higher mean held-out field log density and wins in a majority of fields; otherwise simpler independent model",
+  "joint_minus_independent_mean_log_density": 0.16759302130619852,
+  "joint_winning_fields": 28,
+  "paired_field_bootstrap_95_interval": [
+    0.11975093303313775,
+    0.2128351506759717
+  ],
+  "bootstrap_caveat": "Descriptive field resampling; four acquisitions limit independence",
+  "nested_validation": false,
+  "selection_caveat": "These folds select a candidate; a separate independent test set is needed for final performance",
+  "biological_accuracy_estimated": false
+}

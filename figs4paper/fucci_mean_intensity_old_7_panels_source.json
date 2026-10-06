@@ -1,0 +1,46 @@
+{
+  "input": "/Users/4470246/Downloads/Archive (6).zip",
+  "archive_sha256": "2abedee81b9c0b86f05df8f77f1c1306156128c0f8f7c84115473eb81e1e9eeb",
+  "source": "old",
+  "rows": 7399,
+  "fofs": 8,
+  "tables": {
+    "231005/object_cellCycle_CellProfilerJuly9th2025.csv": 3456,
+    "2409/object_cellCycle_CellProfilerJuly9th2025.csv": 3943
+  },
+  "x": "Intensity_MeanIntensity_green",
+  "y": "Intensity_MeanIntensity_red",
+  "x_limits": [
+    0.0005,
+    1
+  ],
+  "y_limits": [
+    0.005,
+    0.2
+  ],
+  "scale": "log",
+  "examples_folder_date_fof": [
+    [
+      "231005",
+      "231005",
+      "1"
+    ],
+    [
+      "231005",
+      "231005",
+      "2"
+    ],
+    [
+      "2409",
+      "240918",
+      "1"
+    ],
+    [
+      "2409",
+      "240918",
+      "2"
+    ]
+  ],
+  "excluded_rows": 0,
+  "subsampled": false
+}

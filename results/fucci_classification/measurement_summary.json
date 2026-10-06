@@ -1,0 +1,10 @@
+{
+  "source_objects": 48475,
+  "mask_labels": 21653,
+  "tiny_objects": 24737,
+  "all_tiny_mask_labels": 133,
+  "global_median_core_volume": 1.0,
+  "core_one_voxel_objects": 31676,
+  "median_largest_component_fraction": 1.0,
+  "aggregate_measurement_rule": "sum integrated intensity / sum voxel volume; median and signal-core features are not averaged into nuclear features"
+}

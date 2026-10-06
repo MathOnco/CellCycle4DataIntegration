@@ -1,0 +1,61 @@
+{
+  "input": "/Users/4470246/Downloads/Archive (6).zip",
+  "classification_source": "https://github.com/saeedalahmari3/PMO_MeasuringFitnessperClone/blob/f23b506e2ec3ed117db6cc42d21c89cef25f823b/3D_Imaging/R/Manager.R#L99-L144",
+  "comparison": [
+    {
+      "folder": "231005",
+      "raw_rows": 5433,
+      "labeled_rows": 5433,
+      "raw_and_labeled_plot_data_match": true,
+      "thresholds": {
+        "green": 0.005,
+        "red": 0.009,
+        "red_exclusion_upper_in_github_code": 0.01
+      },
+      "label_rule_mismatches": 0,
+      "rows_current_github_filter_would_remove": 710,
+      "previous_labeled_rows": 4723,
+      "added_rows": 710,
+      "shared_ids": 4723,
+      "shared_ids_with_label_changes": 0
+    },
+    {
+      "folder": "2409",
+      "raw_rows": 5088,
+      "labeled_rows": 5088,
+      "raw_and_labeled_plot_data_match": true,
+      "thresholds": {
+        "green": 0.003,
+        "red": 0.0095,
+        "red_exclusion_upper_in_github_code": 0.011
+      },
+      "label_rule_mismatches": 0,
+      "rows_current_github_filter_would_remove": 1300,
+      "previous_labeled_rows": 4707,
+      "added_rows": 381,
+      "shared_ids": 4707,
+      "shared_ids_with_label_changes": 1236
+    },
+    {
+      "folder": "2410",
+      "raw_rows": 37954,
+      "labeled_rows": 37954,
+      "raw_and_labeled_plot_data_match": true,
+      "thresholds": {
+        "green": 0.003,
+        "red": 0.0095,
+        "red_exclusion_upper_in_github_code": 0.011
+      },
+      "label_rule_mismatches": 0,
+      "rows_current_github_filter_would_remove": 8337,
+      "previous_labeled_rows": 29617,
+      "added_rows": 8337,
+      "shared_ids": 29617,
+      "shared_ids_with_label_changes": 0
+    }
+  ],
+  "old_tables_identical_to_previous": {
+    "231005": true,
+    "2409": true
+  }
+}

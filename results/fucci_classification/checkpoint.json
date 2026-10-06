@@ -1,0 +1,45 @@
+{
+  "status": "paused_at_user_request",
+  "completed": [
+    "replacement_archive_scatter_plots",
+    "input_and_baseline_audit",
+    "available_segmentation_audit",
+    "feature_comparisons",
+    "available_image_value_checks",
+    "model_fitting",
+    "grouped_holdouts",
+    "sensitivity_exports"
+  ],
+  "next_stage": "review",
+  "pending": [
+    "review_panel_rendering",
+    "classification_figures",
+    "results_report",
+    "visual_inspection",
+    "full_image_background_calibration_requires_matching_inputs",
+    "independent_phase_validation_requires_annotations"
+  ],
+  "tests": {
+    "passed": 5,
+    "failed": 0,
+    "task_python_sources_compile": true
+  },
+  "biological_label_replacement_approved": false,
+  "input_objects": 48475,
+  "original_mask_labels": 21653,
+  "fields": 31,
+  "handoff": "docs/fucci_classification_handoff.md",
+  "implementation_sha256": {
+    "scripts/fucci_analysis/__init__.py": "fed777764ac4c92ce4e7ebe2792bc29c0d83517d3fb72cd20d2b37572a0c7f0b",
+    "scripts/fucci_analysis/data.py": "c7581488a34ec1351ee8dcc09e226173725deab09bacb06b7210d19f64f47990",
+    "scripts/fucci_analysis/evaluate.py": "3391e4ef5db375c6b2b64f2f60f9134d712ea060fd458cba8848ea0ad0436a3a",
+    "scripts/fucci_analysis/model.py": "2164dc47db8c4ba7efa5bdb208c5d90e8b2e7865791dceb1adf9619910795842",
+    "scripts/fucci_analysis/outputs.py": "9ae0204e59bdfde57fd32cba483efd4a8b6c75761259368a0ae89e334ccb469e",
+    "scripts/fucci_analysis/review.py": "53a214335c8c33cb31c0cf15cdf63430b80f46570ca6c12e09ca029dfb375c12",
+    "scripts/fucci_analysis/config.json": "601c43b6e84e44285745d147dedeb8f05d81958c4698f4f2e5f00213b31652fa",
+    "scripts/fucci_analysis/requirements.txt": "8025741d2005e7db49fd16d62df3d0f911fa3fd42f672cb315b3a9bac834caac",
+    "scripts/run_fucci_classification.py": "041caec11b6dae44e4dde9b62d0d870f3d8e813908b3b1c815d47be0f885d603",
+    "scripts/plot_fucci_mean_intensity.py": "0bdbcda63fa56e09b5299e635050de2f149661bde5cbed812612f5ee89f6f0f6",
+    "tests/test_fucci_analysis.py": "4e5911cc247d4808f8f299cc9864eb7c0bee2acaa9e6ea8ed5f19810cf6f9e8a"
+  }
+}
