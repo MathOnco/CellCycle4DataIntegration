@@ -1346,8 +1346,15 @@
     608
   ],
   "coordinate_transform": "none",
+  "fluorescence_mask_outlines": {
+    "color": "white",
+    "alpha": 0.8,
+    "width_in_mask_pixels": 1,
+    "boundary_mode": "inner",
+    "selection": "same selected mask geometry as the classification panels"
+  },
   "models_refitted": false,
   "mask_voxels_changed": false,
   "independent_phase_validation": false,
-  "script_sha256": "a4de2393fff9dfaf048ec396b234d59d20e1f00263e56058d20bbd0fdc7490a8"
+  "script_sha256": "9430be1de24e42cd95819b275b6af80061a20a4263773e186f6495e1ef320f79"
 }

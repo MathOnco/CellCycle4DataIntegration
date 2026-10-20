@@ -10,7 +10,7 @@ The supplied `FoF5_241016_fucci.nucleus.zip` provides the first verified image�
 
 ## Figures
 
-The main figure is a single actual plane at **z=35** of the 70-plane stack (default: the middle plane, z=35). Panel A merges green and red; C1 colors masks using the supplied phase thresholds; C2 colors the same selected masks using the saved refitted model, including uncertainty and QC. The field's 3D assignment totals are below; each panel also states how many selected units intersect its plane.
+The main figure is a single actual plane at **z=35** of the 70-plane stack (default: the middle plane, z=35). Panel A merges green and red with thin white segmentation outlines; C1 colors masks using the supplied phase thresholds; C2 colors the same selected masks using the saved refitted model, including uncertainty and QC. The outlines in A use exactly the same selected mask boundaries as the classification panels, including boundaries between touching labels. The field's 3D assignment totals are below; each panel also states how many selected units intersect its plane.
 
 - **Every exported connected component:** [PNG](../figs4paper/fucci_spatial_verification/241016_5/fig1AC_source_rows_z35.png) · [PDF](../figs4paper/fucci_spatial_verification/241016_5/fig1AC_source_rows_z35.pdf)
 - **All components aggregated by original mask label:** [PNG](../figs4paper/fucci_spatial_verification/241016_5/fig1AC_aggregated_z35.png) · [PDF](../figs4paper/fucci_spatial_verification/241016_5/fig1AC_aggregated_z35.pdf)
@@ -33,7 +33,7 @@ The source-row view colors every measured connected component by its own supplie
 
 ## Display and interpretation
 
-Each channel uses a fixed display stretch estimated across all 70 planes: 1st–99.8th percentiles for green/red, 0.5th–99.5th for brightfield, sampled every sixteenth X/Y pixel. Green and red have separate display ranges; these improve visibility and do not change the feature values or thresholds. Mask interiors are drawn with 55% phase-color opacity and full-color boundaries. Scale bars are in pixels.
+Each channel uses a fixed display stretch estimated across all 70 planes: 1st–99.8th percentiles for green/red, 0.5th–99.5th for brightfield, sampled every sixteenth X/Y pixel. Green and red have separate display ranges; these improve visibility and do not change the feature values or thresholds. Panel A draws one-pixel inner mask boundaries in white at 80% opacity, without filling the interiors; white has no phase meaning. C1/C2 mask interiors are drawn with 55% phase-color opacity and full-color boundaries. Scale bars are in pixels.
 
 Labels use full 3D measurements, so fluorescence in a single slice need not show the same green/red balance as the object's 3D average. These panels check spatial registration and classification consistency; they do not independently validate biological phase accuracy. The candidate model was loaded from the completed analysis and was not refitted.
 
