@@ -1,5 +1,7 @@
 # FUCCI classification results
 
+**Input update, 2026-10-20:** The newly supplied FoF5 mask now matches both the new feature table and local raw images, providing one verified image–mask pair. See the [Fig. 1A/C-style spatial verification figures](fucci_spatial_verification_241016_5.md). The results and availability counts below describe the earlier aggregated-reference analysis; its predictions were not refitted.
+
 The computational analysis retains all 48,475 exported objects and reconstructs measurements for 21,653 original Cellpose mask labels across 31 FoFs. Each original label is a segmentation unit whose interpretation as one biological nucleus remains provisional. The fitted model is not approved as a replacement for four biological phase labels: it has insufficient support for low_low, low_high, and calls are sensitive to red-channel calibration. Independent phase accuracy has not been established.
 
 The available computational stages and review-sheet generation are complete. Expert annotations, full image calibration, and independent phase validation remain pending. Original-mask aggregation is a measurement-unit sensitivity analysis; it does not establish that every resulting label is a cell. The existing object-level phase labels are preserved.

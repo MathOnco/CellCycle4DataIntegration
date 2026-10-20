@@ -6,6 +6,8 @@ The archive contains unfiltered `object_features_new.csv` tables and correspondi
 
 ## Requested extension completed — 2026-10-20
 
+The subsequently supplied FoF5 ZIP now provides **one verified matching image–mask pair**, with all 1,314 component volumes, bounding boxes and three-channel mean/integrated intensities reproduced. Fig. 1A/C-style overlays and a multi-slice atlas are available in the [spatial verification report](fucci_spatial_verification_241016_5.md). The user dropped Fig. 1E; no pseudotime was computed. Eleven tests pass. Background calibration remains pending.
+
 Repeated the classification, seven-panel and all-FoF scatter plots, per-FoF class distributions, both candidate fits, all holdouts, and 14 stability variants using (1) only the largest component of each original label and (2) only labels with one component. Selection ledgers account for every source row. The [comparison report](fucci_component_input_comparison.md) separates the original component-row gates, aggregated reference, measurement changes, refitting, and population exclusion.
 
 Also quantified component-size distributions across all 31 FoFs and generated actual-mask projections, slice plots, and an offline interactive z-slice viewer for six examples from the two available masks. See the [inspection guide](fucci_mask_fragment_inspection.md). No source mask voxels were edited. Ten unit tests and both alternative-output consistency checks pass. Gate instability and independent biological validation remain unresolved.

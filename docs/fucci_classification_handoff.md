@@ -2,6 +2,14 @@
 
 Resumed on 2026-10-19 from checkpoint `548e6da`. The available computational work, review-sheet generation, figure inspection, and report are now complete. See [the results report](fucci_classification_results.md), [visual inspection notes](fucci_visual_review.md), and the status table in [the implementation plan](fucci_classification_plan.md). Full image calibration, expert annotations, construct confirmation, and independent phase validation remain pending; the biological classification problem is not solved.
 
+## FoF5 image–mask verification — 2026-10-20
+
+The user supplied `/Users/4470246/Downloads/FoF5_241016_fucci.nucleus.zip` and requested Fig. 1A/C-style verification figures, explicitly dropping Fig. 1E. Its `FoF5_241016_fucci.nucleus_masks.tif` matches all 578 original labels and 1,314 connected components in the new feature table. Every parent/component ID, volume and bounding box matches. All 3,942 component/channel combinations reproduce their exported 3D mean and integrated intensity from the local green, red and brightfield images.
+
+This provides **one verified image–mask pair**, superseding the earlier statement that image/mask overlap is zero. The historical `results/fucci_classification/image_inventory.csv` describes the earlier inputs; the new evidence and all source hashes are in `results/fucci_spatial_verification/241016_5/image_mask_verification.json`. Background calibration has not yet been performed.
+
+The [spatial verification report](fucci_spatial_verification_241016_5.md) links the fluorescence and phase-colored mask overlays for source rows, aggregated labels, dominant components and singleton labels, plus magnified regions and a five-slice atlas. Main panels use z=35 and share fixed channel display ranges. Saved classification models were reused without refitting; no pseudotime was calculated. `scripts/plot_fucci_spatial_verification.py` reproduces the figures. Eleven tests pass, including a spatial mapping check for the distinction between global CellID and per-field ObjectNumber.
+
 ## Component-input extension — 2026-10-20
 
 The user's requested largest-component and single-component-only analyses are complete. See [the comparison report](fucci_component_input_comparison.md) and [the mask-fragment inspection guide](fucci_mask_fragment_inspection.md).
