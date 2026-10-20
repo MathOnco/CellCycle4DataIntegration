@@ -1,0 +1,16 @@
+{
+  "policy": "Single-component mask labels only",
+  "original_objects": 48475,
+  "original_mask_labels": 21653,
+  "selected_objects": 13981,
+  "retained_mask_labels": 13981,
+  "excluded_source_components": 34494,
+  "excluded_original_mask_labels": 7672,
+  "fields": 31,
+  "source_identity_checks_passed": true,
+  "largest_volume_or_single_component_check_passed": true,
+  "original_phase_labels_preserved": true,
+  "additional_size_filter_applied": false,
+  "note": "Original mask labels are segmentation units, not independently validated cells",
+  "largest_component_tie_rule": "First maximum-volume component in the deterministic loaded source-row order"
+}

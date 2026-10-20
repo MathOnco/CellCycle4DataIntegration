@@ -1,0 +1,7 @@
+field_id,CellposeLabel,pdf_page,png,reason,components,volume,largest_fraction
+241016/14,31,1,241016_14_mask_31.png,Previously discussed: one large component and tiny satellites,28,26334,0.998784840890104
+241016/14,92,2,241016_14_mask_92.png,Strongly fragmented example with little dominant support,53,84,0.15476190476190477
+241016/14,89,3,241016_14_mask_89.png,Many components with a dominant but incomplete main component,73,1432,0.861731843575419
+241016/1,250,4,241016_1_mask_250.png,Fragmented example from the second available mask,25,684,0.8947368421052632
+241016/1,201,5,241016_1_mask_201.png,Three components; largest fraction near the dataset median among fragmented labels,3,221,0.9819004524886877
+241016/1,179,6,241016_1_mask_179.png,Single-component example with volume near the dataset median for single-component labels,1,469,1.0

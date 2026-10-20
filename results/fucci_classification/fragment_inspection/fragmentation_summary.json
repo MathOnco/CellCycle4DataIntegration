@@ -1,0 +1,22 @@
+{
+  "original_mask_labels": 21653,
+  "source_components": 48475,
+  "single_component_labels": 13981,
+  "multiple_component_labels": 7672,
+  "single_component_fraction": 0.6456842008035838,
+  "median_components_among_fragmented": 3.0,
+  "median_largest_volume_fraction_among_fragmented": 0.9820251583164605,
+  "nonlargest_components": 26822,
+  "nonlargest_components_at_most_8_voxels": 24604,
+  "nonlargest_tiny_fraction": 0.9173066885392588,
+  "median_nonlargest_volume_voxels": 1.0,
+  "unit": "Original segmentation labels; biological cell identity not verified",
+  "fragmented_largest_at_least_0.9_count": 5527,
+  "fragmented_largest_at_least_0.9_fraction": 0.7204118873826904,
+  "fragmented_largest_at_least_0.95_count": 4896,
+  "fragmented_largest_at_least_0.95_fraction": 0.6381647549530761,
+  "fragmented_largest_at_least_0.99_count": 3185,
+  "fragmented_largest_at_least_0.99_fraction": 0.41514598540145986,
+  "fragmented_largest_at_least_0.999_count": 1436,
+  "fragmented_largest_at_least_0.999_fraction": 0.18717413972888425
+}

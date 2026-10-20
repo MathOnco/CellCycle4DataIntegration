@@ -1,0 +1,16 @@
+{
+  "all_checks_passed": true,
+  "examples_checked": 6,
+  "controls": [
+    "selection",
+    "previous",
+    "next",
+    "slider",
+    "smaller_components_toggle",
+    "play_pause"
+  ],
+  "scope": "JavaScript parse and control logic in a DOM stub; no browser rendering assertion",
+  "html_sha256": "bd7d733581c6e59b13abf53a65d9bcaf0d50a9ed8ba95de745af41083e2d08a9",
+  "static_mask_pages_visually_inspected": 6,
+  "component_counts_and_volumes_verified_against_source_tables": true
+}

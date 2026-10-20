@@ -1,0 +1,12 @@
+{
+  "all_checks_passed": true,
+  "policy": "dominant",
+  "source_rows_accounted_for": 48475,
+  "selected_objects": 21653,
+  "mask_labels": 21653,
+  "fields": 31,
+  "source_measurements_and_phase_labels_match": true,
+  "numeric_model_reproduces_saved_probabilities": true,
+  "source_selection_and_all_holdouts_verified": true,
+  "biological_validation": false
+}

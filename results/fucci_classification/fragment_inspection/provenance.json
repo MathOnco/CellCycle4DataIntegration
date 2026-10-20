@@ -1,0 +1,91 @@
+{
+  "masks": [
+    {
+      "field_id": "241016/14",
+      "path": "/Users/4470246/Downloads/FoF14_241016_fucci.nucleus_masks.tif",
+      "sha256": "386529149c9888971d8ec5aaeac550177617d2829136928ba6ecd05e3f4aeed1",
+      "shape": [
+        70,
+        1024,
+        1024
+      ]
+    },
+    {
+      "field_id": "241016/1",
+      "path": "/Users/4470246/Downloads/FoF1_241016_fucci.nucleus_masks.tif",
+      "sha256": "fdb6ac19e9d1efcd9eec4b488f4381437626dc1012b5660cd383267f4ffeee29",
+      "shape": [
+        70,
+        1024,
+        1024
+      ]
+    }
+  ],
+  "selected_labels": [
+    {
+      "field_id": "241016/14",
+      "CellposeLabel": "31",
+      "pdf_page": 1,
+      "png": "241016_14_mask_31.png",
+      "reason": "Previously discussed: one large component and tiny satellites",
+      "components": 28,
+      "volume": 26334,
+      "largest_fraction": 0.998784840890104
+    },
+    {
+      "field_id": "241016/14",
+      "CellposeLabel": "92",
+      "pdf_page": 2,
+      "png": "241016_14_mask_92.png",
+      "reason": "Strongly fragmented example with little dominant support",
+      "components": 53,
+      "volume": 84,
+      "largest_fraction": 0.15476190476190477
+    },
+    {
+      "field_id": "241016/14",
+      "CellposeLabel": "89",
+      "pdf_page": 3,
+      "png": "241016_14_mask_89.png",
+      "reason": "Many components with a dominant but incomplete main component",
+      "components": 73,
+      "volume": 1432,
+      "largest_fraction": 0.861731843575419
+    },
+    {
+      "field_id": "241016/1",
+      "CellposeLabel": "250",
+      "pdf_page": 4,
+      "png": "241016_1_mask_250.png",
+      "reason": "Fragmented example from the second available mask",
+      "components": 25,
+      "volume": 684,
+      "largest_fraction": 0.8947368421052632
+    },
+    {
+      "field_id": "241016/1",
+      "CellposeLabel": "201",
+      "pdf_page": 5,
+      "png": "241016_1_mask_201.png",
+      "reason": "Three components; largest fraction near the dataset median among fragmented labels",
+      "components": 3,
+      "volume": 221,
+      "largest_fraction": 0.9819004524886877
+    },
+    {
+      "field_id": "241016/1",
+      "CellposeLabel": "179",
+      "pdf_page": 6,
+      "png": "241016_1_mask_179.png",
+      "reason": "Single-component example with volume near the dataset median for single-component labels",
+      "components": 1,
+      "volume": 469,
+      "largest_fraction": 1.0
+    }
+  ],
+  "connectivity": 26,
+  "no_mask_voxels_changed": true,
+  "component_counts_and_volumes_match_export": true,
+  "selection": "Four deliberately fragmented examples, one example near median fragmented geometry, one single-component example",
+  "script_sha256": "ca409d27789b5ad1be607654a1ac335a820f473a018c7aa0cc7b2551f0d78e33"
+}

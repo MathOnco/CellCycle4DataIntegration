@@ -1,0 +1,14 @@
+{
+  "effective_weighted_labels": {
+    "low_low": 1.7982693434995915e-05,
+    "high_low": 10737.576652453887,
+    "low_high": 816.8208527275756,
+    "high_high": 10098.602476835846
+  },
+  "minimum_effective_labels_diagnostic": 5,
+  "unsupported_states": [
+    "low_low"
+  ],
+  "biological_label_replacement_approved": false,
+  "reason": "No independent phase validation; inspect state support and gate sensitivity before using biological labels"
+}

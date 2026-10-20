@@ -1,0 +1,3 @@
+input,common_mask_labels,measurement_only_changed_fraction,refitting_changed_fraction_on_new_measurements,combined_changed_fraction,baseline_gates_changed_fraction,note
+dominant,21653,0.00872858264443726,0.032466632799150234,0.03791622407980418,0.015425114302867964,All contrasts use identical mask-label IDs; changes are not additive and are not accuracy estimates
+singletons,13981,0.0,0.004577641084328732,0.004577641084328732,0.0,All contrasts use identical mask-label IDs; changes are not additive and are not accuracy estimates

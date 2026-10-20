@@ -1,0 +1,9 @@
+held_out,model,train_labels,test_labels,converged,mean_log_density,baseline_agreement,confidence_coverage,interpretation
+231005,joint,18842,2811,True,-0.7137559197991068,0.8192813945215226,0.840270366417645,Reporter-density validation; supplied gates fixed before each split
+231005,independent,18842,2811,True,-1.1619383477863046,0.6851654215581644,0.7662753468516542,Reporter-density validation; supplied gates fixed before each split
+240918,joint,19363,2290,True,0.5731215578763625,0.5034934497816594,0.7707423580786026,Reporter-density validation; supplied gates fixed before each split
+240918,independent,19363,2290,True,0.4622756402067703,0.4641921397379913,0.8196506550218341,Reporter-density validation; supplied gates fixed before each split
+241016,joint,12470,9183,True,0.7654434281392227,0.628770554285092,0.765109441359033,Reporter-density validation; supplied gates fixed before each split
+241016,independent,12470,9183,True,0.7545026779479581,0.6288794511597517,0.8666013285418709,Reporter-density validation; supplied gates fixed before each split
+241017,joint,14284,7369,True,0.6502464131021519,0.4882616365856968,0.8367485411860497,Reporter-density validation; supplied gates fixed before each split
+241017,independent,14284,7369,True,0.4896371181377351,0.43465870538743384,0.877595331795359,Reporter-density validation; supplied gates fixed before each split

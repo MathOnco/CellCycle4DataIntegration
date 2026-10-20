@@ -1,0 +1,5 @@
+input,measurement_units,baseline_G1S_count,baseline_G1_count,baseline_S_count,baseline_G2M_count
+source_objects,48475,8321,11813,4738,23603
+aggregated,21653,158,5122,119,16254
+dominant,21653,190,5146,162,16155
+singletons,13981,90,3076,67,10748

@@ -4,6 +4,12 @@ Implement and compare candidate classifiers for the replacement FUCCI feature ta
 
 The archive contains unfiltered `object_features_new.csv` tables and corresponding `object_features_new_withCellCycle.csv` tables in `231005`, `2409`, and `2410`. The older CellProfiler tables provide a historical comparison. Preliminary inspection found 24,737 objects with volumes of eight voxels or fewer and repeated Cellpose labels; this motivates checking the unit of analysis before interpreting class frequencies as cell frequencies.
 
+## Requested extension completed — 2026-10-20
+
+Repeated the classification, seven-panel and all-FoF scatter plots, per-FoF class distributions, both candidate fits, all holdouts, and 14 stability variants using (1) only the largest component of each original label and (2) only labels with one component. Selection ledgers account for every source row. The [comparison report](fucci_component_input_comparison.md) separates the original component-row gates, aggregated reference, measurement changes, refitting, and population exclusion.
+
+Also quantified component-size distributions across all 31 FoFs and generated actual-mask projections, slice plots, and an offline interactive z-slice viewer for six examples from the two available masks. See the [inspection guide](fucci_mask_fragment_inspection.md). No source mask voxels were edited. Ten unit tests and both alternative-output consistency checks pass. Gate instability and independent biological validation remain unresolved.
+
 ## Execution status — 2026-10-19
 
 The available computational deliverables are complete. See [the results report](fucci_classification_results.md) and [visual inspection notes](fucci_visual_review.md). All source objects and supplied labels are preserved. Eight unit tests and the export consistency checks pass. The saved model has not been approved to replace four biological phase labels.

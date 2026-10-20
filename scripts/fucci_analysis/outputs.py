@@ -36,7 +36,7 @@ def scatter_axes(ax, df):
     ax.grid(alpha=.15, linewidth=.5)
 
 
-def figures(objects, labels, out, figs):
+def figures(objects, labels, out, figs, unit_description="Original mask labels"):
     for frame in [objects, labels]:
         if not (frame.green.between(5e-4, 1) & frame.red.between(5e-3, .2)).all():
             raise ValueError("Scatter limits would hide measurements; expand the limits before plotting")
@@ -49,12 +49,12 @@ def figures(objects, labels, out, figs):
     axes[1, 3].axis("off")
     axes[1, 3].legend(handles=[Patch(color=COLORS[s], label=f"{s.replace('_', '/')} reporter state") for s in STATES] +
                              [Patch(color="#a5a5a5", label="Uncertain or QC review")], loc="center", frameon=False)
-    fig.suptitle("FUCCI candidate reporter states for original mask labels\nProvisional phase interpretation; no independent biological validation", fontsize=13)
+    fig.suptitle(f"FUCCI candidate reporter states: {unit_description}\nProvisional phase interpretation; no independent biological validation", fontsize=13)
     save(fig, figs / "candidate_scatter_7_panels")
 
     fig, axes = plt.subplots(2, 3, figsize=(14, 8), constrained_layout=True)
     for col, folder in enumerate(["231005", "2409", "2410"]):
-        for row, (name, df) in enumerate([("Exported objects", objects), ("Original mask labels", labels)]):
+        for row, (name, df) in enumerate([("Input objects", objects), (unit_description, labels)]):
             d = df[df.folder == folder]
             for state, phase in enumerate(PHASES):
                 group = d[d.baseline_state == state]
@@ -66,7 +66,7 @@ def figures(objects, labels, out, figs):
     save(fig, figs / "objects_vs_mask_labels")
 
     fields = sorted(labels.field_id.unique(), key=lambda s: tuple(map(int, s.split("/"))))
-    field_scatter_atlas(labels, fields, out, figs)
+    field_scatter_atlas(labels, fields, out, figs, unit_description)
     fig, axes = plt.subplots(1, 2, figsize=(15, 12), sharey=True, constrained_layout=True)
     for ax, column, title, categories in [
         (axes[0], "baseline_phase", "Supplied gates applied to mask-label means", list(PHASES)),
@@ -82,7 +82,7 @@ def figures(objects, labels, out, figs):
         ax.set_yticklabels([f"{f} (n={int(labels.field_id.eq(f).sum()):,})" for f in fields], fontsize=8)
         ax.legend(fontsize=8, loc="upper center", bbox_to_anchor=(.5,-.065), ncol=2)
     axes[0].invert_yaxis()
-    fig.suptitle("Class distributions by FoF; all mask labels remain in the denominator")
+    fig.suptitle(f"{unit_description}: class distributions by FoF; all included labels in denominator")
     save(fig, figs / "class_balance_by_fof")
 
     validation = pd.read_csv(out / "held_out_fields.csv")
@@ -100,16 +100,18 @@ def figures(objects, labels, out, figs):
     axes[0].hist(np.log10(objects.volume), bins=bins, alpha=.65, label="Objects")
     axes[0].hist(np.log10(labels.volume), bins=bins, alpha=.65, label="Mask labels")
     axes[0].set(xlabel="log10(volume in voxels)", ylabel="Count"); axes[0].legend()
-    axes[1].hist(labels.n_components, bins=np.arange(.5, labels.n_components.max()+1.5), color="#7158a8")
-    axes[1].set(xlabel="Components per original mask label (all labels)", ylabel="Mask labels", yscale="log")
-    axes[2].hist(labels.largest_component_fraction, bins=40, color="#268c76")
+    original_components = labels.get("original_n_components", labels.n_components)
+    original_largest_fraction = labels.get("original_largest_component_fraction", labels.largest_component_fraction)
+    axes[1].hist(original_components, bins=np.arange(.5, original_components.max()+1.5), color="#7158a8")
+    axes[1].set(xlabel="Original components per included mask label", ylabel="Mask labels", yscale="log")
+    axes[2].hist(original_largest_fraction, bins=40, color="#268c76")
     axes[2].set(xlabel="Fraction of volume in the largest component", ylabel="Mask labels", yscale="log")
-    fig.suptitle("Segmentation audit; small components are retained and linked to their original labels")
+    fig.suptitle(f"Segmentation audit: {unit_description}\nOriginal component counts and volume fractions describe the included source labels")
     save(fig, figs / "segmentation_audit")
     sensitivity_figure(labels, out, figs)
 
 
-def field_scatter_atlas(labels, fields, out, figs):
+def field_scatter_atlas(labels, fields, out, figs, unit_description="Original mask labels"):
     """Show every FoF with its own gate constants and the saved diagnostic boundary."""
     model = model_from_dict(json.loads((out / "reporter_state_model.json").read_text()))
     green, red = np.meshgrid(np.geomspace(5e-4, 1, 180), np.geomspace(5e-3, .2, 180))
@@ -139,7 +141,7 @@ def field_scatter_atlas(labels, fields, out, figs):
                              "png": f"candidate_scatter_by_fof_{page:02}.png"})
             for ax in axes.flat[len(page_fields):]:
                 ax.axis("off")
-            fig.suptitle(f"Candidate reporter states by FoF — page {page}\nGreen/red state order; boundary conditional on supplied gates; no phase validation", fontsize=12)
+            fig.suptitle(f"{unit_description}: candidate reporter states by FoF — page {page}\nGreen/red state order; boundary conditional on supplied gates; no phase validation", fontsize=12)
             fig.legend(handles=handles, loc="lower center", ncol=4, fontsize=9, frameon=False)
             fig.tight_layout(rect=(0, .075, 1, .93))
             pdf.savefig(fig)
@@ -156,7 +158,7 @@ def sensitivity_figure(labels, out, figs):
     axes[0].set_yticks(range(len(variants)))
     axes[0].set_yticklabels(variants.variant.str.replace("_", " "), fontsize=8)
     axes[0].invert_yaxis()
-    axes[0].set(xlabel="Changed most likely reporter state (%)", title="Sensitivity over all 21,653 mask labels")
+    axes[0].set(xlabel="Changed most likely reporter state (%)", title=f"Sensitivity over all {len(labels):,} included mask labels")
     for i, value in enumerate(100*variants.changed_calls_fraction):
         axes[0].text(value+.3, i, f"{value:.2f}%", va="center", fontsize=8)
     axes[0].set_xlim(0, max(100*variants.changed_calls_fraction)*1.2)

@@ -2,6 +2,22 @@
 
 Resumed on 2026-10-19 from checkpoint `548e6da`. The available computational work, review-sheet generation, figure inspection, and report are now complete. See [the results report](fucci_classification_results.md), [visual inspection notes](fucci_visual_review.md), and the status table in [the implementation plan](fucci_classification_plan.md). Full image calibration, expert annotations, construct confirmation, and independent phase validation remain pending; the biological classification problem is not solved.
 
+## Component-input extension — 2026-10-20
+
+The user's requested largest-component and single-component-only analyses are complete. See [the comparison report](fucci_component_input_comparison.md) and [the mask-fragment inspection guide](fucci_mask_fragment_inspection.md).
+
+- The previous main model already used 21,653 aggregated mask-label measurements. The original threshold scatter plots used all 48,475 component rows. The new report compares both reference units explicitly.
+- Largest-component input retains 21,653 original labels and excludes 26,822 satellite rows from fitting. Single-component-only input retains 13,981 labels, excluding all 7,672 fragmented labels. Both policies keep a ledger accounting for every source row and add no size exclusion.
+- Both candidate models were refitted separately for each policy, with all 31 FoF holdouts, four acquisition holdouts, and 14 sensitivity variants repeated. Joint models were selected in both cases.
+- Raw state assignments change for 3.79% of labels with largest-component measurements, and 0.46% of the same retained labels after the singleton refit. Gate sensitivity remains 39.7% and 35.8%, respectively, versus 37.3% for the aggregated reference.
+- The largest-component fit has a supported low-green/high-red mixture component and 473 S-like most-likely assignments, but all 473 are uncertain under the specified checks. The singleton fit and aggregated reference still lack support for both low-green states. None establishes a reliable four-phase classification.
+- Across all labels, 64.6% have one component. Among fragmented labels, 63.8% place at least 95% of their volume in the largest component. Of the non-largest components, 91.7% contain eight voxels or fewer.
+- Six examples from the two exact masks have a self-contained z-slice viewer, detailed PNG/PDF pages, and per-component volume/coordinate exports. Every component count and volume matches the measurement table. These examples are illustrative, not a prevalence sample.
+
+New entry points are `scripts/compare_fucci_component_inputs.py` and `scripts/inspect_fucci_mask_fragments.py`. Numeric comparison outputs are in `results/fucci_component_comparison`, figures in `figs4paper/fucci_component_comparison`, and inspection outputs in the `fragment_inspection` subdirectories of the original results/figure directories. The original fitted predictions are preserved. Ten unit tests pass, and both comparison policies pass source-selection, measurement, probability, and holdout-coverage checks.
+
+The sections below describe the aggregated reference analysis unless explicitly stated otherwise.
+
 ## Repository and input
 
 - Working directory: `/Users/4470246/Repositories/CellCycle4DataIntegration`.
