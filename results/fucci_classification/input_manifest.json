@@ -978,7 +978,8 @@
     "scipy": "1.13.1",
     "matplotlib": "3.6.3",
     "tifffile": "2024.8.30",
-    "scikit-image": "0.24.0"
+    "scikit-image": "0.24.0",
+    "Pillow": "9.4.0"
   },
   "no_rows_removed": true
 }

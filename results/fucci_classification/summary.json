@@ -1,0 +1,24 @@
+{
+  "objects": 48475,
+  "mask_labels": 21653,
+  "fields": 31,
+  "selected_model": "joint",
+  "confidence_threshold": 0.8,
+  "confidence_coverage": 0.8824181406733478,
+  "gate_sensitive_fraction": 0.37315845379393153,
+  "robust_call_coverage": 0.5946981942456011,
+  "unsupported_reporter_states": [
+    "low_low",
+    "low_high"
+  ],
+  "approved_as_four_phase_replacement": false,
+  "fit_vs_oof_disagreement_fraction": 0.0033713573176926983,
+  "baseline_disagreement_fraction": 0.36401422435690206,
+  "provisional_calls": {
+    "uncertain": 8643,
+    "G1": 6791,
+    "G2M": 6086,
+    "qc_review": 133
+  },
+  "independent_biological_validation": false
+}

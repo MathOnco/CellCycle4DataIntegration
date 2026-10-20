@@ -1,12 +1,15 @@
 """Scientific invariants: source gates, additive support, and reporter-state scores."""
 import unittest
 import tempfile
+import hashlib
+import json
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
 from scripts.fucci_analysis.data import aggregate_mask_labels, gates, training_weights
+from scripts.fucci_analysis.data import validate_resume_inputs, validate_saved_labels, STATES
 from scripts.fucci_analysis.model import AnchoredMixture, IndependentChannels, model_from_dict
 
 
@@ -66,6 +69,63 @@ class FucciAnalysisTests(unittest.TestCase):
             path = Path(directory) / "image.tif"
             Image.fromarray(source).save(path, compression="tiff_lzw")
             np.testing.assert_allclose(normalized_plane(path), source.astype(float)/65535, rtol=1e-7)
+
+    def test_resume_rejects_changed_inputs_without_rewriting_provenance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            out = Path(directory)
+            archive = out / "input.zip"
+            archive.write_bytes(b"original")
+            config = {"archive": str(archive), "confidence_threshold": .8, "review_objects_per_field": 6}
+            path = out / "prediction_provenance.json"
+            path.write_text(json.dumps({"archive_sha256": hashlib.sha256(b"original").hexdigest(), "config": config}))
+            original = path.read_bytes()
+            validate_resume_inputs(config, out, "review")
+            validate_resume_inputs({**config, "review_objects_per_field": 8}, out, "review")
+            with self.assertRaisesRegex(ValueError, "configuration changed"):
+                validate_resume_inputs({**config, "confidence_threshold": .6}, out, "report")
+            archive.write_bytes(b"replacement")
+            # A later audit must not make old predictions compatible with a new archive.
+            (out / "input_manifest.json").write_text(json.dumps({
+                "archive_sha256": hashlib.sha256(b"replacement").hexdigest(), "config": config}))
+            with self.assertRaisesRegex(ValueError, "archive changed"):
+                validate_resume_inputs(config, out, "review")
+            self.assertEqual(path.read_bytes(), original)
+
+    def test_saved_predictions_must_cover_unchanged_measurements(self):
+        current = pd.DataFrame({"mask_label_id": ["a", "b"], "volume": [100, 200],
+                                "green": [.01, .02], "red": [.008, .015],
+                                "green_gate": [.005, .005], "red_gate": [.009, .009], "n_components": [1, 2]})
+        saved = current.copy()
+        for state in STATES:
+            saved[f"p_{state}"] = .25
+            saved[f"oof_p_{state}"] = .25
+        validate_saved_labels(current, saved.iloc[::-1])
+        with self.assertRaisesRegex(ValueError, "cover"):
+            validate_saved_labels(current, saved.iloc[:1])
+        altered = saved.copy()
+        altered.loc[0, "green"] *= 2
+        with self.assertRaises(AssertionError):
+            validate_saved_labels(current, altered)
+
+    def test_review_rerun_preserves_human_annotations_and_previous_candidates(self):
+        from scripts.fucci_analysis.review import save_review_annotations
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "annotations.csv"
+            pd.DataFrame([
+                {"mask_label_id": "a", "review_status": "reviewed", "reviewer_notes": "boundary unclear", "crop_z": 3},
+                {"mask_label_id": "b", "review_status": "reviewed", "reviewer_notes": "keep this note", "crop_z": 5},
+            ]).to_csv(path, index=False)
+            save_review_annotations([
+                {"mask_label_id": "a", "review_status": "unreviewed", "reviewer_notes": "", "crop_z": 4},
+                {"mask_label_id": "c", "review_status": "unreviewed", "reviewer_notes": "", "crop_z": 6},
+            ], path)
+            after = pd.read_csv(path).set_index("mask_label_id")
+            self.assertEqual(after.loc["a", "review_status"], "reviewed")
+            self.assertEqual(after.loc["a", "reviewer_notes"], "boundary unclear")
+            self.assertEqual(after.loc["a", "crop_z"], 4)
+            self.assertEqual(after.loc["b", "reviewer_notes"], "keep this note")
+            self.assertFalse(after.loc["b", "in_current_review_set"])
+            self.assertEqual(after.loc["c", "review_status"], "unreviewed")
 
 
 if __name__ == "__main__":

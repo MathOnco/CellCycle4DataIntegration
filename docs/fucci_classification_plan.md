@@ -4,6 +4,20 @@ Implement and compare candidate classifiers for the replacement FUCCI feature ta
 
 The archive contains unfiltered `object_features_new.csv` tables and corresponding `object_features_new_withCellCycle.csv` tables in `231005`, `2409`, and `2410`. The older CellProfiler tables provide a historical comparison. Preliminary inspection found 24,737 objects with volumes of eight voxels or fewer and repeated Cellpose labels; this motivates checking the unit of analysis before interpreting class frequencies as cell frequencies.
 
+## Execution status — 2026-10-19
+
+The available computational deliverables are complete. See [the results report](fucci_classification_results.md) and [visual inspection notes](fucci_visual_review.md). All source objects and supplied labels are preserved. Eight unit tests and the export consistency checks pass. The saved model has not been approved to replace four biological phase labels.
+
+| Step | Status |
+|---|---|
+| 1 Inputs and baseline | Complete: 48,475 objects, 31 FoFs, all supplied labels reproduced. |
+| 2 Segmentation | Table audit and two available masks checked; 21,653 source mask labels reconstructed as a measurement-unit sensitivity analysis. Biological nuclear identity remains unverified. |
+| 3 Features and calibration | Feature comparisons and sampled raw-image checks complete; no field currently has both compatible images and masks for background calibration. |
+| 4 Candidate models | Both candidates fitted; the selected model lacks reliable support for four states. |
+| 5 Stability | 31 FoF holdouts, four acquisition holdouts, and 14 sensitivity variants complete. |
+| 6 Review and validation | 72 fluorescence review candidates and eight mask examples prepared; representative artifacts inspected. Expert annotations and independent phase validation remain pending. |
+| 7 Package | Scripts, dependencies, configuration, provenance, all-row exports, per-FoF summaries, figures, and report delivered. |
+
 ## 1 Freeze inputs and reproduce the existing classification
 
 Record the archive checksum, table schemas, code revision, package versions, and random seeds. Preserve date, FoF, CellID, ObjectNumber, CellposeLabel, and supplied phase labels. Use the unfiltered newer tables as the measurement source and join the supplied labels by verified unique identifiers.

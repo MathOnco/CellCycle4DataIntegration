@@ -1,0 +1,13 @@
+{
+  "all_checks_passed": true,
+  "source_objects_checked": 48475,
+  "mask_labels_checked": 21653,
+  "plotted_fields_checked": 31,
+  "source_identity_and_phase_preserved": true,
+  "source_intensities_preserved": true,
+  "object_to_mask_label_mapping_verified": true,
+  "parent_probabilities_verified": true,
+  "all_grouped_holdouts_present": true,
+  "mutually_exclusive_disposition_totals_verified": true,
+  "interpretation": "Computational consistency checks, not independent biological validation"
+}

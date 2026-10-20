@@ -1,0 +1,9 @@
+{
+  "1_input_and_baseline": "complete; all source rows retained and supplied labels reproduced",
+  "2_segmentation": "table audit complete; 2/31 masks compatible by component volumes; biological nuclei not independently confirmed",
+  "3_features_and_calibration": "feature comparison complete; 0/31 fields have both compatible raw images and exact masks; background calibration pending",
+  "4_candidate_classifier": "complete; gate-anchored reporter-state models, provisional phase mapping",
+  "5_stability_evaluation": "complete; 31 field holdouts, 4 acquisition holdouts, sensitivity variants; no independent phase accuracy estimate",
+  "6_review_and_validation": "72 current review candidates prepared; 72 rows await expert review; independent phase validation pending",
+  "7_reproducible_package": "complete for computational artifacts; experimental validation dependencies remain"
+}

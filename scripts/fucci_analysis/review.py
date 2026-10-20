@@ -10,6 +10,31 @@ import numpy as np
 import pandas as pd
 import tifffile
 
+ANNOTATION_COLUMNS = ["review_status", "reviewer_reporter_state", "reviewer_phase",
+                      "independent_phase_evidence", "reviewer_notes"]
+
+
+def save_review_annotations(rows, path):
+    """Refresh crop metadata without deleting human annotations on a rerun."""
+    current = pd.DataFrame(rows).set_index("mask_label_id")
+    if not current.index.is_unique:
+        raise ValueError("Review candidates must have unique mask-label identities")
+    current["in_current_review_set"] = True
+    if path.exists():
+        previous = pd.read_csv(path, dtype={"mask_label_id": str}).set_index("mask_label_id")
+        if not previous.index.is_unique:
+            raise ValueError("Existing annotation sheet has duplicate identities; preserve and resolve them before rerunning")
+        common = current.index.intersection(previous.index)
+        for column in ANNOTATION_COLUMNS:
+            if column in previous:
+                values = previous.loc[common, column]
+                populated = values.notna() & values.astype(str).ne("")
+                current.loc[values.index[populated], column] = values[populated]
+        retained = previous.loc[~previous.index.isin(current.index)].copy()
+        retained["in_current_review_set"] = False
+        current = pd.concat([current, retained])
+    current.reset_index().to_csv(path, index=False)
+
 
 def planes(image_dir, channel):
     found = []
@@ -100,8 +125,10 @@ def choose_review(labels, count):
 def create_review_sheets(labels, objects, inventory, config, out, figs):
     selected_rows = []
     obj_lookup = objects.set_index("object_id")
+    page_dir = figs / "review_pages"
+    page_dir.mkdir(exist_ok=True)
     with PdfPages(figs / "image_review.pdf") as pdf:
-        for _, field in inventory[inventory.raw_images_available].iterrows():
+        for page, (_, field) in enumerate(inventory[inventory.raw_images_available].iterrows(), start=1):
             subset = labels[labels.field_id == field.field_id]
             selected = choose_review(subset, config["review_objects_per_field"])
             files = {c: planes(field.image_dir, ch) for c, ch in [("green", "00"), ("red", "02")]}
@@ -139,7 +166,13 @@ def create_review_sheets(labels, objects, inventory, config, out, figs):
                 rec = {c: parent[c] for c in ["mask_label_id", "field_id", "CellposeLabel", "largest_object_id", "volume", "n_components", "baseline_phase", "candidate_state", "confidence", "provisional_phase"]}
                 rec.update(raw_image_sample_check=bool(field.image_measurements_match),
                            mask_verified=bool(field.mask_components_match),
-                           crop_z=z, review_status="unreviewed", reviewer_reporter_state="",
+                           crop_z=z, crop_x_min=x0, crop_x_max=x1, crop_y_min=y0, crop_y_max=y1,
+                           green_plane=str(files["green"][z]), red_plane=str(files["red"][z]),
+                           green_display_low=scale["green"][0], green_display_high=scale["green"][1],
+                           red_display_low=scale["red"][0], red_display_high=scale["red"][1],
+                           review_pdf_page=page,
+                           review_png=f"review_pages/image_{field.field_id.replace('/', '_')}.png",
+                           review_status="unreviewed", reviewer_reporter_state="",
                            reviewer_phase="", independent_phase_evidence="", reviewer_notes="")
                 selected_rows.append(rec)
             for row, name in enumerate(["Green", "Red", "Merge"]):
@@ -149,24 +182,31 @@ def create_review_sheets(labels, objects, inventory, config, out, figs):
             fig.suptitle(f"{field.field_id}: image review candidates, not validated phase labels\nLargest-component center marked; common display stretch per channel; matching mask unavailable", fontsize=11)
             fig.tight_layout(rect=(0, 0, 1, .91))
             pdf.savefig(fig)
+            fig.savefig(page_dir / f"image_{field.field_id.replace('/', '_')}.png", dpi=150)
             if field.field_id == inventory[inventory.raw_images_available].field_id.iloc[0]:
                 fig.savefig(figs / "image_review_example.png", dpi=150)
             plt.close(fig)
-    pd.DataFrame(selected_rows).to_csv(out / "image_review_annotations.csv", index=False)
+    save_review_annotations(selected_rows, out / "image_review_annotations.csv")
     # Verify fragmentation visually where the original mask exists but raw images do not.
     with PdfPages(figs / "mask_review.pdf") as pdf:
         for _, field in inventory[inventory.mask_components_match].iterrows():
             mask = tifffile.imread(field.mask_path)
             subset = labels[labels.field_id == field.field_id].sort_values("n_components", ascending=False).head(4)
-            fig, axes = plt.subplots(1, len(subset), figsize=(14, 4), squeeze=False)
-            for ax, (_, parent) in zip(axes.flat, subset.iterrows()):
+            fig, axes = plt.subplots(2, len(subset), figsize=(14, 7), squeeze=False)
+            for col, (_, parent) in enumerate(subset.iterrows()):
                 z = int(round(parent.largest_z))
                 x0, x1 = max(0, int(parent.x_min)-4), min(mask.shape[2], int(parent.x_max)+4)
                 y0, y1 = max(0, int(parent.y_min)-4), min(mask.shape[1], int(parent.y_max)+4)
-                ax.imshow(mask[z, y0:y1, x0:x1] == int(parent.CellposeLabel), cmap="gray")
-                ax.set_title(f"Mask {parent.CellposeLabel}; z={z}\n{int(parent.n_components)} 3D components\nLargest component: {parent.largest_component_fraction:.1%}", fontsize=9)
-                ax.axis("off")
+                axes[0, col].imshow(mask[z, y0:y1, x0:x1] == int(parent.CellposeLabel), cmap="gray")
+                projection = (mask[:, y0:y1, x0:x1] == int(parent.CellposeLabel)).any(axis=0)
+                axes[1, col].imshow(projection, cmap="gray")
+                axes[0, col].set_title(f"Mask {parent.CellposeLabel}; slice z={z}\n{int(parent.n_components)} 3D components\nLargest component: {parent.largest_component_fraction:.1%}", fontsize=9)
+                axes[1, col].set_title("All z slices projected", fontsize=9)
+                for row in range(2):
+                    axes[row, col].axis("off")
             fig.suptitle(f"{field.field_id}: verified mask components; fluorescence images unavailable")
-            fig.tight_layout(); pdf.savefig(fig); plt.close(fig)
+            fig.tight_layout(); pdf.savefig(fig)
+            fig.savefig(page_dir / f"mask_{field.field_id.replace('/', '_')}.png", dpi=150)
+            plt.close(fig)
             del mask
     return len(selected_rows)

@@ -53,6 +53,97 @@ def gate_coordinates(frame: pd.DataFrame, columns=("green", "red")) -> np.ndarra
                    frame[["green_gate", "red_gate"]].to_numpy(float))
 
 
+def validate_resume_inputs(config: dict, out: Path, stage: str) -> None:
+    """Reject stale model reuse before rewriting any provenance or measurements."""
+    if stage in ["all", "audit"]:
+        return
+    source = out / "prediction_provenance.json"
+    if stage == "fit" or not source.exists():
+        source = out / "input_manifest.json"
+    if not source.exists():
+        raise ValueError("Run --stage audit (then fit) or --stage all before resuming")
+    previous = json.loads(source.read_text())
+    if sha256(Path(config["archive"]).expanduser()) != previous["archive_sha256"]:
+        raise ValueError("Input archive changed; run --stage all to regenerate dependent artifacts")
+    if stage in ["review", "report"]:
+        ignored = {"archive", "review_objects_per_field"}
+        expected = {k: v for k, v in previous["config"].items() if k not in ignored}
+        current = {k: v for k, v in config.items() if k not in ignored}
+        if current != expected:
+            raise ValueError("Analysis configuration changed; rerun --stage fit or --stage all before review/report")
+
+
+def validate_saved_labels(current: pd.DataFrame, saved: pd.DataFrame) -> None:
+    """Confirm that reused calls describe exactly the current measurement units."""
+    if not saved.mask_label_id.is_unique or set(current.mask_label_id) != set(saved.mask_label_id):
+        raise ValueError("Saved predictions do not cover the current mask labels exactly")
+    a = current.set_index("mask_label_id")
+    b = saved.set_index("mask_label_id").loc[a.index]
+    for column in ["volume", "green", "red", "green_gate", "red_gate", "n_components"]:
+        np.testing.assert_allclose(a[column], b[column], rtol=1e-12, atol=1e-15,
+                                   err_msg=f"Saved prediction measurements differ: {column}")
+    probabilities = saved[[f"p_{s}" for s in STATES]].to_numpy()
+    held_out = saved[[f"oof_p_{s}" for s in STATES]].to_numpy()
+    for scores in [probabilities, held_out]:
+        if not np.isfinite(scores).all() or (scores < 0).any() or (scores > 1).any():
+            raise ValueError("Invalid saved reporter probabilities")
+        np.testing.assert_allclose(scores.sum(axis=1), 1, atol=1e-10)
+
+
+def check_result_artifacts(objects: pd.DataFrame, labels: pd.DataFrame, out: Path) -> dict:
+    """Check persisted exports against source rows rather than trusting row counts alone."""
+    columns = ["object_id", "mask_label_id", "cellCycle", "volume", "green", "red"]
+    scores = [f"p_{state}" for state in STATES]
+    predicted = pd.read_csv(out / "object_predictions.csv.gz", usecols=columns + scores)
+    mapping = pd.read_csv(out / "object_mapping.csv.gz")
+    for frame in [predicted, mapping]:
+        if len(frame) != len(objects) or not frame.object_id.is_unique:
+            raise ValueError("Object export lost or duplicated source rows")
+        expected = objects.set_index("object_id").loc[frame.object_id]
+        for column in ["object_id", "mask_label_id", "cellCycle"]:
+            values = expected.index if column == "object_id" else expected[column]
+            np.testing.assert_array_equal(frame[column], values)
+    np.testing.assert_allclose(predicted[["volume", "green", "red"]],
+                               objects.set_index("object_id").loc[predicted.object_id, ["volume", "green", "red"]],
+                               rtol=1e-12, atol=1e-15)
+    parents = labels.set_index("mask_label_id").loc[predicted.mask_label_id]
+    np.testing.assert_allclose(predicted[scores], parents[scores], rtol=1e-12, atol=1e-15)
+    np.testing.assert_array_equal(mapping.groupby("mask_label_id").size().sort_index(),
+                                  labels.set_index("mask_label_id").n_components.sort_index())
+    np.testing.assert_allclose(mapping.groupby("mask_label_id").volume.sum().sort_index(),
+                               labels.set_index("mask_label_id").volume.sort_index())
+    for filename, group_column in [("held_out_fields.csv", "field_id"), ("held_out_acquisitions.csv", "Date")]:
+        holdouts = pd.read_csv(out / filename, dtype={"held_out": str})
+        if holdouts.duplicated(["held_out", "model"]).any():
+            raise ValueError("Duplicate evaluation folds")
+        expected_groups = set(labels[group_column])
+        for model in ["joint", "independent"]:
+            subset = holdouts[holdouts.model == model]
+            if set(subset.held_out) != expected_groups:
+                raise ValueError("Incomplete grouped evaluation")
+            counts = labels.groupby(group_column).size().reindex(subset.held_out)
+            np.testing.assert_array_equal(subset.test_labels, counts)
+            np.testing.assert_array_equal(subset.train_labels + subset.test_labels, len(labels))
+    plotted = pd.read_csv(out / "scatter_field_index.csv")
+    if plotted.field_id.duplicated().any() or set(plotted.field_id) != set(labels.field_id):
+        raise ValueError("Scatter atlas does not cover every field exactly once")
+    np.testing.assert_array_equal(plotted.plotted_mask_labels,
+                                  labels.groupby("field_id").size().reindex(plotted.field_id))
+    disposition = pd.read_csv(out / "disposition_by_fof.csv")
+    count_columns = [c for c in disposition if c.endswith("_count")]
+    np.testing.assert_array_equal(disposition[count_columns].sum(axis=1), disposition.denominator_mask_labels)
+    if int(disposition.denominator_mask_labels.sum()) != len(labels):
+        raise ValueError("Disposition denominators do not preserve every mask label")
+    result = {"all_checks_passed": True, "source_objects_checked": len(objects),
+              "mask_labels_checked": len(labels), "plotted_fields_checked": len(plotted),
+              "source_identity_and_phase_preserved": True, "source_intensities_preserved": True,
+              "object_to_mask_label_mapping_verified": True, "parent_probabilities_verified": True,
+              "all_grouped_holdouts_present": True, "mutually_exclusive_disposition_totals_verified": True,
+              "interpretation": "Computational consistency checks, not independent biological validation"}
+    write_json(out / "artifact_checks.json", result)
+    return result
+
+
 def load_inputs(config: dict, out: Path) -> tuple[pd.DataFrame, dict]:
     archive_path = Path(config["archive"]).expanduser().resolve()
     frames, tables = [], []
@@ -115,7 +206,7 @@ def load_inputs(config: dict, out: Path) -> tuple[pd.DataFrame, dict]:
         np.testing.assert_allclose(objects[f"{channel}_sum"], objects[channel] * objects.volume,
                                    rtol=2e-6, atol=1e-5)
     versions = {p: importlib.metadata.version(p) for p in
-                ["numpy", "pandas", "scipy", "matplotlib", "tifffile", "scikit-image"]}
+                ["numpy", "pandas", "scipy", "matplotlib", "tifffile", "scikit-image", "Pillow"]}
     manifest = {"archive": str(archive_path), "archive_sha256": sha256(archive_path),
                 "tables": tables, "objects": len(objects), "fields": objects.field_id.nunique(),
                 "acquisitions": sorted(objects.Date.unique()), "config": config,
@@ -183,10 +274,12 @@ def audit_units(objects: pd.DataFrame, labels: pd.DataFrame, out: Path) -> None:
                      "median_mask_label_volume": parent.volume.median(),
                      "median_largest_component_fraction": parent.largest_component_fraction.median()})
     pd.DataFrame(rows).to_csv(out / "segmentation_audit_by_fof.csv", index=False)
-    labels.to_csv(out / "mask_label_measurements.csv.gz", index=False)
+    labels.to_csv(out / "mask_label_measurements.csv.gz", index=False,
+                  compression={"method": "gzip", "mtime": 0})
     objects[["object_id", "mask_label_id", "Date", "FoF", "CellID", "ObjectNumber",
              "CellposeLabel", "volume", "tiny_object", "components_in_mask_label", "cellCycle",
-             "github_exclusion_rule"]].to_csv(out / "object_mapping.csv.gz", index=False)
+             "github_exclusion_rule"]].to_csv(out / "object_mapping.csv.gz", index=False,
+                                             compression={"method": "gzip", "mtime": 0})
 
 
 def image_inventory(objects: pd.DataFrame, labels: pd.DataFrame, repo: Path, out: Path,

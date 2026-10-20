@@ -1,12 +1,12 @@
 # FUCCI classification handoff
 
-Paused at the user's request after the table analysis, grouped validation, and sensitivity exports completed. No analysis process is running. Resume the remaining stages of [the implementation plan](fucci_classification_plan.md); do not assume that the biological classification problem is solved.
+Resumed on 2026-10-19 from checkpoint `548e6da`. The available computational work, review-sheet generation, figure inspection, and report are now complete. See [the results report](fucci_classification_results.md), [visual inspection notes](fucci_visual_review.md), and the status table in [the implementation plan](fucci_classification_plan.md). Full image calibration, expert annotations, construct confirmation, and independent phase validation remain pending; the biological classification problem is not solved.
 
 ## Repository and input
 
 - Working directory: `/Users/4470246/Repositories/CellCycle4DataIntegration`.
 - Branch: `main`; remote: `https://github.com/MathOnco/CellCycle4DataIntegration.git`.
-- The plan was committed and pushed as `dcea30a` before implementation began. The checkpoint commit containing this handoff follows it.
+- The plan was committed and pushed as `dcea30a` before implementation began. The original pause checkpoint is `548e6da`; later commits complete the available rendering and reporting work.
 - The input is `/Users/4470246/Downloads/Archive (6).zip`. It supersedes the older extracted `/Users/4470246/Downloads/I08_3DCellProfiler_FUCCI` directory. Read the replacement ZIP directly. It contains both unfiltered and labeled newer tables for `231005`, `2409`, and `2410`, plus two unchanged older tables.
 - The ZIP is an external input, not checked into this repository. Its SHA256 and table metadata are in `results/fucci_classification/input_manifest.json`.
 - Many unrelated modifications, deletions, and untracked files predate this task, particularly under `data4paper` and in the R Markdown document. They were deliberately excluded from task commits. Do not reset, clean, stage, or overwrite them.
@@ -22,6 +22,8 @@ The implementation is in `scripts/fucci_analysis`, with CLI `scripts/run_fucci_c
 3. Feature comparisons and local image compatibility checks completed. Exact mask files for `241016/1` and `241016/14` in Downloads reproduce exported per-label and connected-component volumes. Raw images exist for 12 other FoFs; sampled complete small bounding boxes reproduce their exported intensities. The image/mask overlap is zero, so complete background calibration remains pending. A Pillow fallback handles LZW TIFF files without changing 16-bit intensity scaling.
 4. Two gate-anchored reporter-density models were implemented: a joint four-state diagonal Gaussian mixture and independent two-state mixtures for each channel. They use log10(intensity / supplied acquisition gate), unequal state frequencies, and equal total training weight per FoF. Object-level sensitivity weights siblings together. Supplied biological labels remain intact.
 5. Thirty-one FoF holdouts, four acquisition holdouts, and fourteen sensitivity variants completed. Candidate selection, models, held-out predictions, all source mappings, and updated uncertain flags are saved. The last operation reused the saved fitted model and held-out predictions to add gate-sensitivity flags; it did not rerun or change the model-selection folds.
+6. Review sheets are generated for 72 candidates across 12 fluorescence fields and eight mask examples across two fields. Annotation status remains unreviewed. Representative fluorescence sheets from every acquisition date and both mask sheets were inspected; observations are documented separately from expert annotations.
+7. Six summary figures (PNG/PDF), a four-page atlas covering all 31 FoFs, review PDFs and page PNGs, the results report, mutually exclusive per-FoF disposition counts, provenance, and export checks are complete. No model fitting was repeated on resumption. All source identities, means, phases, mappings, and parent scores were checked against the persisted outputs.
 
 ## Findings that govern the next steps
 
@@ -33,9 +35,9 @@ The implementation is in `scripts/fucci_analysis`, with CLI `scripts/run_fucci_c
 - Changing to largest-component SignalCore measurements changes about **42.8%** of calls in a descriptive sensitivity analysis. Median/core variants use a dataset-derived scale alignment only for that analysis; this is neither image calibration nor held-out validation.
 - The rules are consistent with a PIP-FUCCI-like green Cdt1/PIP and red Geminin configuration. The exact construct and fluorescent tags are still inferred. Independent time-lapse, EdU, DNA-content, or other phase validation is unavailable.
 
-## Remaining work
+## Reproducing the completed artifacts
 
-Stage 6 and final stage 7 artifacts are implemented but **not yet executed or visually inspected**. In particular, the new classification figure directory is currently empty, and `docs/fucci_classification_results.md` has not been generated. This is the natural resume point.
+The previously pending review/rendering stage has run successfully. `docs/fucci_classification_results.md` and `figs4paper/fucci_classification` are populated. The remaining work needs expert review or additional experimental inputs, rather than another unmodified model run.
 
 Run:
 
@@ -44,16 +46,16 @@ cd /Users/4470246/Repositories/CellCycle4DataIntegration
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python -u scripts/run_fucci_classification.py --stage review
 ```
 
-This loads the saved predictions, creates raw-image review panels and annotation templates, creates the classification/QC figures, and writes the results report and workflow status. Fix any errors in this unexecuted rendering stage, then inspect the generated figures with `view_image`. Review sheets are candidates for annotation, not completed independent validation. `--stage report` regenerates figures/report after review exists. Avoid rerunning the already completed model comparisons unless a substantive code or data change requires it.
+This loads the saved predictions, regenerates raw-image and mask review panels, preserves existing annotation fields, creates the classification/QC figures, and writes the results report and workflow status. Review sheets are candidates for annotation, not completed independent validation. `--stage report` regenerates figures/report after review exists. Both commands check that the archive and analysis parameters match the saved predictions before updating outputs. Avoid rerunning the completed model comparisons unless a substantive code or data change requires it.
 
-The stages `audit` and `fit` have been exercised. `--stage all` should reproduce the full computation, but the complete all-stage invocation has not yet been run. All five unit tests passed at the checkpoint, and all task Python sources compiled successfully. The tests cover original gate boundary behavior, additive fragment reconstruction, field/sibling weighting, reporter-state identities and numeric model serialization, and 16-bit LZW decoding:
+The stages `audit` and `fit` were exercised before the pause; `review` and `report` were exercised on resumption. A fresh `--stage all` invocation has not been run because the input and fitted models are unchanged. All eight unit tests pass, and all task Python sources compile. The tests cover original gate boundary behavior, additive fragment reconstruction, field/sibling weighting, reporter-state identities and numeric model serialization, 16-bit LZW decoding, stale-input rejection, saved measurement coverage, and preservation of human review annotations:
 
 ```bash
 MPLCONFIGDIR=/tmp/fucci-mpl XDG_CACHE_HOME=/tmp/fucci-cache OPENBLAS_NUM_THREADS=1 \
 python -m unittest discover -s tests -p 'test_fucci_analysis.py'
 ```
 
-The user was asked asynchronously for the matching raw images/masks and independent phase annotations. At the pause, no answer had arrived and `/Volumes/Expansion` was unavailable. Continue the available computational and review work; report calibration and independent phase validation as pending until their inputs exist. The conclusion may remain that this candidate is unsuitable as a four-phase classifier without better measurement calibration.
+The user was asked asynchronously for the matching raw images/masks and independent phase annotations. No answer had arrived, and `/Volumes/Expansion` was still unavailable on resumption. Calibration and independent phase validation remain pending until their inputs exist. The current candidate is unsuitable as a four-phase replacement under the available evidence. Use the image inventory and review CSV to identify the missing inputs and the objects requiring expert assessment.
 
 ## Code provenance and operational details
 
