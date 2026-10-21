@@ -1,0 +1,5 @@
+conservative_reporter_state,green_only,red_only,both,neither
+both,0,0,1,0
+green_only,31,0,0,0
+red_only,0,16,0,0
+unresolved,59,56,31,384

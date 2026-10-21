@@ -1,6 +1,16 @@
 # FUCCI classification handoff
 
-Latest work: the authorized **FoF5 local-background reporter recalibration pilot is complete**. See [the pilot report](fucci_fof5_recalibration.md) and [the implementation plan](fucci_classification_plan.md). Earlier sections below preserve the history of the aggregated and dominant-component models. Calibration across other FoFs, expert annotations, construct confirmation and independent phase validation remain pending.
+Latest work: the user requested **forced four-state assignments for every FoF5 label**, replacing abstentions in the new output. See [the forced-state report](fucci_fof5_forced_reporter_states.md), [the original conservative pilot](fucci_fof5_recalibration.md) and [the implementation plan](fucci_classification_plan.md). Earlier sections below preserve the history of the aggregated and dominant-component models.
+
+## Forced reporter-state output
+
+All 578 original labels now receive one of four states: **90 green only, 72 red only, 32 both, 384 neither**. At z=35 the 180 intersecting labels are **41 / 31 / 5 / 103**, respectively. There are zero unresolved state assignments. The 48 previously resolved calls are unchanged; the 530 previous abstentions become 59 green only, 56 red only, 31 both and 384 neither.
+
+Use the same frozen primary mean-excess scores and fitted point thresholds (green 0.0065016188, red 0.0041954069). Bootstrap bands, measurement-support flags, instability and questionable-mask flags do not veto the forced call. All those flags and conservative calls remain in the new table. Neither means below both reporter cutoffs and is not assigned a biological phase.
+
+One missing-score case, label 17 (seven voxels at z=27), uses a documented background fallback: the nearest unmasked pixels beyond a 3-pixel gap, with at least 50 pixels and distance ties included. This selects 51 pixels within 30.067 pixels. Its green/red excesses are 0.0087718 / 0.0010463, giving green only. The fallback is explicitly flagged and its pixel statistics saved.
+
+Run `OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python scripts/force_fucci_fof5_reporter_states.py`. Results and figures are in the `forced` subdirectories of `results/fucci_fof5_recalibration` and `figs4paper/fucci_fof5_recalibration`. The source conservative outputs and frozen calibration are preserved. Eighteen tests pass, including four-state boundary behavior, rejection of missing scores as implicit negatives, and the fallback's exclusion of all mask labels.
 
 ## Local-background reporter recalibration — 2026-10-21
 

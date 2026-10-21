@@ -1,0 +1,30 @@
+{
+  "n": 578,
+  "counts": {
+    "green_only": 90,
+    "red_only": 72,
+    "both": 32,
+    "neither": 384
+  },
+  "z35_counts": {
+    "green_only": 41,
+    "red_only": 31,
+    "both": 5,
+    "neither": 103
+  },
+  "previously_unresolved_assigned": 530,
+  "previous_resolved_calls_unchanged": 48,
+  "fallback_labels": [
+    17
+  ],
+  "thresholds": {
+    "green": 0.0065016187699578,
+    "red": 0.00419540689627625
+  },
+  "rule": "Strict greater-than point threshold in each channel; all four combinations retained; no abstention",
+  "fallback": "For missing primary scores only, use at least the nearest 50 unmasked pixels per occupied XY plane beyond a 3-pixel gap, including distance ties; foreground-volume-weighted mean excess",
+  "source_results_sha256": "6f200d051a5dbb3dedd314b719c488e124196b3ddb409053bd563314f3e23e1e",
+  "frozen_calibration_sha256": "56f6031e1da483e466d46b62978266a82de6094541212c20ce28026fc0e9655a",
+  "script_sha256": "401c8826bfdb4e54914dbefb2cc9590300914877ee06b60bf372b4975bf5c224",
+  "plot_helpers_sha256": "8d0f7d7954d2b1b331a58b0fbfa8f3b0061fca1de1ab8c8f25d9ec57869c29b7"
+}

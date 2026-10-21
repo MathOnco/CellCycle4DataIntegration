@@ -4,6 +4,10 @@ Implement and compare candidate classifiers for the replacement FUCCI feature ta
 
 The archive contains unfiltered `object_features_new.csv` tables and corresponding `object_features_new_withCellCycle.csv` tables in `231005`, `2409`, and `2410`. The older CellProfiler tables provide a historical comparison. Preliminary inspection found 24,737 objects with volumes of eight voxels or fewer and repeated Cellpose labels; this motivates checking the unit of analysis before interpreting class frequencies as cell frequencies.
 
+## Requested forced four-state output — completed
+
+Following the conservative FoF5 pilot, the user requested assignment of every label to green only, red only, both or neither. The [forced-state report](fucci_fof5_forced_reporter_states.md) provides updated spatial maps, scatter plots and all-label exports: **90 / 72 / 32 / 384**, totaling 578, with no unresolved assignments. Use the frozen fitted point thresholds; retain uncertainty and mask-quality information as separate flags. One missing local score uses a flagged nearest-unmasked-pixel background fallback. The original conservative outputs are preserved. Eighteen tests pass.
+
 ## FoF5 reporter recalibration pilot — authorized 2026-10-21
 
 Use the verified 241016/FoF5 image–mask–table set and the largest component of all 578 original labels. Preserve the old predictions and all source data. Work independently through the following steps; expert or experimental validation is not claimed.
