@@ -2,6 +2,14 @@
 
 Resumed on 2026-10-19 from checkpoint `548e6da`. The available computational work, review-sheet generation, figure inspection, and report are now complete. See [the results report](fucci_classification_results.md), [visual inspection notes](fucci_visual_review.md), and the status table in [the implementation plan](fucci_classification_plan.md). Full image calibration, expert annotations, construct confirmation, and independent phase validation remain pending; the biological classification problem is not solved.
 
+## Fluorescence versus classification audit — 2026-10-21
+
+The user observed that the fluorescence in panel A does not convincingly correspond to C1/C2. A direct audit of the FoF5 dominant components confirms that the mean features reproduce the image pixels, but the absolute gates do not establish localized reporter positivity. All 180 components visible at z=35 are green-positive under the 3D cutoff; C1 splits them into 123 G2M and 57 G1 based on red. The green/red cutoffs sit at only 1.0%/2.9% of the fluorescence display ranges. All 180 local unmasked annuli also exceed the green cutoff, and 110 exceed both. Annuli can contain diffuse fluorescence and are not negative controls, so their subtraction is only diagnostic.
+
+Single-slice means change 29/180 C1 calls, or 9/123 when restricting the comparison to intersections of at least 100 pixels. The slice/3D distinction therefore explains only part of the mismatch. Label 63 is a strong green example called G2M by both methods: its 3D red mean is 0.010471, above the 0.0095 gate but slightly below its local unmasked red mean of 0.010753. No biological phase is inferred from this contrast check.
+
+The [spatial verification report](fucci_spatial_verification_241016_5.md#fluorescence-interpretation-audit--2026-10-21) now links six numerical/image examples, a diagnostic figure, per-cell measurements, and provenance. Reproduce with `OPENBLAS_NUM_THREADS=1 python scripts/audit_fucci_fluorescence.py`. Original predictions are preserved; saved C2 scores reproduce from their inputs. Background-aware reporter scores and image-reviewed positive/negative references should precede further interpretation or refitting of phase labels. The synthetic audit test checks a known 3D/slice discrepancy and exclusion of a bright neighboring label from the local annulus.
+
 ## FoF5 image–mask verification — 2026-10-20
 
 The user supplied `/Users/4470246/Downloads/FoF5_241016_fucci.nucleus.zip` and requested Fig. 1A/C-style verification figures, explicitly dropping Fig. 1E. Its `FoF5_241016_fucci.nucleus_masks.tif` matches all 578 original labels and 1,314 connected components in the new feature table. Every parent/component ID, volume and bounding box matches. All 3,942 component/channel combinations reproduce their exported 3D mean and integrated intensity from the local green, red and brightfield images.

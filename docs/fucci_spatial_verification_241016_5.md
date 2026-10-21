@@ -20,6 +20,20 @@ The main figure is a single actual plane at **z=35** of the 70-plane stack (defa
 - [Magnified central-region comparison](../figs4paper/fucci_spatial_verification/241016_5/fig1AC_dominant_crop_z35.png)
 - [Magnified upper-left cluster](../figs4paper/fucci_spatial_verification/241016_5/fig1AC_dominant_cluster_z35.png)
 
+## Fluorescence interpretation audit — 2026-10-21
+
+The images reveal a calibration problem that exact image–table agreement does not resolve. Among the **180 dominant components visible at z=35**, **180 exceed the green cutoff**. C1 assigns 123 to G2M, effectively splitting this displayed population by red intensity. The gates correspond to only 1.0% green and 2.9% red on panel A's display scale.
+
+Unmasked local annuli also exceed the green cutoff for **180/180** displayed components and both cutoffs for **110/180**. Annuli pool pixels 3–12 X/Y pixels outside each component across its z extent and exclude every mask label. They can contain diffuse fluorescence and are not negative controls; these results show that the supplied absolute gates do not establish localized reporter positivity.
+
+Using the displayed slice means changes **29/180** C1 calls. Among components with at least 100 pixels in the slice, only **9/123** change. Thus the slice/3D difference contributes but does not explain most of the visual mismatch. The table means reproduce the original pixels, and saved C2 probabilities reproduce from those means; C2 inherits the same raw features and gate anchors. Neither panel currently establishes a reliable biological phase map.
+
+- [Six cells with separate channels, raw values, local references and C1/C2 calls](../figs4paper/fucci_spatial_verification/241016_5/fluorescence_audit/cell_examples_z35.png) · [PDF](../figs4paper/fucci_spatial_verification/241016_5/fluorescence_audit/cell_examples_z35.pdf)
+- [Quantitative diagnostic figure](../figs4paper/fucci_spatial_verification/241016_5/fluorescence_audit/measurement_diagnostics_z35.png) · [PDF](../figs4paper/fucci_spatial_verification/241016_5/fluorescence_audit/measurement_diagnostics_z35.pdf)
+- [Per-cell measurements](../results/fucci_spatial_verification/241016_5/fluorescence_audit/per_cell_measurements_z35.csv) · [Summary and provenance](../results/fucci_spatial_verification/241016_5/fluorescence_audit/summary_z35.json)
+
+The next classification step is to evaluate background-aware reporter measurements against the images and reference reporter-positive/negative cells, retaining low-contrast objects as unresolved before refitting. The annular subtraction here is a diagnostic and was not used to issue new phase labels. Reproduce with `OPENBLAS_NUM_THREADS=1 python scripts/audit_fucci_fluorescence.py`.
+
 ## Counts in the full 3D field
 
 | Input | Units | Supplied G1 | G1S | S | G2M | Candidate G1 | G2M | Uncertain | QC |

@@ -283,6 +283,20 @@ def write_report(repo, out, figs, provenance, policies, z, slice_indices):
     text += f"- [Largest-component view across z={', '.join(map(str, slice_indices))} (PDF)]({relative(figs/'fig1AC_dominant_slice_atlas.pdf')})\n"
     text += f"- [Magnified central-region comparison]({relative(figs/f'fig1AC_dominant_crop_z{z:02}.png')})\n"
     text += f"- [Magnified upper-left cluster]({relative(figs/f'fig1AC_dominant_cluster_z{z:02}.png')})\n\n"
+    audit_path = out / "fluorescence_audit" / f"summary_z{z:02}.json"
+    if audit_path.exists():
+        audit = json.loads(audit_path.read_text())
+        visible = audit["visible"]
+        substantial = audit["visible_at_least_100_pixels"]
+        audit_figs = figs / "fluorescence_audit"
+        text += "## Fluorescence interpretation audit — 2026-10-21\n\n"
+        text += f"The images reveal a calibration problem that exact image–table agreement does not resolve. Among the **{visible['n']} dominant components visible at z={z}**, **{visible['green_above_gate']} exceed the green cutoff**. C1 assigns {visible['C1_counts'].get('G2M', 0)} to G2M, effectively splitting this displayed population by red intensity. The gates correspond to only {audit['gate_display_fraction']['green']*100:.1f}% green and {audit['gate_display_fraction']['red']*100:.1f}% red on panel A's display scale.\n\n"
+        text += f"Unmasked local annuli also exceed the green cutoff for **{visible['green_annulus_above_gate']}/{visible['green_annulus_valid_n']}** displayed components and both cutoffs for **{visible['annulus_above_both_gates']}/{visible['annulus_both_channels_valid_n']}**. Annuli pool pixels 3–12 X/Y pixels outside each component across its z extent and exclude every mask label. They can contain diffuse fluorescence and are not negative controls; these results show that the supplied absolute gates do not establish localized reporter positivity.\n\n"
+        text += f"Using the displayed slice means changes **{visible['slice_vs_3d_calls_changed']}/{visible['n']}** C1 calls. Among components with at least 100 pixels in the slice, only **{substantial['slice_vs_3d_calls_changed']}/{substantial['n']}** change. Thus the slice/3D difference contributes but does not explain most of the visual mismatch. The table means reproduce the original pixels, and saved C2 probabilities reproduce from those means; C2 inherits the same raw features and gate anchors. Neither panel currently establishes a reliable biological phase map.\n\n"
+        text += f"- [Six cells with separate channels, raw values, local references and C1/C2 calls]({relative(audit_figs/f'cell_examples_z{z:02}.png')}) · [PDF]({relative(audit_figs/f'cell_examples_z{z:02}.pdf')})\n"
+        text += f"- [Quantitative diagnostic figure]({relative(audit_figs/f'measurement_diagnostics_z{z:02}.png')}) · [PDF]({relative(audit_figs/f'measurement_diagnostics_z{z:02}.pdf')})\n"
+        text += f"- [Per-cell measurements]({relative(audit_path.parent/f'per_cell_measurements_z{z:02}.csv')}) · [Summary and provenance]({relative(audit_path)})\n\n"
+        text += "The next classification step is to evaluate background-aware reporter measurements against the images and reference reporter-positive/negative cells, retaining low-contrast objects as unresolved before refitting. The annular subtraction here is a diagnostic and was not used to issue new phase labels. Reproduce with `OPENBLAS_NUM_THREADS=1 python scripts/audit_fucci_fluorescence.py`.\n\n"
     text += "## Counts in the full 3D field\n\n| Input | Units | Supplied G1 | G1S | S | G2M | Candidate G1 | G2M | Uncertain | QC |\n|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|\n"
     for policy, item in policies.items():
         f = item["frame"]
