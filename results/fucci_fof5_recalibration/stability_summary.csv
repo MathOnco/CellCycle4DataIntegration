@@ -1,0 +1,12 @@
+variant,changed_from_primary,n,green_only,red_only,both,unresolved
+primary,0,578,55,36,15,472
+near_reference,9,578,52,35,14,477
+far_reference,6,578,55,41,16,466
+trimmed_reference,10,578,52,37,13,476
+mean_reference,48,578,40,27,11,500
+erode_1px,24,578,51,32,7,488
+erode_2px,31,578,47,32,6,493
+dilate_1px,7,578,55,34,14,475
+even_z,16,578,52,37,9,480
+odd_z,17,578,53,37,7,481
+large_cross_sections,11,578,54,37,12,475

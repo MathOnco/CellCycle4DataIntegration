@@ -1,0 +1,4 @@
+baseline_phase,green_only,red_only,both,unresolved
+G1,14,0,0,149
+G1S,0,0,0,1
+G2M,17,16,1,380

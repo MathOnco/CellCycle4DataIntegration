@@ -1,6 +1,22 @@
 # FUCCI classification handoff
 
-Resumed on 2026-10-19 from checkpoint `548e6da`. The available computational work, review-sheet generation, figure inspection, and report are now complete. See [the results report](fucci_classification_results.md), [visual inspection notes](fucci_visual_review.md), and the status table in [the implementation plan](fucci_classification_plan.md). Full image calibration, expert annotations, construct confirmation, and independent phase validation remain pending; the biological classification problem is not solved.
+Latest work: the authorized **FoF5 local-background reporter recalibration pilot is complete**. See [the pilot report](fucci_fof5_recalibration.md) and [the implementation plan](fucci_classification_plan.md). Earlier sections below preserve the history of the aggregated and dominant-component models. Calibration across other FoFs, expert annotations, construct confirmation and independent phase validation remain pending.
+
+## Local-background reporter recalibration — 2026-10-21
+
+The user authorized independent image review and recalibration for the verified 241016/FoF5 data. All 578 original labels are retained using their dominant components. No source image, mask, table or previous prediction was changed.
+
+- Measured local fluorescence in all 70 planes; compared six foreground/reference features and 11 measurement settings. Volume-weighted raw means and volumes reproduce the new table.
+- Reviewed 32 calibration examples with old labels, IDs and scores concealed, then froze feature/threshold choices before viewing 16 check examples. Check judgments were frozen before scoring. All 48 reviews are explicitly assistant judgments, not experimental or independent expert truth. Twenty masks were marked questionable; this sample is not a prevalence estimate.
+- Both channels selected mean fluorescence above the per-plane local median reference. Green cutoff 0.0065016 with bootstrap interval 0.0063821–0.0085066; red cutoff 0.0041954 with interval 0.0031994–0.0049148. Do not substitute these for raw-intensity gates: they apply to local excess measurements in this field only.
+- The primary setting calls 55 green only, 36 red only, 15 both and 472 unresolved. Requiring agreement across all 11 settings leaves 33/16/4/525; applying reviewed questionable-mask flags yields **31 green only, 16 red only, 1 both, 530 unresolved**. At z=35, counts are **25/14/1/140** among 180 intersections. All label-level counts retain the full denominator.
+- Only seven check masks were judged usable. Against clear image judgments, point thresholds agree for 6/6 green and 7/7 red channel reviews, versus 2/6 and 3/7 with old gates. Threshold uncertainty/stability abstain on one reviewed green-positive example. These tiny same-field comparisons do not establish biological accuracy; no usable double-positive review example was available.
+- Label 17 has only seven voxels and no sufficiently populated local reference, so it has no corrected scatter coordinate. It remains unresolved in all exports and denominators. The raw scatter includes 578 labels; the corrected scatter plots 577 finite pairs.
+- New main figures: `figs4paper/fucci_fof5_recalibration/reporter_map_z35.png`, `reporter_map_cluster_z35.png`, `old_new_comparison_z35.png`, `reporter_scatter_comparison.png`, `measurement_stability.png`, and `previously_discussed_cells.png`. Review PDFs and a five-slice atlas are in the same directory.
+
+Code: `scripts/recalibrate_fucci_fof5.py`, `scripts/fucci_analysis/local_calibration.py` and `local_calibration_outputs.py`. Results: `results/fucci_fof5_recalibration`, including `cell_reporter_states.csv`, both frozen annotation files, `frozen_calibration.json` and `summary.json`. Regenerate with `OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python scripts/recalibrate_fucci_fof5.py --stage report`. The stage rejects changes to frozen measurements, fitting code or judgments. `fit` refuses to overwrite the frozen calibration. Sixteen tests pass with `python -m unittest discover -s tests -p 'test_fucci*.py'`.
+
+The next scientific step is expert review of the saved images and segmentation concerns, plus independent phase validation and matching masks for additional FoFs. Preserve this pilot as a frozen comparison if developing a subsequent version. The 530 unreviewed masks and 530 unresolved outputs are different sets; the equal totals are coincidental.
 
 ## Fluorescence versus classification audit — 2026-10-21
 

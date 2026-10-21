@@ -1,0 +1,33 @@
+review_id,split,green,red,mask_review,notes,reviewer,experimental_ground_truth,geometry_id
+R01,calibration,not_detected,not_detected,questionable,Thin tapered mask at a brightfield edge; adjacent red signal lies outside the outline across the three planes.,assistant_visual_review,False,142
+R02,calibration,not_detected,not_detected,usable,No coherent interior enrichment in either channel at standard or 4x display across the three planes.,assistant_visual_review,False,51
+R03,calibration,ambiguous,not_detected,usable,Weak green texture partly overlaps the interior but a stronger neighboring gradient complicates localization; red interior is not enriched.,assistant_visual_review,False,684
+R04,calibration,ambiguous,not_detected,questionable,Narrow edge-like mask beside the main green fluorescent structure; isolated red spot is outside the mask and does not persist within it.,assistant_visual_review,False,421
+R05,calibration,not_detected,not_detected,questionable,Irregular changing outline encloses a dark region; the dominant green signal lies around and outside it.,assistant_visual_review,False,134
+R06,calibration,not_detected,positive,usable,Red texture is consistently localized within the round outlined object at all three planes; no comparable localized green signal.,assistant_visual_review,False,69
+R07,calibration,not_detected,not_detected,usable,Both channels show diffuse sparse texture without a convincing object-localized increase.,assistant_visual_review,False,1
+R08,calibration,positive,not_detected,usable,Strong coherent green interior at all three planes; red interior remains dark relative to nearby signal.,assistant_visual_review,False,68
+R09,calibration,not_detected,positive,usable,Consistent localized red interior across three sections; green is sparse and comparable with the neighborhood.,assistant_visual_review,False,3
+R10,calibration,positive,positive,questionable,"Both channels clearly label the elongated structure, but the narrow edge-dominated mask does not consistently cover its fluorescent interior.",assistant_visual_review,False,34
+R11,calibration,positive,positive,questionable,"Both signals are present, but the broad irregular mask spans spatially distinct red and green lobes; possible merged regions.",assistant_visual_review,False,23
+R12,calibration,not_detected,not_detected,usable,Outlined object remains dark in both channels; bright neighboring signal is outside it.,assistant_visual_review,False,49
+R13,calibration,positive,positive,questionable,Bright elongated structure in both channels at the stack edge; outline covers only a narrow part of that structure.,assistant_visual_review,False,35
+R14,calibration,positive,not_detected,usable,Localized green interior persists at all three planes; a red punctum lies at the lower edge without broader interior enrichment.,assistant_visual_review,False,825
+R15,calibration,not_detected,not_detected,usable,No consistent fluorescence increase in the outlined interior; stronger signal lies outside the upper-left boundary.,assistant_visual_review,False,108
+R16,calibration,not_detected,not_detected,questionable,Small irregular edge-like component within a larger brightfield structure; fluorescence does not localize to it.,assistant_visual_review,False,946
+R17,calibration,not_detected,not_detected,usable,No coherent interior enrichment in either channel; diffuse texture extends through the surrounding region.,assistant_visual_review,False,91
+R18,calibration,positive,not_detected,usable,Clear coherent green object across all three sections; red is absent as a localized interior signal.,assistant_visual_review,False,57
+R19,calibration,not_detected,not_detected,questionable,Thin short mask within a much larger brightfield object; stronger red texture is mainly above the outline.,assistant_visual_review,False,376
+R20,calibration,not_detected,ambiguous,questionable,Irregular object spans a large dark upper region and a small brighter red lower lobe; signal assignment to one object is uncertain.,assistant_visual_review,False,72
+R21,calibration,ambiguous,not_detected,usable,Weak central green texture is visible at 4x but its separation from local speckle is uncertain; no coherent red enrichment.,assistant_visual_review,False,198
+R22,calibration,not_detected,positive,usable,Consistent strong red object at all three planes; green lacks localized enrichment.,assistant_visual_review,False,165
+R23,calibration,not_detected,not_detected,questionable,Long thin arc-like mask along the edge of a larger structure; no clear fluorescent interior.,assistant_visual_review,False,845
+R24,calibration,not_detected,ambiguous,usable,Green neighbor is outside the object; weak diffuse red interior becomes apparent only at 4x and is not clearly separated from surrounding signal.,assistant_visual_review,False,60
+R25,calibration,not_detected,not_detected,usable,Both interiors remain dark; strong red signal is diffuse around the outlined region rather than enriched within it.,assistant_visual_review,False,10
+R26,calibration,positive,not_detected,usable,Coherent green object persists through three planes; adjacent red structure is outside the mask.,assistant_visual_review,False,918
+R27,calibration,positive,not_detected,usable,"Strong green fluorescence throughout the outlined object at all planes, with no localized red signal.",assistant_visual_review,False,97
+R28,calibration,ambiguous,not_detected,usable,Weak green signal overlaps the object amid an adjacent brighter gradient; red interior is dimmer than the surrounding lower region.,assistant_visual_review,False,248
+R29,calibration,not_detected,positive,usable,Red enrichment follows the outlined round object consistently; green resembles local sparse background.,assistant_visual_review,False,117
+R30,calibration,positive,not_detected,questionable,"Bright green subregion is clear, but the large elongated irregular mask extends into neighboring structures and dark regions.",assistant_visual_review,False,76
+R31,calibration,not_detected,positive,usable,"Red signal is coherently localized across all three sections, most evident at fixed 4x display; green is not localized.",assistant_visual_review,False,768
+R32,calibration,positive,not_detected,usable,Consistent green enrichment centered within the outline across three sections; no analogous red interior enrichment.,assistant_visual_review,False,1008

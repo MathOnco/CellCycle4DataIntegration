@@ -1,0 +1,1334 @@
+{
+  "source": {
+    "field_id": "241016/5",
+    "mask_archive": "/Users/4470246/Downloads/FoF5_241016_fucci.nucleus.zip",
+    "mask_member": "FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_masks.tif",
+    "mask_archive_sha256": "2ea31d52b97a67a769277ea196214d75146bd871a3e3e6749032760058603c89",
+    "mask_member_sha256": "2349884654ba92265c8c05321048a9f77c9de7da9e93920bb1cb679809dcb55f",
+    "feature_archive": "/Users/4470246/Downloads/Archive (6).zip",
+    "feature_archive_sha256": "2abedee81b9c0b86f05df8f77f1c1306156128c0f8f7c84115473eb81e1e9eeb",
+    "feature_member": "2410/object_features_new.csv",
+    "prediction_files": {
+      "aggregated": {
+        "path": "results/fucci_classification/mask_label_predictions.csv.gz",
+        "sha256": "2c544a8df51f08233584914cff7b08e89614ed7e793e57cf9a9a37d07b47d98a"
+      },
+      "dominant": {
+        "path": "results/fucci_component_comparison/dominant/mask_label_predictions.csv.gz",
+        "sha256": "31d2d3241bc70c183213b355bcfd85dfd779bac9ba3699e3c70ca3bab9dacd6c"
+      },
+      "singletons": {
+        "path": "results/fucci_component_comparison/singletons/mask_label_predictions.csv.gz",
+        "sha256": "6e5477d4da765043b9f99f4a415cabad35a81ba6a1c7a7cb3910b722b2db6b80"
+      }
+    },
+    "mask_shape_zyx": [
+      70,
+      1024,
+      1024
+    ],
+    "original_mask_labels": 578,
+    "exported_components": 1314,
+    "connectivity": 26,
+    "all_parent_ids_component_ids_volumes_and_bounding_boxes_match": true
+  },
+  "display_limits": {
+    "green": {
+      "low": 0.001983672846108675,
+      "high": 0.10383285528421293,
+      "quantiles": [
+        0.01,
+        0.998
+      ],
+      "sampling": "Every sixteenth pixel in X and Y from all 70 planes"
+    },
+    "red": {
+      "low": 0.007263294421136379,
+      "high": 0.0837128829360001,
+      "quantiles": [
+        0.01,
+        0.998
+      ],
+      "sampling": "Every sixteenth pixel in X and Y from all 70 planes"
+    },
+    "bright": {
+      "low": 0.2700327229499817,
+      "high": 0.4030121970176692,
+      "quantiles": [
+        0.005,
+        0.995
+      ],
+      "sampling": "Every sixteenth pixel in X and Y from all 70 planes"
+    }
+  },
+  "image_files": [
+    {
+      "channel": "green",
+      "z": 0,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z00_ch00.tif",
+      "sha256": "b4c15d54ed6e6375974a2622393d195ce6cbb11874e3c9eac716996ed3ef6660"
+    },
+    {
+      "channel": "green",
+      "z": 1,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z01_ch00.tif",
+      "sha256": "079ca9c44444a52217d0eb41245b867bc2aff446ec0624d3784bc10e316fa9e8"
+    },
+    {
+      "channel": "green",
+      "z": 2,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z02_ch00.tif",
+      "sha256": "03aa6e870857b5044d72f0c86d9341934839c7338fe762736ec0b50a1e79894c"
+    },
+    {
+      "channel": "green",
+      "z": 3,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z03_ch00.tif",
+      "sha256": "544fc1663afd61043888a0e62ff007a279bf92cd310e36f53a4e4686a39e6dec"
+    },
+    {
+      "channel": "green",
+      "z": 4,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z04_ch00.tif",
+      "sha256": "88f37fd58bda3bf91a56fe2e365974e1f2c5c9316f438ee23f02d4db50fe852a"
+    },
+    {
+      "channel": "green",
+      "z": 5,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z05_ch00.tif",
+      "sha256": "67c02521f7df42204f26611a639802d4e2982ddd4fabb08508eddb3b5157b5b3"
+    },
+    {
+      "channel": "green",
+      "z": 6,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z06_ch00.tif",
+      "sha256": "cfac122dc2b4ef4c617cc2e58c33b9071fee86f9aad06516f90b955a2e712f00"
+    },
+    {
+      "channel": "green",
+      "z": 7,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z07_ch00.tif",
+      "sha256": "2d7ecde2664a31694fc976c4c06df1f2829d1001b2d13dc31ce23956eb321664"
+    },
+    {
+      "channel": "green",
+      "z": 8,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z08_ch00.tif",
+      "sha256": "8426f296ba3ef8c7629c4f53c1da1a9c5d358bdc8cc92a596c85e1529c437ee8"
+    },
+    {
+      "channel": "green",
+      "z": 9,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z09_ch00.tif",
+      "sha256": "1b96fced904858073b6c93bf1677d5286ddf67765947a2cbc1b50e87e1c4c7e7"
+    },
+    {
+      "channel": "green",
+      "z": 10,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z10_ch00.tif",
+      "sha256": "a8f81e1330998badfb6f14d3c40ce6e759869717751380616e6fc20142e08578"
+    },
+    {
+      "channel": "green",
+      "z": 11,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z11_ch00.tif",
+      "sha256": "fe6271b779ba2d73a0abc58b0495c0e3fc3d90250c7cf6779d2778c52b482975"
+    },
+    {
+      "channel": "green",
+      "z": 12,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z12_ch00.tif",
+      "sha256": "24a684c2244ea7774b53d2a5cef03ba8691e7241869cdcd24a5b260cc9802c5d"
+    },
+    {
+      "channel": "green",
+      "z": 13,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z13_ch00.tif",
+      "sha256": "1e1b2d0d20685b83f9e5855fd6f31b1a27fcd3e96c15783fb4560c49b6a4a34e"
+    },
+    {
+      "channel": "green",
+      "z": 14,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z14_ch00.tif",
+      "sha256": "652b6f296284fed13e006785c0b5ffb5d0fa5f3b692523c184fe56e8f2ff328a"
+    },
+    {
+      "channel": "green",
+      "z": 15,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z15_ch00.tif",
+      "sha256": "55521b94f003b906d2a6c25562c793dcf28f7bc4d2e6b40f1adb874497146731"
+    },
+    {
+      "channel": "green",
+      "z": 16,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z16_ch00.tif",
+      "sha256": "d708ce4540f2b3685c027281caa3b6127f41c71f50355f461bfae1e86c5c912f"
+    },
+    {
+      "channel": "green",
+      "z": 17,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z17_ch00.tif",
+      "sha256": "4ef20f4194828ba62f6aec1e50e52ddec17c632f0207f2e235a25858acf51650"
+    },
+    {
+      "channel": "green",
+      "z": 18,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z18_ch00.tif",
+      "sha256": "f0390cc4c44c314338b8a2a37f86cb8321b6a1c871bb9e836c08acdaa503422c"
+    },
+    {
+      "channel": "green",
+      "z": 19,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z19_ch00.tif",
+      "sha256": "7daacfb96a38f591a0358fc7ec294b6634e4b535fed96a14b08f2b8318343cd7"
+    },
+    {
+      "channel": "green",
+      "z": 20,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z20_ch00.tif",
+      "sha256": "2e8a4ea209f4b41fdcfd984194c8c721a7e27e76379da4ec3ea326f22ee6bab8"
+    },
+    {
+      "channel": "green",
+      "z": 21,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z21_ch00.tif",
+      "sha256": "5c0b4b86bec50f165e08fd46d4451ce3119d024e5cd67c234cddcc00707a6960"
+    },
+    {
+      "channel": "green",
+      "z": 22,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z22_ch00.tif",
+      "sha256": "dbac140287d4dd0a9e08a620486f68f387c16d0f29c6c5b2e03fe094c5f3b93a"
+    },
+    {
+      "channel": "green",
+      "z": 23,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z23_ch00.tif",
+      "sha256": "2384ab61a4bae91dd91dbfa697453c9735a85a4407cddfbf1c5ade98ba02986d"
+    },
+    {
+      "channel": "green",
+      "z": 24,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z24_ch00.tif",
+      "sha256": "7817664d95037bf483aca175d9a0e8122e6e3f759f683095f5290f4cc4a15d1a"
+    },
+    {
+      "channel": "green",
+      "z": 25,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z25_ch00.tif",
+      "sha256": "6d1fb05d3616bea03978ef5460503af6fd88675df2fe238cc57d09507ea97126"
+    },
+    {
+      "channel": "green",
+      "z": 26,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z26_ch00.tif",
+      "sha256": "016c34304acca2e45be4f18e54c18e633494f78ecb9261bc10d72cc8d52419f3"
+    },
+    {
+      "channel": "green",
+      "z": 27,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z27_ch00.tif",
+      "sha256": "bea2c5d1985c933c648db938577c37ac3c87ee09f9a23af35837ab483750aaf6"
+    },
+    {
+      "channel": "green",
+      "z": 28,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z28_ch00.tif",
+      "sha256": "6f9cdb9a21ff4e95cd3f2ae9c7fe8b21e273ff85c3bd10f2ed17a221f4cceb66"
+    },
+    {
+      "channel": "green",
+      "z": 29,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z29_ch00.tif",
+      "sha256": "4827f9d4d1ea56a583122bf09b3ee0e1bde7101ab9ec1c86ed663f754d3b5502"
+    },
+    {
+      "channel": "green",
+      "z": 30,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z30_ch00.tif",
+      "sha256": "8c7a251fb3bf9d6c48139d0c40db597b3c84d58faa9dd5207480b75fe9278ba9"
+    },
+    {
+      "channel": "green",
+      "z": 31,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z31_ch00.tif",
+      "sha256": "6073ebde7c92025272eac4c908f1e25e3a715a809235fe3444b58a1241f89b04"
+    },
+    {
+      "channel": "green",
+      "z": 32,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z32_ch00.tif",
+      "sha256": "71fb50ebc9aa26a2d646e15eb62e63d7745652bf87a0b112fe70cb96742a6c6c"
+    },
+    {
+      "channel": "green",
+      "z": 33,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z33_ch00.tif",
+      "sha256": "d5710feba1c8648d66d2c4b6e2c6cdd99e146fe52b24e100a93a8341a2b490a2"
+    },
+    {
+      "channel": "green",
+      "z": 34,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z34_ch00.tif",
+      "sha256": "54a537965699f7fd31c8c4c06e7b908326c73ff80ca1279f87bf068c50af3c8f"
+    },
+    {
+      "channel": "green",
+      "z": 35,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z35_ch00.tif",
+      "sha256": "a0d40f8c2fef44452806d6341bbe5eeb9706fccac8622f89ad626acff10e5790"
+    },
+    {
+      "channel": "green",
+      "z": 36,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z36_ch00.tif",
+      "sha256": "9c2c7f4a5eb146ed863f100ffe367c4cf321fb774668e5743a39123bbfb89660"
+    },
+    {
+      "channel": "green",
+      "z": 37,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z37_ch00.tif",
+      "sha256": "ce54d45e235f4a4c8903e6bf352f3587dd043882b03c32b0437470d5b2209039"
+    },
+    {
+      "channel": "green",
+      "z": 38,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z38_ch00.tif",
+      "sha256": "8d7ec52befe3e01d37802250550f59327e6cf8c51c18073df61c1834652bd92e"
+    },
+    {
+      "channel": "green",
+      "z": 39,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z39_ch00.tif",
+      "sha256": "7e000de3e153028fceaec335be0e714727c13ea3f5f89df07d92bb4798129b61"
+    },
+    {
+      "channel": "green",
+      "z": 40,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z40_ch00.tif",
+      "sha256": "effbe428c79da9c8ed7bc1dc46ca35a7f044aa40e6fb37ea690855d9b14a562c"
+    },
+    {
+      "channel": "green",
+      "z": 41,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z41_ch00.tif",
+      "sha256": "7de8b88cb2d23ab693ae31154c93055fc142e9285f584860dea9fc2a04c6926e"
+    },
+    {
+      "channel": "green",
+      "z": 42,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z42_ch00.tif",
+      "sha256": "9f064835fbf3ac7687f9e113a4af034d9abae82319ceefc5012027ea550b78ff"
+    },
+    {
+      "channel": "green",
+      "z": 43,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z43_ch00.tif",
+      "sha256": "0c404e87617e9d0939e6c2f1dc6440dd66eb39114787f6f07d0ce1921f5032fe"
+    },
+    {
+      "channel": "green",
+      "z": 44,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z44_ch00.tif",
+      "sha256": "08941d0ad21deba9d095d01d0180f74dacdbfb3c9c695bf37296f57bd087044e"
+    },
+    {
+      "channel": "green",
+      "z": 45,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z45_ch00.tif",
+      "sha256": "78d9a8ff5389da342ae81e615d83d43b22b0c30aa687e15f75f9ceb20fb940dc"
+    },
+    {
+      "channel": "green",
+      "z": 46,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z46_ch00.tif",
+      "sha256": "7a14f0bf0e84cda2985e0451f5ad8224cae32f0c15b1975caf384ee9b63f6a4e"
+    },
+    {
+      "channel": "green",
+      "z": 47,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z47_ch00.tif",
+      "sha256": "89b84081d8dbf902b7a3c52d020e314819ee8ce6494ec18493f0bcf5666c09b7"
+    },
+    {
+      "channel": "green",
+      "z": 48,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z48_ch00.tif",
+      "sha256": "2be77a944b7567bd12b9cc222f6cd36ad0b4fa0a57f060161f84e82bb7235050"
+    },
+    {
+      "channel": "green",
+      "z": 49,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z49_ch00.tif",
+      "sha256": "06aebf83018d94ae85b337100a9cd96ea90188f59c4ec9111e438699d2974875"
+    },
+    {
+      "channel": "green",
+      "z": 50,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z50_ch00.tif",
+      "sha256": "26e1f173a5fd749ade303968f4135e6eb25159c5e76276746eb57586e3a47c70"
+    },
+    {
+      "channel": "green",
+      "z": 51,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z51_ch00.tif",
+      "sha256": "44bf84c91957557abac31d31ccc5c9b1d87421c755d6df7dfd4d4ed6eb90536a"
+    },
+    {
+      "channel": "green",
+      "z": 52,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z52_ch00.tif",
+      "sha256": "dd10e1cc387899d973ba059d23bbdc9ca520f330bdfd8fdf44c34a0d82e78164"
+    },
+    {
+      "channel": "green",
+      "z": 53,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z53_ch00.tif",
+      "sha256": "ef3e8e9290603f9dc3df512b41e024689b920c6cb6da2a76003fe5bc57c252df"
+    },
+    {
+      "channel": "green",
+      "z": 54,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z54_ch00.tif",
+      "sha256": "f95672591245c413c77ddbb1a03c4cd771957b705747e3190c1b222cfd83d306"
+    },
+    {
+      "channel": "green",
+      "z": 55,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z55_ch00.tif",
+      "sha256": "6c4df238d2b5c04fe3b1fdd21dab6b33f8466883b509fd66bc84cf70f2788c80"
+    },
+    {
+      "channel": "green",
+      "z": 56,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z56_ch00.tif",
+      "sha256": "cf9ad33587d73ff973ba334835ce70fc1eabc4441bb857d027cdc3a9fbdac084"
+    },
+    {
+      "channel": "green",
+      "z": 57,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z57_ch00.tif",
+      "sha256": "55103292c4a3e8f28363a76ebbf4ccf32d37ee2f633398ac579907fae1e297f2"
+    },
+    {
+      "channel": "green",
+      "z": 58,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z58_ch00.tif",
+      "sha256": "fad4b027647cbba2832c03e643f0dc6d585ec8f99bc111099f4a00c23ff7cdb6"
+    },
+    {
+      "channel": "green",
+      "z": 59,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z59_ch00.tif",
+      "sha256": "31677dc56f60a48a0c77a840bbb5f6fe6bd797e9b9f1784c540235e53c637734"
+    },
+    {
+      "channel": "green",
+      "z": 60,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z60_ch00.tif",
+      "sha256": "dcb20d1369cb2c27bd2c6a91cd863427c070e7fd9651f34e7d72e7ef34b46401"
+    },
+    {
+      "channel": "green",
+      "z": 61,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z61_ch00.tif",
+      "sha256": "ef2288da300905c15addc96d14e5ec7660618e89ea02918a706cd76f4f5247f7"
+    },
+    {
+      "channel": "green",
+      "z": 62,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z62_ch00.tif",
+      "sha256": "582f988c9511ffc3d4a7804cb6c0e8e3f0199b233ab16768c083b8385c93a4f6"
+    },
+    {
+      "channel": "green",
+      "z": 63,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z63_ch00.tif",
+      "sha256": "7eaa47124741ab289614d1bed24f351218bf651e19dd1357cc036e2ced8dd43f"
+    },
+    {
+      "channel": "green",
+      "z": 64,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z64_ch00.tif",
+      "sha256": "3c16d9853076e68767d5a1e41399c7b5edd524cd9b7f6260169beb753d34a150"
+    },
+    {
+      "channel": "green",
+      "z": 65,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z65_ch00.tif",
+      "sha256": "b5eec88b2af358ad333ff1960223e8654c8ec0daa5dfe5e8d8b177ec4f8676f7"
+    },
+    {
+      "channel": "green",
+      "z": 66,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z66_ch00.tif",
+      "sha256": "1d7ef3ae560be905fa9dca0b96ad831dbf623b5b01da56748943c31958ebda85"
+    },
+    {
+      "channel": "green",
+      "z": 67,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z67_ch00.tif",
+      "sha256": "23791910298600643135fe356ad51d54c416328ad8cd169f492e06394a592505"
+    },
+    {
+      "channel": "green",
+      "z": 68,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z68_ch00.tif",
+      "sha256": "5a14cebf3f717e3627cf13515b6dec713c5c1fc334ad2f347a8fc494207f85de"
+    },
+    {
+      "channel": "green",
+      "z": 69,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z69_ch00.tif",
+      "sha256": "93493f28fe3dad3247d46d510edba857c79dac4a41bebfa6212c5ce1adc58cf1"
+    },
+    {
+      "channel": "red",
+      "z": 0,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z00_ch02.tif",
+      "sha256": "83dcf7a5623a2ec80767b98250886f2bf062ae1e6b18a73940c7cc1c6bc39725"
+    },
+    {
+      "channel": "red",
+      "z": 1,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z01_ch02.tif",
+      "sha256": "1339c4de47c27aacad338537c95c401263cc328f096363dc463b5337d1b99c60"
+    },
+    {
+      "channel": "red",
+      "z": 2,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z02_ch02.tif",
+      "sha256": "f11e184efd747d03720be3e5f4581583312e79ca8f27bde94eb1a680e1f76b3b"
+    },
+    {
+      "channel": "red",
+      "z": 3,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z03_ch02.tif",
+      "sha256": "f98e9706e21ba7389641d3308bc39f51aa331c85a6e2ab7d215cfc843f4c37b7"
+    },
+    {
+      "channel": "red",
+      "z": 4,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z04_ch02.tif",
+      "sha256": "c5c1f8ce2dfda6237cc21dab4c8f4b8d4a9f6733dc18b6d06db374af7bcb4e98"
+    },
+    {
+      "channel": "red",
+      "z": 5,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z05_ch02.tif",
+      "sha256": "b86ef9932b13087efc38c33e0ca680332a0bc0a344dd0279d648d2efa448f235"
+    },
+    {
+      "channel": "red",
+      "z": 6,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z06_ch02.tif",
+      "sha256": "6f9af412d74f5bacc33f030802a41edbf26da4c0b1e7855f85f8ac1befea237a"
+    },
+    {
+      "channel": "red",
+      "z": 7,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z07_ch02.tif",
+      "sha256": "2080200ce2f0b67892023cfca38805d0b64ce464f789aa90cb5b0aadfbefd23a"
+    },
+    {
+      "channel": "red",
+      "z": 8,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z08_ch02.tif",
+      "sha256": "bb5dadf763e98d413e7f8468eb765be2287121eabb3f4c715efe8be049f1ae58"
+    },
+    {
+      "channel": "red",
+      "z": 9,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z09_ch02.tif",
+      "sha256": "86706fcbc6af83efdcf437792122be81ee944c0f71e3e609cc8c962105d799d4"
+    },
+    {
+      "channel": "red",
+      "z": 10,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z10_ch02.tif",
+      "sha256": "4fe1d3006eddf110c4b3cf74289e81a821370867910f7d5110876b7dcf2435b1"
+    },
+    {
+      "channel": "red",
+      "z": 11,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z11_ch02.tif",
+      "sha256": "0212990ee716e4b46994a6c040fd282b7273939566bd7fead8dbaaccd09657b9"
+    },
+    {
+      "channel": "red",
+      "z": 12,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z12_ch02.tif",
+      "sha256": "eae42477d54a3f56654c1aa9275447e9565f36dca3d458f99dadf436422a60ee"
+    },
+    {
+      "channel": "red",
+      "z": 13,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z13_ch02.tif",
+      "sha256": "efdac18cd1c1252a994758c2f16c418c5093894883aa3aa6d9bf3bfbd27f8fff"
+    },
+    {
+      "channel": "red",
+      "z": 14,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z14_ch02.tif",
+      "sha256": "4159808cef21f3696c8154db940a1b75343d34649eddaee9c145cb86db50aae2"
+    },
+    {
+      "channel": "red",
+      "z": 15,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z15_ch02.tif",
+      "sha256": "22b0b62e9519a80808d7781afff78861ea21d17c3a7ab97be0b900f2c68f4d46"
+    },
+    {
+      "channel": "red",
+      "z": 16,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z16_ch02.tif",
+      "sha256": "5a6bd3e1fcb85f0bdde262e35f3b3c33973664762086c6f455ea141052d2a8db"
+    },
+    {
+      "channel": "red",
+      "z": 17,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z17_ch02.tif",
+      "sha256": "893b86d6c885535805d101542155ae4de87fed4772398416a4002bac151606d8"
+    },
+    {
+      "channel": "red",
+      "z": 18,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z18_ch02.tif",
+      "sha256": "ccc093c835d4470978ed930c294dde319550426cab1633714129de586ec2df5b"
+    },
+    {
+      "channel": "red",
+      "z": 19,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z19_ch02.tif",
+      "sha256": "91895356c693d5fa2faa3e7a7305e94f8ec9145cf1ee653c0bd101e629f27986"
+    },
+    {
+      "channel": "red",
+      "z": 20,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z20_ch02.tif",
+      "sha256": "c563bb66091e4f6cb942af3f109eab9d7a7b79d4c0b687b3e69a24adfb967f5e"
+    },
+    {
+      "channel": "red",
+      "z": 21,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z21_ch02.tif",
+      "sha256": "4c2b167d6691704ee336023840def901d227ce8729aa1dbfff80e1b06cc975b9"
+    },
+    {
+      "channel": "red",
+      "z": 22,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z22_ch02.tif",
+      "sha256": "0a72168c06ed568b0b591081d133bc23709bdff9f735a9470b6fee1e08dda036"
+    },
+    {
+      "channel": "red",
+      "z": 23,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z23_ch02.tif",
+      "sha256": "824f689a551ae22d6597ea95f963a611593b7b411867e745c8cbd34c5a39a81c"
+    },
+    {
+      "channel": "red",
+      "z": 24,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z24_ch02.tif",
+      "sha256": "d105fb73a828c1dc69d466f3f344ed663a632f298b1625973266bcf73d4dcf5f"
+    },
+    {
+      "channel": "red",
+      "z": 25,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z25_ch02.tif",
+      "sha256": "fd976a068f5c2f4d2ff1b91b5395a8b6cfe092bb9c50288cd0dd108b2e830446"
+    },
+    {
+      "channel": "red",
+      "z": 26,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z26_ch02.tif",
+      "sha256": "14a531ea9ebc4676a9c10447a11c848d0dff7cae416005162caa5e1592016d6c"
+    },
+    {
+      "channel": "red",
+      "z": 27,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z27_ch02.tif",
+      "sha256": "89e500fb98cd251bf2211396da0a97abb84f8c26cea79b4fa35fadecae0bcf2a"
+    },
+    {
+      "channel": "red",
+      "z": 28,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z28_ch02.tif",
+      "sha256": "2662ad2dfc45ec22d413e3245e6817762ec8788c2f18f835d0ab7c0e275349d6"
+    },
+    {
+      "channel": "red",
+      "z": 29,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z29_ch02.tif",
+      "sha256": "5ea0cfe6e8248147b4df971e1fe68ecc7c432e8b045aca80919792923b56610c"
+    },
+    {
+      "channel": "red",
+      "z": 30,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z30_ch02.tif",
+      "sha256": "50d250c702c355e9a048b4b920ba49b320bcfcaa5209f5d118062cfd46de6b2a"
+    },
+    {
+      "channel": "red",
+      "z": 31,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z31_ch02.tif",
+      "sha256": "ca7bc77702b3899fff1e3bf88014bab242b375b544f5ecc61611a26169039051"
+    },
+    {
+      "channel": "red",
+      "z": 32,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z32_ch02.tif",
+      "sha256": "cfa7291aafe8c8eb7c1cc747b7d869cc1f611542e3d7e8d0ca6f44a8774bf4b9"
+    },
+    {
+      "channel": "red",
+      "z": 33,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z33_ch02.tif",
+      "sha256": "84b23b2f92f584f5ca6a631db2f33a59f2ab26cd12b8ba2859105a47bb440ff6"
+    },
+    {
+      "channel": "red",
+      "z": 34,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z34_ch02.tif",
+      "sha256": "22523bdeafbcbc538158c32d8a00ab29b1073745704d6bf62cb2aa71d0c8c621"
+    },
+    {
+      "channel": "red",
+      "z": 35,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z35_ch02.tif",
+      "sha256": "6f648b6083f47767d647878753f187305e24554cb4c0d4baf7de0251207e0f75"
+    },
+    {
+      "channel": "red",
+      "z": 36,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z36_ch02.tif",
+      "sha256": "f85c4ad853dd7e6866a25792efc13c5423ccbc1c07b5d6de06abee503d2f3668"
+    },
+    {
+      "channel": "red",
+      "z": 37,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z37_ch02.tif",
+      "sha256": "ed89e3866582fab6a53411576632fac4d4aec88fa58fb764416a2d1aa5de00c9"
+    },
+    {
+      "channel": "red",
+      "z": 38,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z38_ch02.tif",
+      "sha256": "7b5a7ff36e29ec996eb8d34d5ead579dbc7e6a54ad1734a83e665c1b326d7d94"
+    },
+    {
+      "channel": "red",
+      "z": 39,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z39_ch02.tif",
+      "sha256": "c71c2de05c5781d776b1ade4ca4baa20f0bcf55c5abf5df1e92c210f6d419f36"
+    },
+    {
+      "channel": "red",
+      "z": 40,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z40_ch02.tif",
+      "sha256": "1b73cc20b138203ab6afc3e511bb77fd570fd224b11581d7e7c9f17b9c788003"
+    },
+    {
+      "channel": "red",
+      "z": 41,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z41_ch02.tif",
+      "sha256": "7c3fca1e138e7493cf17a9204a1b14d627495d11f449dd2f50ffcdbfeadf4c3a"
+    },
+    {
+      "channel": "red",
+      "z": 42,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z42_ch02.tif",
+      "sha256": "1ef486ec776bff2f0d16c093ad4ae199f681db1b6edc804a0912117782928084"
+    },
+    {
+      "channel": "red",
+      "z": 43,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z43_ch02.tif",
+      "sha256": "96019d46f3f73bbfedb1737df36fe47393692a15eadf914da4879249bc91e218"
+    },
+    {
+      "channel": "red",
+      "z": 44,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z44_ch02.tif",
+      "sha256": "065caf84925e438d4fc1d7bea44f5337ab610cf343baf4247d53f0e41cb0ea51"
+    },
+    {
+      "channel": "red",
+      "z": 45,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z45_ch02.tif",
+      "sha256": "5cff75bd760d502f05e71af7a27b41d1404829369eae12dd2b84e9f3f5166e4e"
+    },
+    {
+      "channel": "red",
+      "z": 46,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z46_ch02.tif",
+      "sha256": "2cf5a8238e593abd170e36703b5cf53e11cd08c6e4c35dc1d37c962bb1243b44"
+    },
+    {
+      "channel": "red",
+      "z": 47,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z47_ch02.tif",
+      "sha256": "474c618733bfc1d49999747b6773d166733d238c55496fccae827708fd85dcb3"
+    },
+    {
+      "channel": "red",
+      "z": 48,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z48_ch02.tif",
+      "sha256": "3cbe459fc5f1b1f44fbee98e40a0402728236be971d7a195fbb78f95837471f7"
+    },
+    {
+      "channel": "red",
+      "z": 49,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z49_ch02.tif",
+      "sha256": "cf8c8527e006ea682f2fcc89339d5dfc1865a81d36be0636c3fd3acee07548ac"
+    },
+    {
+      "channel": "red",
+      "z": 50,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z50_ch02.tif",
+      "sha256": "062cc3895ffcda56787a8b40dbd45d9553b0935abbc28cd3b118b3ae74765ea5"
+    },
+    {
+      "channel": "red",
+      "z": 51,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z51_ch02.tif",
+      "sha256": "af0c55f0b3270cace998f5ab1cde8ac16f49a2a9a5aa5cdf58127c311c558f3a"
+    },
+    {
+      "channel": "red",
+      "z": 52,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z52_ch02.tif",
+      "sha256": "58c773b7256670906f500c67ecffe16f7bc00c1683ce65d27ad21fa609c49617"
+    },
+    {
+      "channel": "red",
+      "z": 53,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z53_ch02.tif",
+      "sha256": "b7fa50a7b3e73a97162711335c99bc7dee81e1dd648592bb69db7931cea0fa33"
+    },
+    {
+      "channel": "red",
+      "z": 54,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z54_ch02.tif",
+      "sha256": "a6735ec127f7c3338901b95aa834e46a067ff4dd9302a7d44915607af0ecdb0e"
+    },
+    {
+      "channel": "red",
+      "z": 55,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z55_ch02.tif",
+      "sha256": "4841ef92ee27f970bd22e8f4654b94e1af8ffd7b51ce004ad64310c250101849"
+    },
+    {
+      "channel": "red",
+      "z": 56,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z56_ch02.tif",
+      "sha256": "760effdc0c50af7d2e8183410525a21c5311cb466848dd08417ef22dac821cb6"
+    },
+    {
+      "channel": "red",
+      "z": 57,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z57_ch02.tif",
+      "sha256": "4ff903cfd253d8577845ac06f93a4f12494583551e3a9b39647ad430411b545e"
+    },
+    {
+      "channel": "red",
+      "z": 58,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z58_ch02.tif",
+      "sha256": "b28a2d952033927dd996f99d68317cee748f37b713e8e47eb8d3675faab8aca2"
+    },
+    {
+      "channel": "red",
+      "z": 59,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z59_ch02.tif",
+      "sha256": "c593ed169e68ebaa8150cfa7573aafba9d114b4e0bdf7f5b3311b3ce93a8c716"
+    },
+    {
+      "channel": "red",
+      "z": 60,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z60_ch02.tif",
+      "sha256": "bc7c338523af1a804d737687dd10af7381ea3ff5c23d66c03ffd9cd3b11f3329"
+    },
+    {
+      "channel": "red",
+      "z": 61,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z61_ch02.tif",
+      "sha256": "416997008207f4e3b2a672987388e48002bce8b5463d0865fdf65bc3105ce68e"
+    },
+    {
+      "channel": "red",
+      "z": 62,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z62_ch02.tif",
+      "sha256": "444563eca7f3c7a01a2f4fa2e662741d5721bc8cb7b05e34caeac8269434d30a"
+    },
+    {
+      "channel": "red",
+      "z": 63,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z63_ch02.tif",
+      "sha256": "7163e6f8560117492a792becfa985cdb0ee26d5ca5ce10fe2fd7ad2be163b96b"
+    },
+    {
+      "channel": "red",
+      "z": 64,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z64_ch02.tif",
+      "sha256": "9748539779df294e0db528a3c973ae2ccd97a3ac201dbab7c295205f441c97a0"
+    },
+    {
+      "channel": "red",
+      "z": 65,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z65_ch02.tif",
+      "sha256": "7f8136168c91fb8c7195e1dc402c4b6c9786f9d867030be7b880958f01300c33"
+    },
+    {
+      "channel": "red",
+      "z": 66,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z66_ch02.tif",
+      "sha256": "fca19ec3e12be097855909edcd02bac51c16a6f79355400db9f575452eb2bfeb"
+    },
+    {
+      "channel": "red",
+      "z": 67,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z67_ch02.tif",
+      "sha256": "6c68acb4b06b16f867a2a50882cf8d19a0c48196267a80255b52c390e17dead9"
+    },
+    {
+      "channel": "red",
+      "z": 68,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z68_ch02.tif",
+      "sha256": "96d1a15252268d33113815ecfb24fbd69bca25b6cf599da800889b178d0bc7d9"
+    },
+    {
+      "channel": "red",
+      "z": 69,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z69_ch02.tif",
+      "sha256": "3da3196866381cb1cff43b3c21b4a27ecc98001a9ea9fca98aa03527c8a1baa8"
+    },
+    {
+      "channel": "bright",
+      "z": 0,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z00_ch01.tif",
+      "sha256": "8b7a44c4b8ab2b2adff808c7ce3b2877a03c42650c7578e1041b7e7590eb3422"
+    },
+    {
+      "channel": "bright",
+      "z": 1,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z01_ch01.tif",
+      "sha256": "f89a13835e29fdbb6a098ba8050c32b9fbc436959ab2b3795bb0841cf566fd37"
+    },
+    {
+      "channel": "bright",
+      "z": 2,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z02_ch01.tif",
+      "sha256": "6275c72021970d6559abdb48ba4323e7e2ab7073680b9fced54059538f60a88a"
+    },
+    {
+      "channel": "bright",
+      "z": 3,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z03_ch01.tif",
+      "sha256": "55cb0c96aec7fbc63ee66f0f35a029a5a95fb4eea1b07859441b6154f79937c0"
+    },
+    {
+      "channel": "bright",
+      "z": 4,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z04_ch01.tif",
+      "sha256": "b1b5b798a36ec05602e9ef759249790d7d13fbd1ae3d6a23bffa2384bb7dcff5"
+    },
+    {
+      "channel": "bright",
+      "z": 5,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z05_ch01.tif",
+      "sha256": "676ef19eeb7360777ef28e7e60c68c90741caf7ee4cc99e5e012f4d80320807f"
+    },
+    {
+      "channel": "bright",
+      "z": 6,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z06_ch01.tif",
+      "sha256": "c5c69ab06651546861af30951d1b91f32d290b69b1a77bc846e5f47d7c1e1c7f"
+    },
+    {
+      "channel": "bright",
+      "z": 7,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z07_ch01.tif",
+      "sha256": "f603b76bf4a1073c6506e410639eacea81dff66fb6718d990895c4502ad01be0"
+    },
+    {
+      "channel": "bright",
+      "z": 8,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z08_ch01.tif",
+      "sha256": "27250d4c734614b2d83bcbf35bded3ec831637dc359d34a71edb40a267dd9d10"
+    },
+    {
+      "channel": "bright",
+      "z": 9,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z09_ch01.tif",
+      "sha256": "9dfd7da335b5b1220fa6e9c13e3230b563b04ca147d48f0bb896abdc4fc80878"
+    },
+    {
+      "channel": "bright",
+      "z": 10,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z10_ch01.tif",
+      "sha256": "a8076b1cd495f05f69cad473e9d35d7bdef768ab70056745b6032a2912710f45"
+    },
+    {
+      "channel": "bright",
+      "z": 11,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z11_ch01.tif",
+      "sha256": "db2ebfa49b6780cfcc78912e9caade46b2b706c46d9e6c15cba1e90c4dd556bc"
+    },
+    {
+      "channel": "bright",
+      "z": 12,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z12_ch01.tif",
+      "sha256": "fa89b00b384494da1fac2e59817dd4dcda099c04da962299243fcbffe8855f33"
+    },
+    {
+      "channel": "bright",
+      "z": 13,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z13_ch01.tif",
+      "sha256": "87fd427f189d13c00b3836a227a726b8291127134b2b5860e2dd55a0bfd26b94"
+    },
+    {
+      "channel": "bright",
+      "z": 14,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z14_ch01.tif",
+      "sha256": "87ab4155183c92bd62e5aef019a0553c1478464c688d741d5ad06a2b9b2bd509"
+    },
+    {
+      "channel": "bright",
+      "z": 15,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z15_ch01.tif",
+      "sha256": "080acb53524c1cfb01ab1fd2ccd2037ce7e00b670010a790dace986af7903c92"
+    },
+    {
+      "channel": "bright",
+      "z": 16,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z16_ch01.tif",
+      "sha256": "7a8b6e1c2d29dbc0a25e1152077ddd867691b1040849b26b41b306e4b56e57f5"
+    },
+    {
+      "channel": "bright",
+      "z": 17,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z17_ch01.tif",
+      "sha256": "91dc260109415fef1da65afeed68e37c14cfd70c10abe0a917a7f6f94d0e0612"
+    },
+    {
+      "channel": "bright",
+      "z": 18,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z18_ch01.tif",
+      "sha256": "b7af670ab3077f69c464f96a5e28509ebc599b2b432a11f0244251a2bac87272"
+    },
+    {
+      "channel": "bright",
+      "z": 19,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z19_ch01.tif",
+      "sha256": "6faaa604d5a8d92a94eb798788df9dc612dd967a34d2eae1d7a29927e6754cc2"
+    },
+    {
+      "channel": "bright",
+      "z": 20,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z20_ch01.tif",
+      "sha256": "06ceb150f04b96d1e565ed08f4a9f4d2d46fdd0c0b114a1fa511eaebab2cece6"
+    },
+    {
+      "channel": "bright",
+      "z": 21,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z21_ch01.tif",
+      "sha256": "c3b59e8426dd178be726f4cc454ee9efeec2cc5a5cd75e7e118ddeb27246c2f2"
+    },
+    {
+      "channel": "bright",
+      "z": 22,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z22_ch01.tif",
+      "sha256": "ef439aad85a3124eeb7c1d6a9c07b838b292d17aac7b407e9f3cf652aa941334"
+    },
+    {
+      "channel": "bright",
+      "z": 23,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z23_ch01.tif",
+      "sha256": "ff7ae57069ee50e60501dd4290313324ec3583c40ad20977233acd63410710f9"
+    },
+    {
+      "channel": "bright",
+      "z": 24,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z24_ch01.tif",
+      "sha256": "3140bf5ff07d56606f2a0ed37978c7d4b1410cfbb7fe97eeb4d144988a10c067"
+    },
+    {
+      "channel": "bright",
+      "z": 25,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z25_ch01.tif",
+      "sha256": "ffe70706dfbf0adab4343b9f586f045da28bfb364bdf4eed6e1e554c0528d947"
+    },
+    {
+      "channel": "bright",
+      "z": 26,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z26_ch01.tif",
+      "sha256": "399771f701b2194ebd945c910a799af5625a6946bde04a19563cb64a2c4b85d0"
+    },
+    {
+      "channel": "bright",
+      "z": 27,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z27_ch01.tif",
+      "sha256": "867493d4ca2da02e967164af7047ad92c194417e65696b6bde3ffe9e7521ca99"
+    },
+    {
+      "channel": "bright",
+      "z": 28,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z28_ch01.tif",
+      "sha256": "4f211e39101b13c4cdd5253dddcba8fa5bd37fab3d55ec51128de2d4f7661289"
+    },
+    {
+      "channel": "bright",
+      "z": 29,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z29_ch01.tif",
+      "sha256": "2cda9cf20985897ac5fd62cf435c21d18ea85383d9976f43d0d3be57a15a8980"
+    },
+    {
+      "channel": "bright",
+      "z": 30,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z30_ch01.tif",
+      "sha256": "74468599350e3f38a6c5e3c27f137758922418c25fecded7b47c45efd8ef5afc"
+    },
+    {
+      "channel": "bright",
+      "z": 31,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z31_ch01.tif",
+      "sha256": "9acca9196f5dcea07432df36eb792ad7fe10daead961b422d78428cd8c020246"
+    },
+    {
+      "channel": "bright",
+      "z": 32,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z32_ch01.tif",
+      "sha256": "d8a4de458ddc24ad12095dc0fb1d5a99c5d1c42383becee98bea39708957af51"
+    },
+    {
+      "channel": "bright",
+      "z": 33,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z33_ch01.tif",
+      "sha256": "93f87b3507f5024e73db2fbba93dd7e39dc87bb09f27963dfe1e65884043b160"
+    },
+    {
+      "channel": "bright",
+      "z": 34,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z34_ch01.tif",
+      "sha256": "1e1ba7377fa9a870d604815f9baca0760d4e2acc51c188966b78e14db07217dc"
+    },
+    {
+      "channel": "bright",
+      "z": 35,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z35_ch01.tif",
+      "sha256": "08a123331b236e5d73806a5aa9e9e41eb9a9730d60469ec7edee3e76d4b48796"
+    },
+    {
+      "channel": "bright",
+      "z": 36,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z36_ch01.tif",
+      "sha256": "1facae3977bca53776ebfb10db24885b52a4697655cc1d1083d8baa480855571"
+    },
+    {
+      "channel": "bright",
+      "z": 37,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z37_ch01.tif",
+      "sha256": "574ac0c990a9180c876ed8431a95b31b176effcbc4fcf93c49d2b439b5edbe66"
+    },
+    {
+      "channel": "bright",
+      "z": 38,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z38_ch01.tif",
+      "sha256": "d0ed3c94e03a141eecf22b0f8b3ff536f52d6ab26561edcf4698d8c211b16c84"
+    },
+    {
+      "channel": "bright",
+      "z": 39,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z39_ch01.tif",
+      "sha256": "96e8a9702d916709b35d29f8e8546a7366a190975108fc6a8ca294ad6635ed93"
+    },
+    {
+      "channel": "bright",
+      "z": 40,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z40_ch01.tif",
+      "sha256": "c06ce97e0f69d2338849620d2348b8153bc6b14109ff59a7053d10d65b6f4939"
+    },
+    {
+      "channel": "bright",
+      "z": 41,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z41_ch01.tif",
+      "sha256": "a9cdbc2d735d8f47422dc3604e23e3f315ae6835c7625c3224b74c7a9d51e6e5"
+    },
+    {
+      "channel": "bright",
+      "z": 42,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z42_ch01.tif",
+      "sha256": "74f7058d2c31eaef1fbcab64a97580526257886dd31ccec1a389cdbd84706e5a"
+    },
+    {
+      "channel": "bright",
+      "z": 43,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z43_ch01.tif",
+      "sha256": "a6065bc7460b528db5c60a9f0a22edf904e4384c6fbf33dfa8f6b6f67b4a61b0"
+    },
+    {
+      "channel": "bright",
+      "z": 44,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z44_ch01.tif",
+      "sha256": "634a39792b09b6be78122aa8a282f0429c7f4d4aa5b0a6797999f33e382ddb9a"
+    },
+    {
+      "channel": "bright",
+      "z": 45,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z45_ch01.tif",
+      "sha256": "a529e4e242826a0f7f2a155155198fb051213e0b1f44599fab1718db7e923739"
+    },
+    {
+      "channel": "bright",
+      "z": 46,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z46_ch01.tif",
+      "sha256": "db6509bd0b0593388625f486b3f33797163b9317d4f420e363cd6a882f3a4826"
+    },
+    {
+      "channel": "bright",
+      "z": 47,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z47_ch01.tif",
+      "sha256": "65024d59e0929e7670dd0a2403621a8239115f8c09bf7f3310d10d016a13a639"
+    },
+    {
+      "channel": "bright",
+      "z": 48,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z48_ch01.tif",
+      "sha256": "8cc928adc0f8d86d53f52c03a86fee3ae00ef048ade1214d7adaaa595fc4d02b"
+    },
+    {
+      "channel": "bright",
+      "z": 49,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z49_ch01.tif",
+      "sha256": "1b435af2a8fbc859ec13e1fd83ffa8425bd4ebd042101a525bc8dab05dc0c030"
+    },
+    {
+      "channel": "bright",
+      "z": 50,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z50_ch01.tif",
+      "sha256": "3043f51b72eacfef92f7a8255ebaed3f197642d1a8a99a4e200ed6ddb32d1134"
+    },
+    {
+      "channel": "bright",
+      "z": 51,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z51_ch01.tif",
+      "sha256": "737e5ffeb75a4e31a652167f470738cb654d12fb39fffe62fae68d80dc81c5a9"
+    },
+    {
+      "channel": "bright",
+      "z": 52,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z52_ch01.tif",
+      "sha256": "7bd6114576426243c649336101af8beb3b9fe61abcb48be6b1ebdde079a3660d"
+    },
+    {
+      "channel": "bright",
+      "z": 53,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z53_ch01.tif",
+      "sha256": "8589db08119f90ff93d2be9b57532406ca2bc4c1cb3d121086f811fe035f3bc1"
+    },
+    {
+      "channel": "bright",
+      "z": 54,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z54_ch01.tif",
+      "sha256": "17bd137f79d63f0362e2c08e4e1c08a364e971adc6903a01cebe5a9dfab0dd82"
+    },
+    {
+      "channel": "bright",
+      "z": 55,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z55_ch01.tif",
+      "sha256": "8bfa9884e55da4de8f9c63ce3a4c112fe30193a47848a5a274e28eed6a746fec"
+    },
+    {
+      "channel": "bright",
+      "z": 56,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z56_ch01.tif",
+      "sha256": "6c29f55b043c36f88e0dd96bd4bde32243a8b9a10a8ca00b0d25bb29149dc311"
+    },
+    {
+      "channel": "bright",
+      "z": 57,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z57_ch01.tif",
+      "sha256": "6e2f59b72d3f8210ca4ba662216bd54a7b3c0124cd47757b22c5da47993f736e"
+    },
+    {
+      "channel": "bright",
+      "z": 58,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z58_ch01.tif",
+      "sha256": "5ae8beef7ff3a37f83b11f9c13c640281c92e7e6d6efb33f6591247134876d37"
+    },
+    {
+      "channel": "bright",
+      "z": 59,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z59_ch01.tif",
+      "sha256": "570a79ce76cf0710f37a4c60d528cca35ca2bb5219e62fe4e48a8ad443319000"
+    },
+    {
+      "channel": "bright",
+      "z": 60,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z60_ch01.tif",
+      "sha256": "09ca5915d34bad3afc7a66ae5adb5cf193bef6a25e4a10fa9808234e2ba9ac6d"
+    },
+    {
+      "channel": "bright",
+      "z": 61,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z61_ch01.tif",
+      "sha256": "cfc6e53c3a823ede21c6f03638d25ed014429fb0f5b6528f466a80116e232135"
+    },
+    {
+      "channel": "bright",
+      "z": 62,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z62_ch01.tif",
+      "sha256": "8e2e8e5059926401ce5bda1399db7a73a84b576bb9c8017909eca73b71c8c299"
+    },
+    {
+      "channel": "bright",
+      "z": 63,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z63_ch01.tif",
+      "sha256": "9838b3563f2b5a8f8f8df2a95d0f3fbb1e07b89dad70998e9045fe1b42211598"
+    },
+    {
+      "channel": "bright",
+      "z": 64,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z64_ch01.tif",
+      "sha256": "13fa8cff08c440d3df7dcc62fb7ac2a851308f6fd716fbf08da4d83763d7613a"
+    },
+    {
+      "channel": "bright",
+      "z": 65,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z65_ch01.tif",
+      "sha256": "9fefa405add5909680447ca0197954c51558e2ac3ae9194128db2abe86b91c19"
+    },
+    {
+      "channel": "bright",
+      "z": 66,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z66_ch01.tif",
+      "sha256": "e71c9dc70c3071ef98c58a2aa76a2abfe93f8df68b8544a05effadd79593df2a"
+    },
+    {
+      "channel": "bright",
+      "z": 67,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z67_ch01.tif",
+      "sha256": "48cbe7b4cdaf690e25be8be39055a218976cdebdf448f50414e19e63d8295880"
+    },
+    {
+      "channel": "bright",
+      "z": 68,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z68_ch01.tif",
+      "sha256": "08bcef241936d6885e6f65a364c68a3d4f6c2cc92aaf5f20413b07fd5efe0f57"
+    },
+    {
+      "channel": "bright",
+      "z": 69,
+      "path": "/Users/4470246/Repositories/CellCycle4DataIntegration/data4paper/A01_rawData/FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_z69_ch01.tif",
+      "sha256": "dff7d0278e077f61b1928af695f6ecef03cf97878e5f35e5762641f6bf7f4a67"
+    }
+  ],
+  "checked_image_channels": [
+    "green",
+    "red"
+  ],
+  "minimum_reference_pixels_per_plane": 50,
+  "negative_contrasts_clipped": false,
+  "measurement_source_sha256": "12bddd735d9d1dac8fe3cfa024b7b76483705a8f5a544cdda76c2e54df235fc9",
+  "script_sha256": "936e38485f0cdd56c216e8f8986bacae82f0a74339b187bd10200f4abb0c65c6"
+}

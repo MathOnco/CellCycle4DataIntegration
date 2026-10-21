@@ -2,6 +2,8 @@
 
 The supplied `FoF5_241016_fucci.nucleus.zip` provides the first verified image–mask pair for this analysis. The figure uses the new Saeed feature table from `Archive (6).zip`. No pseudotime analysis or Fig. 1E reconstruction is included.
 
+**Update, 2026-10-21:** the [local-background recalibration pilot](fucci_fof5_recalibration.md) now provides new reporter-state maps, image reviews and stability results. Start with its [magnified fluorescence/map comparison](../figs4paper/fucci_fof5_recalibration/reporter_map_cluster_z35.png). The C1/C2 figures below preserve the earlier classifications for comparison.
+
 ## Input verification
 
 - **578 original mask labels and 1,314 connected components** match the new table, including parent IDs, component IDs, volumes and bounding boxes.

@@ -4,6 +4,19 @@ Implement and compare candidate classifiers for the replacement FUCCI feature ta
 
 The archive contains unfiltered `object_features_new.csv` tables and corresponding `object_features_new_withCellCycle.csv` tables in `231005`, `2409`, and `2410`. The older CellProfiler tables provide a historical comparison. Preliminary inspection found 24,737 objects with volumes of eight voxels or fewer and repeated Cellpose labels; this motivates checking the unit of analysis before interpreting class frequencies as cell frequencies.
 
+## FoF5 reporter recalibration pilot — authorized 2026-10-21
+
+Use the verified 241016/FoF5 image–mask–table set and the largest component of all 578 original labels. Preserve the old predictions and all source data. Work independently through the following steps; expert or experimental validation is not claimed.
+
+**Completed:** all six pilot steps below. The [pilot report](fucci_fof5_recalibration.md) links the new spatial maps, corrected scatter plots, 48 completed assistant image reviews, frozen calibration/check decisions, all-label results and 11-setting stability analysis. Final reporter calls are 31 green only, 16 red only, 1 both and 530 unresolved. Sixteen tests pass. This is a conservative one-field reporter-detection pilot; expert review and independent phase validation remain pending.
+
+1. Measure each channel relative to local unmasked reference pixels in each z plane. Compare foreground means, medians, and 75th percentiles, with and without scaling by local robust pixel variability. Preserve signed differences rather than clipping negative values.
+2. Prepare 48 image-review examples sampled across the fluorescence range, hiding original IDs, old phase labels, measured scores, and new predictions. Review 32 calibration examples first; reserve 16 for a later check. Exclude the six examples already discussed by ID from this review sample. Review three substantial cross-sections per object; mark each channel positive, not detected, or ambiguous, and note segmentation concerns. These are assistant image judgments, not experimental reference labels; prior familiarity with the overall field remains a limitation.
+3. Select a simple per-channel threshold and one of six predefined fluorescence scores using only clear calibration annotations and leave-one-cell-out agreement. Bootstrap the calibration examples to define a threshold uncertainty interval. Do not use old class proportions or phase labels to fit thresholds.
+4. Freeze the fitted choices before reviewing the separate check set. Report agreement and coverage against those image judgments, including ambiguous cases; do not describe this as biological accuracy or transfer to other FoFs.
+5. Test local-reference widths and summaries, 1–2 pixel mask erosion / 1 pixel dilation, and alternate z-plane subsets. Retain unstable, poorly supported, and weak-signal objects as unresolved. Preserve every object in the exported denominator.
+6. Deliver reporter-state maps (green only, red only, both, unresolved), scatter plots, image examples, all-cell measurements and reasons, stability results, and a reproducible report. Any G1/S/G2M mapping remains conditional on the inferred PIP-FUCCI-like construct. Commit and push the completed pilot.
+
 ## Requested extension completed — 2026-10-20
 
 The subsequently supplied FoF5 ZIP now provides **one verified matching image–mask pair**, with all 1,314 component volumes, bounding boxes and three-channel mean/integrated intensities reproduced. Fig. 1A/C-style overlays and a multi-slice atlas are available in the [spatial verification report](fucci_spatial_verification_241016_5.md). The user dropped Fig. 1E; no pseudotime was computed. Eleven tests pass. Background calibration remains pending.

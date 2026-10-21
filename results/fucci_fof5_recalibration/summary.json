@@ -1,0 +1,81 @@
+{
+  "n": 578,
+  "visible_z35": 180,
+  "corrected_scatter_finite_n": 577,
+  "corrected_scatter_missing_labels": [
+    17
+  ],
+  "final_counts": {
+    "green_only": 31,
+    "red_only": 16,
+    "both": 1,
+    "unresolved": 530
+  },
+  "z35_final_counts": {
+    "green_only": 25,
+    "red_only": 14,
+    "both": 1,
+    "unresolved": 140
+  },
+  "primary_counts": {
+    "green_only": 55,
+    "red_only": 36,
+    "both": 15,
+    "unresolved": 472
+  },
+  "automatic_stable_counts": {
+    "green_only": 33,
+    "red_only": 16,
+    "both": 4,
+    "unresolved": 525
+  },
+  "unresolved_reasons_nonexclusive": {
+    "neither_reporter_detected": 234,
+    "insufficient_measurement_support": 166,
+    "sensitive_to_measurement_choice": 79,
+    "threshold_uncertainty": 72,
+    "reviewed_mask_questionable": 20,
+    "missing_local_reference": 1
+  },
+  "primary_unresolved_reasons_exclusive": {
+    "neither_reporter_detected": 227,
+    "insufficient_measurement_support": 166,
+    "threshold_uncertainty": 67,
+    "sensitive_to_measurement_choice": 50,
+    "reviewed_mask_questionable": 20
+  },
+  "review_counts": [
+    {
+      "split": "calibration",
+      "mask_review": "questionable",
+      "n": 11
+    },
+    {
+      "split": "calibration",
+      "mask_review": "usable",
+      "n": 21
+    },
+    {
+      "split": "check",
+      "mask_review": "questionable",
+      "n": 9
+    },
+    {
+      "split": "check",
+      "mask_review": "usable",
+      "n": 7
+    }
+  ],
+  "reviewed_questionable_n": 20,
+  "reviewed_mask_flag_changed_call_n": 5,
+  "unreviewed_mask_n": 530,
+  "reproducibility": {
+    "frozen_calibration_sha256": "56f6031e1da483e466d46b62978266a82de6094541212c20ce28026fc0e9655a",
+    "check_annotations_sha256": "a506d759381710d0ebee3f992449be79604552360831356d8e900d02c324c522",
+    "annotations_sha256": "77cbe81c0b4258844d9485d0e80a2dd7a21a85eb1f167c359bc23cc91eed6645",
+    "script_sha256": "661c8fb9dc74d7fa6981725229db5bc0b1253edcac2699a9db4d2044cc6dd5b5",
+    "outputs_code_sha256": "8d0f7d7954d2b1b331a58b0fbfa8f3b0061fca1de1ab8c8f25d9ec57869c29b7"
+  },
+  "phase_validated": false,
+  "other_fields_calibrated": false
+}

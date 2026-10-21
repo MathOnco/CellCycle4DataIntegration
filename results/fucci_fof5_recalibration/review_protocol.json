@@ -1,0 +1,29 @@
+{
+  "seed": 20261021,
+  "n": 48,
+  "calibration_n": 32,
+  "check_n": 16,
+  "selection": "Round-robin sample from 4x4 quantile strata of preliminary local mean contrasts; random assignment to review splits",
+  "minimum_volume": 1000,
+  "minimum_max_plane_area": 100,
+  "previously_discussed_labels_excluded": [
+    63,
+    410,
+    42,
+    220,
+    127,
+    16
+  ],
+  "review_labels_hidden": [
+    "CellposeLabel",
+    "old_phase",
+    "new_prediction",
+    "numeric_features"
+  ],
+  "positive": "Coherent localized signal within the outline relative to neighboring regions across at least two displayed cross-sections",
+  "not_detected": "No convincing localized signal across the displayed cross-sections, including fixed 4x display",
+  "ambiguous": "Weak, inconsistent, overlapping, or spatially uncertain signal",
+  "reviewer": "assistant; not an independent experimental or expert annotation",
+  "prior_exposure": "Reviewer has seen this field and six excluded examples in prior analysis",
+  "check_protocol": "Freeze feature and threshold choices before rendering/reviewing the check examples"
+}
