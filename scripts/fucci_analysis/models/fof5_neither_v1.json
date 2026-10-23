@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "model_id": "fof5_neither_refinement_v1",
+  "method": "original_then_neither_to_both",
+  "accepted_revision": "20d01f0",
+  "calibration_field": "241016/5",
+  "thresholds": {
+    "green": {
+      "low": 0.0024075655915692497,
+      "high": 0.0065016187699578
+    },
+    "red": {
+      "low": 0.003031188659523,
+      "high": 0.00419540689627625
+    }
+  },
+  "measurement": "Dominant 26-connected component per original mask label; volume-weighted foreground mean minus per-plane local reference median, gap >3 and radius <=12 pixels; >=50 unmasked reference pixels; uint16 /65535.",
+  "fallback": "For a label without a finite primary channel score, use the original nearest >=50 unmasked pixels beyond a 3-pixel gap, including distance ties, per occupied plane. Fail explicitly if unavailable.",
+  "threshold_transfer": "Default cutoffs were calibrated on 241016/FoF5 only. Other fields use these fixed cutoffs without automatic refitting; cross-field transfer is not independently validated.",
+  "bootstrap_file": "fof5_lower_threshold_bootstrap.csv",
+  "bootstrap_sha256": "a9be1e8d6011fdea1c6c7f050292bf7f885612743418794b439a766806b7704d",
+  "locked_code_sha256": {
+    "force_fucci_fof5_reporter_states.py": "401c8826bfdb4e54914dbefb2cc9590300914877ee06b60bf372b4975bf5c224",
+    "fucci_analysis/neither_refinement.py": "b7d199009c420619290e5e3813c5a3e8d99e7d13e6316f2ee55b2295af5c8981",
+    "fucci_analysis/local_calibration.py": "12bddd735d9d1dac8fe3cfa024b7b76483705a8f5a544cdda76c2e54df235fc9",
+    "fucci_analysis/review.py": "a39d8b4d1954c7e4308b8b3e1823c89d52855d9e5f3699da9be21ffcaf430985"
+  }
+}

@@ -1,0 +1,3 @@
+folder,date,fof,features,features_member,images,mask,mask_member,green_channel,red_channel
+231005,231005,1,inputs/Archive.zip,231005/object_features_new.csv,inputs/raw/FoF1_231005_fluorescent.nucleus,inputs/masks/FoF1_231005_fluorescent.nucleus/FoF1_231005_fluorescent.nucleus_mask.ome.tif,,00,02
+2410,241016,5,inputs/Archive.zip,2410/object_features_new.csv,inputs/raw/FoF5_241016_fucci.nucleus,inputs/masks/FoF5_241016_fucci.nucleus.zip,,00,02

@@ -1,6 +1,16 @@
 # FUCCI classification handoff
 
-Latest work: the user clarified that the original **classification code**, rather than saved assignments, must be retained. Rerun that code on numeric measurements and apply lower gates only to its neither results. See [the corrected report](fucci_fof5_neither_refinement.md) and [the implementation plan](fucci_classification_plan.md). Earlier sections below preserve the analysis history.
+Latest work: the user accepted the neither-only refinement and requested a portable runner for their collaborator to apply it across all FoFs. Use [the collaborator guide](fucci_reporter_runner.md) and `scripts/run_fucci_reporters.py`. The original **classification code** is rerun on numeric measurements; saved assignments never determine a prediction. See [the accepted FoF5 report](fucci_fof5_neither_refinement.md) and [the implementation plan](fucci_classification_plan.md). Earlier sections below preserve the analysis history.
+
+## Portable single-field and batch runner — completed 2026-10-23
+
+Commands are `inventory`, `field` and `batch`; field/batch support `--check`, `--resume` and `--no-plots`. Inputs are an explicit new CSV or ZIP member, Date/FoF identifiers, raw uint16 green/red TIFF planes and the matching original integer Z/Y/X mask TIFF or ZIP. The inventory command discovers all 31 FoFs in the current replacement archive. Manifest paths resolve relative to the manifest. No previous analysis results or saved assignments are required.
+
+The runner verifies all mask component/parent IDs, volumes and bounding boxes, reconstructs both channels' component means and sums, selects one dominant component per original label, and computes local-background measurements using the accepted helpers. It reuses the unchanged original `point_states`, `nearest_reference` fallback and neither-refinement classifier. The model bundle under `scripts/fucci_analysis/models` contains the exact accepted cutoffs, 500 frozen bootstrap threshold pairs, calibration source and locked helper hashes. No threshold or feature refitting occurs.
+
+Per-field exports include all-label states and scores, all-component mapping, image verification, fallback details, 11 measurement variants, 500 bootstrap and 81 grid settings, scatter/maps/stability figures and full provenance. Completed outputs are published atomically. Resuming verifies inputs, code, model, environment and output hashes. Batch failures are recorded for every requested field and produce a nonzero exit; combined files contain successful fields only, with explicit completeness metadata.
+
+The real FoF5 regression from a separate copy of only `scripts` reproduced all 578 accepted calls (90/72/77/339), both numeric scores, dominant components, fallback flags and stability annotations. A synthetic two-field batch exercises label-ID collisions, field selection and failure accounting. The [validation record](../results/fucci_reporter_runner_validation/validation.json) and [collaborator guide](fucci_reporter_runner.md) document verification. Complete matching data for all 31 real FoFs have not been verified locally; the collaborator supplies them. Default thresholds transfer the FoF5 calibration and do not establish accuracy across acquisitions.
 
 ## Original code with a neither-only refinement — completed 2026-10-23
 

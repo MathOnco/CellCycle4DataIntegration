@@ -1,0 +1,148 @@
+{
+  "date": "2026-10-23",
+  "accepted_method_revision": "20d01f0",
+  "method": "Raw-input run from a separate copy of only scripts; no previous results or repository data folders present in that copy.",
+  "all_checks_passed": true,
+  "tests_passed": 32,
+  "inventory_fields": 31,
+  "real_fields_executed": 1,
+  "summary": {
+    "field_id": "2410/241016/5",
+    "n": 578,
+    "source_components_n": 1314,
+    "counts": {
+      "green_only": 90,
+      "red_only": 72,
+      "both": 77,
+      "neither": 339
+    },
+    "original_counts": {
+      "green_only": 90,
+      "red_only": 72,
+      "both": 32,
+      "neither": 384
+    },
+    "promoted_n": 45,
+    "fallback_n": 1,
+    "measurement_complete_n": 368,
+    "measurement_stable_all_n": 249,
+    "max_image_mean_error": 4.999921318984968e-10,
+    "interpretation": "Fixed thresholds calibrated on 241016/FoF5; transfer to other fields is unvalidated. Reporter states, not independently validated cell-cycle phases."
+  },
+  "comparisons": {
+    "geometry_id": {
+      "all_match": true,
+      "n": 578
+    },
+    "original_reporter_state": {
+      "all_match": true,
+      "n": 578
+    },
+    "reporter_state": {
+      "all_match": true,
+      "n": 578
+    },
+    "refinement_promoted": {
+      "all_match": true,
+      "n": 578
+    },
+    "forced_reference_fallback": {
+      "all_match": true,
+      "n": 578
+    },
+    "refinement_available_variants": {
+      "all_match": true,
+      "n": 578
+    },
+    "refinement_agreeing_variants": {
+      "all_match": true,
+      "n": 578
+    },
+    "refinement_stable_all_11_measurements": {
+      "all_match": true,
+      "n": 578
+    },
+    "forced_green_score": {
+      "max_absolute_difference": 0.0,
+      "n": 578
+    },
+    "forced_red_score": {
+      "max_absolute_difference": 0.0,
+      "n": 578
+    },
+    "refinement_bootstrap_agreement": {
+      "max_absolute_difference": 0.0,
+      "n": 578
+    },
+    "refinement_grid_agreement": {
+      "max_absolute_difference": 0.0,
+      "n": 578
+    },
+    "all_variant_decisions": {
+      "all_match": true,
+      "n": 6358
+    },
+    "bootstrap_counts.csv": {
+      "all_match": true,
+      "settings": 500
+    },
+    "grid_counts.csv": {
+      "all_match": true,
+      "settings": 81
+    }
+  },
+  "environment": {
+    "python": "3.9.20",
+    "numpy": "1.26.4",
+    "pandas": "2.2.3",
+    "scipy": "1.13.1",
+    "matplotlib": "3.6.3",
+    "tifffile": "2024.8.30",
+    "scikit-image": "0.24.0",
+    "Pillow": "9.4.0"
+  },
+  "inputs": {
+    "features_member": "2410/object_features_new.csv",
+    "feature_table_sha256": "bbf1cb3b17a82935f2a3503b3aa893923d2a324b26c0114455d150bda0a6b913",
+    "mask_member": "FoF5_241016_fucci.nucleus/FoF5_241016_fucci.nucleus_masks.tif",
+    "mask_tiff_sha256": "2349884654ba92265c8c05321048a9f77c9de7da9e93920bb1cb679809dcb55f",
+    "image_files_n": 140,
+    "ordered_channel_z_image_hashes_sha256": "da9d63fbb29eeead3e107db372d8e593f553ca86f0bc61c813107f6d607d8357"
+  },
+  "model_sha256": "d432a990e7b1ceeb9604744ebbdaf03ad26d925365f692edd674235397992097",
+  "implementation_sha256": {
+    "audit_fucci_fluorescence.py": "76a99112cf0da473410371e1417f76242362564079dca144ff65a3654165f228",
+    "classify_fucci_fof5_conditional.py": "3d7cb8aec68a0fbb7cf987d29d6824fb21851a90267deb8a3993baa591a86dfb",
+    "compare_fucci_component_inputs.py": "aa6b65e0f0e17c99c2635b7bb22b7740975e804154114711eed50300d63dbb5d",
+    "force_fucci_fof5_reporter_states.py": "401c8826bfdb4e54914dbefb2cc9590300914877ee06b60bf372b4975bf5c224",
+    "fucci_analysis/__init__.py": "fed777764ac4c92ce4e7ebe2792bc29c0d83517d3fb72cd20d2b37572a0c7f0b",
+    "fucci_analysis/conditional_reporter_outputs.py": "caa436a14d06a0457585f89dd24678c676816a8c540ff9fb71bd2d982163d00c",
+    "fucci_analysis/conditional_reporters.py": "744edfc3f5e02f8c3a2d4414f829219836c5c02ff5b793ed3a33a4ea94e63d3c",
+    "fucci_analysis/data.py": "6eb956f2a7d0dabe843f5d6e849692f09544c73609cbc93ae19c0ade63565b30",
+    "fucci_analysis/evaluate.py": "3391e4ef5db375c6b2b64f2f60f9134d712ea060fd458cba8848ea0ad0436a3a",
+    "fucci_analysis/local_calibration.py": "12bddd735d9d1dac8fe3cfa024b7b76483705a8f5a544cdda76c2e54df235fc9",
+    "fucci_analysis/local_calibration_outputs.py": "8d0f7d7954d2b1b331a58b0fbfa8f3b0061fca1de1ab8c8f25d9ec57869c29b7",
+    "fucci_analysis/model.py": "2164dc47db8c4ba7efa5bdb208c5d90e8b2e7865791dceb1adf9619910795842",
+    "fucci_analysis/neither_refinement.py": "b7d199009c420619290e5e3813c5a3e8d99e7d13e6316f2ee55b2295af5c8981",
+    "fucci_analysis/neither_refinement_outputs.py": "cea5a45dd20db3f93e7d4747c3fe26820397626a14c19445f746629d10798746",
+    "fucci_analysis/outputs.py": "e2bbdf3e52c7dbef153a061bc41e407ace5eff178680952081a534df64d44aa2",
+    "fucci_analysis/reporter_inputs.py": "5f9b27e0b303d84a23471ca6ab294529161a3c1736876017810d4ac7290a9642",
+    "fucci_analysis/reporter_plots.py": "7fa6545cdb61d9bf08cc35dd33d36f95a813e9d899634231b8df599b8eb038ab",
+    "fucci_analysis/reporter_runner.py": "f3f33b8a1d3f90af2e8f7c081c613cfba8e9d473c305e69a59884bbfc3f4a9ca",
+    "fucci_analysis/review.py": "a39d8b4d1954c7e4308b8b3e1823c89d52855d9e5f3699da9be21ffcaf430985",
+    "inspect_fucci_mask_fragments.py": "ca409d27789b5ad1be607654a1ac335a820f473a018c7aa0cc7b2551f0d78e33",
+    "plot_fucci_mean_intensity.py": "0bdbcda63fa56e09b5299e635050de2f149661bde5cbed812612f5ee89f6f0f6",
+    "plot_fucci_spatial_verification.py": "75f3a595656b8e5e2931b1be0544cbccbb1a2caf3fa20a47536e7c6d707d3d89",
+    "recalibrate_fucci_fof5.py": "661c8fb9dc74d7fa6981725229db5bc0b1253edcac2699a9db4d2044cc6dd5b5",
+    "refine_fucci_fof5_neither.py": "ee7519d8c7ad6c660450fa584f5242675e9d0d8f48f3fb09ae6c51e94de2baba",
+    "run_fucci_classification.py": "a41c2d4c36b66af93d7e8febcc07951358e719b9a826682521a58f039fd7ad71",
+    "run_fucci_reporters.py": "325a7e6665d0343646635176b2e365cf01384caaa28f5d4c07eca33aec716bb8"
+  },
+  "reference_results_sha256": "4a13faf0a885b3ae2b0c9d90adfe545828ad5fba3d89a009c6ba4e728a044205",
+  "runner_results_sha256": "c3494b9f6d24cc9c4f30afd0865d12150d784d56b84d019b1dfbedc7521e8211",
+  "limitations": [
+    "Only FoF5 has a complete verified real-data execution in this release check.",
+    "The 31-field inventory does not establish that all raw images and masks are available or compatible.",
+    "Frozen FoF5 thresholds have not been independently validated across acquisitions."
+  ]
+}

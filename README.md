@@ -22,3 +22,9 @@ This folder contains input images for generating the figures in the paper. Some 
 This Rmarkdown contains the code required to generate the majority of the figures included in the paper: Fig1, 3, 4, 5; Supplementary Fig1, 2, 3, 5; and Supplementary Tables 1, 2.
 
 For insight into the generation of Supplementary Figure 4, see doi: 10.1016/j.patter.2022.100523.
+
+### FUCCI reporter classification for new CellProfiler tables
+
+Use [`scripts/run_fucci_reporters.py`](scripts/run_fucci_reporters.py) to run the accepted reporter classifier on one FoF or a manifest of all FoFs. Supply the new feature table, matching original segmentation mask, and raw green/red image planes. The runner selects one dominant component per original label, reruns the original classifier and permits only neither → both refinement.
+
+See the [installation, inputs, batch commands and output guide](docs/fucci_reporter_runner.md). Default thresholds were calibrated on 241016/FoF5; applying them to other fields does not establish their biological accuracy there.

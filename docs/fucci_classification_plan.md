@@ -4,6 +4,16 @@ Implement and compare candidate classifiers for the replacement FUCCI feature ta
 
 The archive contains unfiltered `object_features_new.csv` tables and corresponding `object_features_new_withCellCycle.csv` tables in `231005`, `2409`, and `2410`. The older CellProfiler tables provide a historical comparison. Preliminary inspection found 24,737 objects with volumes of eight voxels or fewer and repeated Cellpose labels; this motivates checking the unit of analysis before interpreting class frequencies as cell frequencies.
 
+## Portable runner for the accepted method — completed 2026-10-23
+
+The user accepted the neither-only refinement and requested code their collaborator can run on all FoFs. The [collaborator guide](fucci_reporter_runner.md) provides installation, explicit file dependencies and runnable commands.
+
+1. Added single-field and manifest-based batch entry points, plus manifest generation from new CSV tables or their ZIP archive. The current archive yields 31 fields across three folders.
+2. Reused the original classification and local-measurement functions with a portable model bundle containing the accepted cutoffs and calibration bootstrap fits. No saved state labels or earlier result directories are required.
+3. Added table/mask/image verification, dominant-component selection, local-background measurements, fallback logging, all-label output and sensitivity analysis. Only a freshly computed neither state can change to both in the refinement.
+4. Added failure accounting, atomic per-field completion and verified resume; supplied an example manifest and per-field/combined output documentation.
+5. Reproduced the accepted FoF5 results from raw inputs using a separate copy of only the scripts, and tested synthetic multi-field execution and failure cases. The collaborator must supply matching inputs for the other FoFs; fixed threshold transfer remains unvalidated across acquisitions.
+
 ## Original code with a neither-only refinement — completed 2026-10-23
 
 The user clarified that the original **code**, rather than stored assignments, must be retained. The [corrected report](fucci_fof5_neither_refinement.md) supersedes the earlier conditional method below.
