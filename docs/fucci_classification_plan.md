@@ -4,7 +4,17 @@ Implement and compare candidate classifiers for the replacement FUCCI feature ta
 
 The archive contains unfiltered `object_features_new.csv` tables and corresponding `object_features_new_withCellCycle.csv` tables in `231005`, `2409`, and `2410`. The older CellProfiler tables provide a historical comparison. Preliminary inspection found 24,737 objects with volumes of eight voxels or fewer and repeated Cellpose labels; this motivates checking the unit of analysis before interpreting class frequencies as cell frequencies.
 
-## Conditional thresholds for dim coexpression — completed 2026-10-23
+## Original code with a neither-only refinement — completed 2026-10-23
+
+The user clarified that the original **code**, rather than stored assignments, must be retained. The [corrected report](fucci_fof5_neither_refinement.md) supersedes the earlier conditional method below.
+
+1. Reuse the original `point_states` function without editing it or its higher gates; rerun it on numeric fluorescence measurements for every prediction.
+2. Apply the existing lower cutoffs only where that rerun returns neither. The only added transition is neither → both. Saved labels are compared after prediction for auditing and do not determine the state.
+3. Recompute all 578 labels: **90 green only / 72 red only / 77 both / 339 neither**. Exactly 45 neither results become both; the original 90 green-only, 72 red-only and 32 both results pass through unchanged on these inputs.
+4. Rerun the 500 bootstrap threshold pairs, 81-setting grid and 11 measurement variants. Each variant reruns both stages on its own measurements, so original-stage decisions can change across variants. No threshold refitting or new image judgments were performed.
+5. Regenerate spatial comparisons, scatter plots, reviewed examples, stability results and full exports in the `neither_refinement` subdirectories. All 27 tests pass, including changed-measurement and changed-stored-label tests. Original code, input and calibration hashes are recorded.
+
+## Earlier conditional thresholds for dim coexpression — superseded
 
 Implemented the agreed hierarchy in [the conditional-threshold report](fucci_fof5_conditional_reporter_states.md): clear single-positive cells require the original higher cutoff in one channel and a new lower cutoff in the opposite channel; remaining cells are both if they exceed both lower cutoffs, otherwise neither. All 578 FoF5 labels remain assigned to four states.
 

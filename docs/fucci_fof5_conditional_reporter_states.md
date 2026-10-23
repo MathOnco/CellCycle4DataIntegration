@@ -1,5 +1,7 @@
 # FoF5: conditional thresholds for four reporter states
 
+**Superseded for current use:** the user requested retention of the original classification code and lower gates only for its neither results. See [the corrected method and results](fucci_fof5_neither_refinement.md). The earlier method below also changes single-positive calls and is retained as analysis history; its frozen lower-threshold calibration is reused in the correction.
+
 The requested two-stage classifier is implemented for **241016/FoF5**, using all **578 original segmentation labels**, one dominant component per label. Every label receives **green only, red only, both, or neither**. There are zero unresolved assignments and no excluded labels in the final counts.
 
 ## Open these figures

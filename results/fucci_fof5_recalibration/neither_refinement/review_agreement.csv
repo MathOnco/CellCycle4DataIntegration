@@ -1,0 +1,17 @@
+split,scope,quality,method,reviewed_n,clear_n,exact_agree_n,both_review_n,nonboth_review_n,both_tp,both_fp
+calibration,all_reviewed,usable,original,31,28,20,7,21,1,0
+calibration,all_reviewed,usable,refined,31,28,21,7,21,3,1
+calibration,all_reviewed,all_masks,original,48,43,33,8,35,2,2
+calibration,all_reviewed,all_masks,refined,48,43,34,8,35,4,3
+calibration,original_neither,usable,original,20,18,14,2,16,0,0
+calibration,original_neither,usable,refined,20,18,15,2,16,2,1
+calibration,original_neither,all_masks,original,30,28,24,2,26,0,0
+calibration,original_neither,all_masks,refined,30,28,25,2,26,2,1
+check,all_reviewed,usable,original,13,9,8,2,7,1,0
+check,all_reviewed,usable,refined,13,9,8,2,7,1,0
+check,all_reviewed,all_masks,original,16,12,11,3,9,2,0
+check,all_reviewed,all_masks,refined,16,12,11,3,9,2,0
+check,original_neither,usable,original,8,5,5,0,5,0,0
+check,original_neither,usable,refined,8,5,5,0,5,0,0
+check,original_neither,all_masks,original,10,7,7,0,7,0,0
+check,original_neither,all_masks,refined,10,7,7,0,7,0,0

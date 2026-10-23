@@ -1,0 +1,9 @@
+scope,reporter_state,original_n,n,denominator
+full_stack,green_only,90,90,578
+full_stack,red_only,72,72,578
+full_stack,both,32,77,578
+full_stack,neither,384,339,578
+z35_intersections,green_only,41,41,180
+z35_intersections,red_only,31,31,180
+z35_intersections,both,5,21,180
+z35_intersections,neither,103,87,180

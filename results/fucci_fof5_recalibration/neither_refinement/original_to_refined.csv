@@ -1,0 +1,5 @@
+original_reporter_state,green_only,red_only,both,neither
+green_only,90,0,0,0
+red_only,0,72,0,0
+both,0,0,32,0
+neither,0,0,45,339

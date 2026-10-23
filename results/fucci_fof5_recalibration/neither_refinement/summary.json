@@ -1,0 +1,74 @@
+{
+  "n": 578,
+  "counts": {
+    "green_only": 90,
+    "red_only": 72,
+    "both": 77,
+    "neither": 339
+  },
+  "original_counts": {
+    "green_only": 90,
+    "red_only": 72,
+    "both": 32,
+    "neither": 384
+  },
+  "z35_counts": {
+    "green_only": 41,
+    "red_only": 31,
+    "both": 21,
+    "neither": 87
+  },
+  "original_z35_counts": {
+    "green_only": 41,
+    "red_only": 31,
+    "both": 5,
+    "neither": 103
+  },
+  "promoted_n": 45,
+  "illegal_refinement_changes_n": 0,
+  "original_code_matches_reference_n": 578,
+  "thresholds": {
+    "green": {
+      "low": 0.0024075655915692497,
+      "high": 0.0065016187699578
+    },
+    "red": {
+      "low": 0.003031188659523,
+      "high": 0.00419540689627625
+    }
+  },
+  "lower_thresholds_refitted": false,
+  "state_inputs": "Only numeric scores and thresholds; stage one calls the original point_states function on each invocation",
+  "bootstrap_both_count_interval": [
+    50.0,
+    88.0
+  ],
+  "bootstrap_agree_all_n": 489,
+  "grid_both_range": [
+    49,
+    118
+  ],
+  "grid_stable_n": 509,
+  "measurement_complete_n": 368,
+  "measurement_stable_all_n": 249,
+  "promotion_stability": {
+    "bootstrap_at_least_90pct_n": 16,
+    "grid_stable_n": 17
+  },
+  "fallback_labels": [
+    17
+  ],
+  "provenance": {
+    "original_code_sha256": "401c8826bfdb4e54914dbefb2cc9590300914877ee06b60bf372b4975bf5c224",
+    "original_calibration_sha256": "56f6031e1da483e466d46b62978266a82de6094541212c20ce28026fc0e9655a",
+    "source_results_sha256": "16d19259e31f5ab80e59b421aa1d383cca3845b03b1be435d455f9931ed51749",
+    "lower_calibration_sha256": "9b262e24f4cbfb90deaea0017a0b02a4a306020563eccab2fd25f9fed073bbea",
+    "bootstrap_thresholds_sha256": "a9be1e8d6011fdea1c6c7f050292bf7f885612743418794b439a766806b7704d",
+    "check_freeze_sha256": "212afb74e66e9977b83f81e64a35849437f1811951d4429bf069b1f29c9a1887",
+    "classifier_sha256": "b7d199009c420619290e5e3813c5a3e8d99e7d13e6316f2ee55b2295af5c8981",
+    "script_sha256": "ee7519d8c7ad6c660450fa584f5242675e9d0d8f48f3fb09ae6c51e94de2baba",
+    "plot_helpers_sha256": "cea5a45dd20db3f93e7d4747c3fe26820397626a14c19445f746629d10798746",
+    "shared_plot_helpers_sha256": "caa436a14d06a0457585f89dd24678c676816a8c540ff9fb71bd2d982163d00c",
+    "result_sha256": "4a13faf0a885b3ae2b0c9d90adfe545828ad5fba3d89a009c6ba4e728a044205"
+  }
+}

@@ -1,8 +1,20 @@
 # FUCCI classification handoff
 
-Latest work: the user authorized **conditional lower thresholds for dim coexpression**, retaining four states for every FoF5 label. See [the conditional-threshold report](fucci_fof5_conditional_reporter_states.md), [the earlier forced-state report](fucci_fof5_forced_reporter_states.md) and [the implementation plan](fucci_classification_plan.md). Earlier sections below preserve the analysis history.
+Latest work: the user clarified that the original **classification code**, rather than saved assignments, must be retained. Rerun that code on numeric measurements and apply lower gates only to its neither results. See [the corrected report](fucci_fof5_neither_refinement.md) and [the implementation plan](fucci_classification_plan.md). Earlier sections below preserve the analysis history.
 
-## Conditional thresholds — completed 2026-10-23
+## Original code with a neither-only refinement — completed 2026-10-23
+
+Use `scripts/refine_fucci_fof5_neither.py` and `scripts/fucci_analysis/neither_refinement.py`. The new core imports the unchanged original `point_states` function from `force_fucci_fof5_reporter_states.py`. It accepts only numeric scores and thresholds. It reruns the original function on every invocation and then changes neither to both only if both existing lower cutoffs are exceeded. Historical assignments are retained for audit after prediction, never used to decide the result. The snapshot CLI checks the original script hash and original higher gates.
+
+All 578 labels remain represented: **90 green only / 72 red only / 77 both / 339 neither**; at z=35, **41 / 31 / 21 / 87** among 180 intersections. All original classifications reproduce on these unchanged inputs, and exactly 45 neither results become both. No original single-positive or both result changes in the added step. Label 17's documented score fallback is retained. No manual overrides or new feature/threshold fitting were performed.
+
+Lower cutoffs are reused from the frozen conditional calibration: green 0.0024075655915692497, red 0.003031188659523. Original higher cutoffs remain green 0.0065016187699578, red 0.00419540689627625. Existing review agreement is **21/28 calibration, 8/9 check**, versus original **20/28, 8/9**. Label 108 remains a known false neither-to-both call. Labels 209 and 47 correctly retain red only against prior reviews. Some retained single-positive calls disagree with visual both judgments, including check label 125. The already-inspected check is not a fresh independent test of this correction.
+
+Sensitivity reruns both stages on each numeric input. The original-stage results can change with measurements; only the refinement's transitions are restricted to neither → both on the same input. Bootstrap total-both central 90% range **50–88**; ±20% lower-threshold grid **49–118**. All original single-positive and both results pass through unchanged across those threshold-only settings. Of the 45 promotions, 16 retain both in at least 90% of bootstrap fits and 17 throughout the grid; none retain both with a mean reference at fixed cutoffs. Of all 578 labels, 368 have complete measurements in all 11 settings and 249 also retain their final state throughout. Missing variants remain explicitly unavailable.
+
+Outputs are in `results/fucci_fof5_recalibration/neither_refinement` and `figs4paper/fucci_fof5_recalibration/neither_refinement`; the [corrected report](fucci_fof5_neither_refinement.md) links figures, examples, predictions and provenance. Reproduce with `OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python scripts/refine_fucci_fof5_neither.py`. All **27 tests pass**, including a test that changing stored assignments has no effect on predictions and one that changing measurements reruns the original code and can change its result. Earlier `conditional` files remain historical.
+
+## Earlier conditional thresholds — superseded
 
 All 578 labels remain in the output: **84 green only, 10 red only, 145 both, 339 neither**; at z=35, **39 / 6 / 48 / 87** among 180 intersecting labels. All 113 changes are to both: 45 from neither, 62 from red only and six from green only. The prior 32 both are retained. No uncertainty or quality flag suppresses a state assignment.
 
