@@ -1,0 +1,30 @@
+{
+  "seed": 20261023,
+  "n": 64,
+  "calibration_n": 48,
+  "check_n": 16,
+  "sampling": "40 previous neither sampled round-robin across 4x4 excess-score quantiles; all 8 eligible previous both; 8 random previous green only and 8 red only; 25% of each group reserved for checking",
+  "eligible": "Volume >=1000 voxels and maximum cross-section >=100 pixels; exclude all 48 previous reviews and the six previously discussed cells",
+  "hidden_on_sheets": [
+    "original label",
+    "previous state",
+    "sampling group",
+    "numeric scores",
+    "prediction"
+  ],
+  "reviewer": "Assistant with prior exposure to the field; provisional observations, not expert or experimental ground truth",
+  "positive": "Coherent interior fluorescence above adjacent background in at least two displayed substantial sections, even if dim; isolated speckles or signal only outside the outline do not suffice",
+  "not_detected": "No coherent interior enrichment across the displayed sections, including the fixed enhanced display",
+  "ambiguous": "Weak or inconsistent interior enrichment, overlap with a neighbor, or uncertain localization",
+  "usable_mask": "Outline delineates a coherent region attributable to one object across the displayed sections; exclude clear edge slivers or merged distinct objects from calibration",
+  "display": "Raw channels and merge use the frozen field ranges; enhanced channels subtract the plane's local reference median (existing volume-weighted reference if unavailable in that section) and show 0..0.012 green / 0..0.008 red with fixed gains; white outlines, no per-cell contrast normalization; reference fallbacks logged",
+  "features": "Retain frozen mean_excess scores; no new feature selection",
+  "fit": "Joint search over 0<=Lg<=Hg and 0<=Lr<=Hr; maximize balanced agreement for reviewed both versus all other clear states, usable calibration masks only; negative examples include singles; tie prefer specificity then larger sum of normalized lower thresholds then larger green threshold",
+  "fit_minimum": "At least two clear usable both and two neither calibration examples; no forced relaxation if evidence is absent",
+  "high_gates": "Frozen previous point gates; never refitted",
+  "check": "Freeze lower thresholds and calibration annotations before rendering check images; freeze check annotations before scoring; no refit using check outcomes",
+  "sensitivity": "500 stratified calibration bootstrap fits, +/-20% grid of lower gates, and 11 existing measurement variants; flags only, never an unresolved assignment",
+  "source_sha256": "16d19259e31f5ab80e59b421aa1d383cca3845b03b1be435d455f9931ed51749",
+  "old_calibration_sha256": "56f6031e1da483e466d46b62978266a82de6094541212c20ce28026fc0e9655a",
+  "measurements_sha256": "4e0ebe613eb73b85588581cc59aca02e1a7af9760e9e59a3f22786cf61ef1246"
+}

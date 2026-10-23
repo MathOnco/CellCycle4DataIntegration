@@ -1,0 +1,76 @@
+{
+  "thresholds": {
+    "green": {
+      "low": 0.0024075655915692497,
+      "high": 0.0065016187699578
+    },
+    "red": {
+      "low": 0.003031188659523,
+      "high": 0.00419540689627625
+    }
+  },
+  "calibration_performance": {
+    "balanced_both_agreement": 0.9285714285714286,
+    "both_sensitivity": 1.0,
+    "nonboth_specificity": 0.8571428571428571,
+    "candidate_pairs": 624
+  },
+  "fit_n": 28,
+  "fit_review_counts": {
+    "neither": 14,
+    "both": 7,
+    "green_only": 5,
+    "red_only": 2
+  },
+  "fit_review_ids": [
+    "C01",
+    "C02",
+    "C03",
+    "C05",
+    "C07",
+    "C10",
+    "C11",
+    "C12",
+    "C16",
+    "C17",
+    "C18",
+    "C20",
+    "C23",
+    "C25",
+    "C27",
+    "C29",
+    "C31",
+    "C33",
+    "C34",
+    "C36",
+    "C37",
+    "C38",
+    "C39",
+    "C40",
+    "C43",
+    "C46",
+    "C47",
+    "C48"
+  ],
+  "bootstrap_replicates": 500,
+  "bootstrap_intervals": {
+    "green": [
+      0.0022652443903322,
+      0.00352085850667395
+    ],
+    "red": [
+      0.00284789747168505,
+      0.0036544328180619
+    ]
+  },
+  "high_gate_policy": "Frozen prior point thresholds; unchanged",
+  "fitting_target": "Image-reviewed both versus all other clear reporter states, usable masks only; balanced sensitivity/specificity",
+  "check_used": false,
+  "old_phase_labels_used": false,
+  "desired_class_counts_used": false,
+  "calibration_annotations_sha256": "cd867113065c7a7a4c2911da7466574abc01cb0dd4c4b26391de3546f92acb3d",
+  "review_key_sha256": "11029718b723ed88662c8a8e0fcdc905ea96f1be4a274553fb2e17e77051f362",
+  "protocol_sha256": "51f32127931231d7aa311273b890798d62f8f25e57fd15767b18fde40b448bdf",
+  "bootstrap_sha256": "a9be1e8d6011fdea1c6c7f050292bf7f885612743418794b439a766806b7704d",
+  "classifier_sha256": "744edfc3f5e02f8c3a2d4414f829219836c5c02ff5b793ed3a33a4ea94e63d3c"
+}

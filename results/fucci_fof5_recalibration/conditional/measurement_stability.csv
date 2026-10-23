@@ -1,0 +1,12 @@
+variant,available_n,missing_n,changed_n,green_only_n,red_only_n,both_n,neither_n
+primary,578,0,0,84,10,145,339
+near_reference,574,4,20,82,9,139,344
+far_reference,577,1,31,81,9,167,320
+trimmed_reference,577,1,50,71,10,113,383
+mean_reference,577,1,150,51,24,38,464
+erode_1px,506,72,48,79,13,130,284
+erode_2px,369,209,42,69,12,94,194
+dilate_1px,577,1,23,81,7,145,344
+even_z,577,1,38,80,7,145,345
+odd_z,574,4,38,89,11,147,327
+large_cross_sections,576,2,21,78,9,153,336

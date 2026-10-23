@@ -1,0 +1,9 @@
+split,quality,method,reviewed_n,clear_n,ambiguous_n,exact_agree_n,both_review_n,nonboth_review_n,both_tp,both_fp,both_fn,both_tn
+calibration,usable,previous,31,28,3,20,7,21,1,0,6,21
+calibration,usable,conditional,31,28,3,23,7,21,7,3,0,18
+calibration,all_reviewed,previous,48,43,5,33,8,35,2,2,6,33
+calibration,all_reviewed,conditional,48,43,5,36,8,35,8,5,0,30
+check,usable,previous,13,9,4,8,2,7,1,0,1,7
+check,usable,conditional,13,9,4,9,2,7,2,0,0,7
+check,all_reviewed,previous,16,12,4,11,3,9,2,0,1,9
+check,all_reviewed,conditional,16,12,4,12,3,9,3,0,0,9

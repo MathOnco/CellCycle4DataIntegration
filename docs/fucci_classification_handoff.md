@@ -1,6 +1,20 @@
 # FUCCI classification handoff
 
-Latest work: the user requested **forced four-state assignments for every FoF5 label**, replacing abstentions in the new output. See [the forced-state report](fucci_fof5_forced_reporter_states.md), [the original conservative pilot](fucci_fof5_recalibration.md) and [the implementation plan](fucci_classification_plan.md). Earlier sections below preserve the history of the aggregated and dominant-component models.
+Latest work: the user authorized **conditional lower thresholds for dim coexpression**, retaining four states for every FoF5 label. See [the conditional-threshold report](fucci_fof5_conditional_reporter_states.md), [the earlier forced-state report](fucci_fof5_forced_reporter_states.md) and [the implementation plan](fucci_classification_plan.md). Earlier sections below preserve the analysis history.
+
+## Conditional thresholds — completed 2026-10-23
+
+All 578 labels remain in the output: **84 green only, 10 red only, 145 both, 339 neither**; at z=35, **39 / 6 / 48 / 87** among 180 intersecting labels. All 113 changes are to both: 45 from neither, 62 from red only and six from green only. The prior 32 both are retained. No uncertainty or quality flag suppresses a state assignment.
+
+Use unchanged mean-excess features and higher cutoffs 0.0065016188 green / 0.0041954069 red. Lower cutoffs are 0.0024075656 green / 0.0030311887 red. Green only requires green above its higher gate and red at/below its lower gate; red only is symmetric. Among the remaining cells, both requires both lower gates to be exceeded; otherwise neither. Neither includes moderate signal in only one channel under this hierarchy. The previous label-17 background fallback is preserved unchanged.
+
+New image reviews: 48 calibration, 16 reserved check, with original identities, scores, prior states and predictions concealed; assistant judgments with prior field exposure. Calibration uses 28 clear usable masks (seven both, 14 neither, five green only, two red only). Joint lower gates maximize balanced agreement for both versus the other clear states. The model was frozen before check images were rendered and check annotations frozen before scoring. Exact state agreement is 23/28 calibration (previously 20/28), 9/9 clear usable check (previously 8/9). The check contains no clear red-only and no reviewed neither-to-both success. These small selected same-field samples do not establish general accuracy.
+
+Known false-both calibration calls are label 108 (reviewed neither) and labels 209 and 47 (reviewed red only); they remain in the output without manual overrides and appear beside successful examples. No new feature selection, segmentation repair, phase mapping or experimental validation was performed.
+
+Stability: 500 calibration bootstrap fits give a central 90% range of 105–158 both labels; the ±20% lower-gate grid gives 110–196. Of 45 neither-to-both changes, 16 remain both in at least 90% of bootstrap fits, 17 throughout the threshold grid, 38 under the nearer reference ring, 44 under the farther ring, 20 with a trimmed reference, and zero with a mean reference at fixed gates. None remains both in all 11 measurement variants. These are sensitivity analyses with frozen cutoffs, not separately recalibrated alternative classifiers.
+
+Files: `scripts/classify_fucci_fof5_conditional.py`, `scripts/fucci_analysis/conditional_reporters.py`, `conditional_reporter_outputs.py`, `tests/test_fucci_conditional_reporters.py`; results and figures under the `conditional` subdirectories of `results/fucci_fof5_recalibration` and `figs4paper/fucci_fof5_recalibration`. Reproduce with `OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python scripts/classify_fucci_fof5_conditional.py --stage report`. Twenty-two tests pass. Model/source/review hashes are enforced; do not alter the frozen reviews or fit to the reserved check outcomes.
 
 ## Forced reporter-state output
 

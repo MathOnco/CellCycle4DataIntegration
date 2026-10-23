@@ -4,6 +4,17 @@ Implement and compare candidate classifiers for the replacement FUCCI feature ta
 
 The archive contains unfiltered `object_features_new.csv` tables and corresponding `object_features_new_withCellCycle.csv` tables in `231005`, `2409`, and `2410`. The older CellProfiler tables provide a historical comparison. Preliminary inspection found 24,737 objects with volumes of eight voxels or fewer and repeated Cellpose labels; this motivates checking the unit of analysis before interpreting class frequencies as cell frequencies.
 
+## Conditional thresholds for dim coexpression — completed 2026-10-23
+
+Implemented the agreed hierarchy in [the conditional-threshold report](fucci_fof5_conditional_reporter_states.md): clear single-positive cells require the original higher cutoff in one channel and a new lower cutoff in the opposite channel; remaining cells are both if they exceed both lower cutoffs, otherwise neither. All 578 FoF5 labels remain assigned to four states.
+
+1. Prepared 64 new label-concealed review examples, emphasizing prior neither calls; reviewed 48 calibration examples and reserved 16 for checking.
+2. Kept the original mean-excess features and higher gates. Fitted lower green/red cutoffs **0.002407566 / 0.003031189** from 28 clear usable calibration reviews, including seven both. Froze the model before rendering the reserved check sheets.
+3. Reviewed and froze all 16 check judgments before scoring. Nine clear usable check examples agree with the new states; the sample contains no clear red-only example or reviewed neither-to-both success. Three calibration false-both calls remain explicitly documented.
+4. Applied the rules to all 578 labels: **84 green only / 10 red only / 145 both / 339 neither**. Transitions to both comprise 45 prior neither, 62 red only and six green only. No cells are excluded and there are no unresolved state assignments.
+5. Completed 500 calibration bootstrap fits, an 81-setting lower-threshold grid, and the 11 existing measurement variants. Reassignments depend strongly on the background statistic: none of the 45 neither-to-both cells stays both after substituting the local reference mean for its median at fixed gates.
+6. Saved spatial comparisons, scatter plots, review sheets, successful and failed examples, stability figures, full tables and provenance. Twenty-two tests pass. Earlier classifications and source data remain preserved.
+
 ## Requested forced four-state output — completed
 
 Following the conservative FoF5 pilot, the user requested assignment of every label to green only, red only, both or neither. The [forced-state report](fucci_fof5_forced_reporter_states.md) provides updated spatial maps, scatter plots and all-label exports: **90 / 72 / 32 / 384**, totaling 578, with no unresolved assignments. Use the frozen fitted point thresholds; retain uncertainty and mask-quality information as separate flags. One missing local score uses a flagged nearest-unmasked-pixel background fallback. The original conservative outputs are preserved. Eighteen tests pass.

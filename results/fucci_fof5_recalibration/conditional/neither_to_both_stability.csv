@@ -1,0 +1,12 @@
+variant,available_n,remain_both_n
+primary,45,45
+near_reference,45,38
+far_reference,45,44
+trimmed_reference,45,20
+mean_reference,45,0
+erode_1px,42,35
+erode_2px,33,25
+dilate_1px,45,40
+even_z,45,37
+odd_z,45,41
+large_cross_sections,45,41

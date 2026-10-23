@@ -1,0 +1,65 @@
+review_id,split,green,red,mask_review,notes,reviewer,experimental_ground_truth
+C01,calibration,not_detected,not_detected,usable,Interior is darker than the surrounding speckle field in both channels across all three sections; green patch lies below the outline.,assistant_visual_review,False
+C02,calibration,not_detected,not_detected,usable,Main body is coherent in the two deeper sections; neither channel shows convincing interior enrichment over adjacent texture.,assistant_visual_review,False
+C03,calibration,positive,not_detected,usable,Green enrichment fills the outlined body across sections; bright red structure remains outside the upper boundary.,assistant_visual_review,False
+C04,calibration,not_detected,ambiguous,usable,Green interior lacks enrichment; weak red within the outline cannot be separated confidently from the bright adjacent red gradient.,assistant_visual_review,False
+C05,calibration,positive,not_detected,usable,Strong coherent green interior in all sections; red interior is dark relative to nearby pixels.,assistant_visual_review,False
+C06,calibration,not_detected,not_detected,questionable,Small irregular disconnected-looking sections in complex brightfield texture; no coherent internal enrichment in either channel.,assistant_visual_review,False
+C07,calibration,not_detected,not_detected,usable,Outlined interior is dark in both channels; nearby bright structures remain outside the boundary.,assistant_visual_review,False
+C08,calibration,not_detected,not_detected,questionable,Thin small outline follows a brightfield edge without a convincing full object interior; no localized fluorescence.,assistant_visual_review,False
+C09,calibration,not_detected,not_detected,questionable,Small wedge or crescent along brightfield texture; no consistent reporter enrichment within the outline.,assistant_visual_review,False
+C10,calibration,positive,not_detected,usable,Dim green speckle density is coherently increased over the outlined body in the larger sections; red remains sparse without an interior increase.,assistant_visual_review,False
+C11,calibration,not_detected,not_detected,usable,Dark outlined center in both channels; enhanced green and red structures are outside or at the periphery.,assistant_visual_review,False
+C12,calibration,positive,positive,usable,"Dim green enrichment follows the body across sections, with a clearer red interior texture in the same body; both exceed the nearby dark background spatially.",assistant_visual_review,False
+C13,calibration,not_detected,ambiguous,usable,Green texture is not enriched inside; faint red interior is difficult to separate from the bright lower-left neighboring gradient.,assistant_visual_review,False
+C14,calibration,not_detected,not_detected,questionable,Narrow irregular fragment changes shape across sections; neither reporter shows coherent internal enrichment.,assistant_visual_review,False
+C15,calibration,not_detected,not_detected,questionable,Small wedge at a brightfield edge appears to capture only part of a structure; fluorescence is outside rather than within the outline.,assistant_visual_review,False
+C16,calibration,not_detected,not_detected,usable,Outlined body is darker than adjacent texture in green; red enrichment remains mainly outside its left boundary.,assistant_visual_review,False
+C17,calibration,not_detected,not_detected,usable,Coherent rounded body has sparse internal signal compared with the surrounding background in both channels.,assistant_visual_review,False
+C18,calibration,not_detected,not_detected,usable,Irregular outline covers one main body; both enhanced views show more surrounding texture than coherent internal fluorescence.,assistant_visual_review,False
+C19,calibration,not_detected,not_detected,questionable,Small thin wedge or loop along brightfield texture with no consistent interior reporter enrichment.,assistant_visual_review,False
+C20,calibration,positive,positive,usable,Strong red fills the body; dim green texture is spatially enriched over the same interior in the larger sections.,assistant_visual_review,False
+C21,calibration,not_detected,positive,questionable,Strong red extends across a much larger region than the small irregular outline; green has no clear interior enrichment; mask attribution is uncertain.,assistant_visual_review,False
+C22,calibration,not_detected,not_detected,questionable,Object is clipped at the field boundary and the narrow remaining portion has no convincing reporter enrichment.,assistant_visual_review,False
+C23,calibration,not_detected,not_detected,usable,Outlined interior is dark in both channels; green upper-right and red lower-right structures are outside the mask.,assistant_visual_review,False
+C24,calibration,positive,positive,questionable,"Both reporters occupy the larger underlying body, but the mask is only a thin triangular sliver inside it.",assistant_visual_review,False
+C25,calibration,not_detected,positive,usable,Red enrichment follows the crescent-shaped body across all sections; green signal belongs to nearby exterior structures.,assistant_visual_review,False
+C26,calibration,not_detected,ambiguous,usable,"No green enrichment; red shows a weak internal patch most clearly in one section, with uncertain persistence against surrounding texture.",assistant_visual_review,False
+C27,calibration,positive,positive,usable,"Bright red interior with dim green texture enriched over the same body across sections, especially the two deeper views.",assistant_visual_review,False
+C28,calibration,not_detected,not_detected,questionable,Small outlined structure is clipped by the image border; internal speckles do not show coherent enrichment above nearby pixels.,assistant_visual_review,False
+C29,calibration,positive,positive,usable,Dim green enrichment and stronger red enrichment follow the same rounded interior across all three sections.,assistant_visual_review,False
+C30,calibration,not_detected,positive,questionable,"Red fluorescence extends across a much larger region than the irregular mask, whose attribution to one body is unclear; green is diffuse.",assistant_visual_review,False
+C31,calibration,not_detected,not_detected,usable,Both channels are dark inside the coherent outline; red enrichment is adjacent on the right.,assistant_visual_review,False
+C32,calibration,not_detected,not_detected,questionable,Small jagged region sits within complex brightfield texture; neither channel has a convincing outline-localized increase.,assistant_visual_review,False
+C33,calibration,positive,not_detected,usable,Dim green enrichment occupies the upper interior across sections; the red interior is darker than its surroundings.,assistant_visual_review,False
+C34,calibration,not_detected,positive,usable,Red fills the outlined body across sections; green is brightest in the neighboring upper structure without convincing internal enrichment.,assistant_visual_review,False
+C35,calibration,ambiguous,positive,questionable,Red-rich region extends beyond the small irregular or split outline; green localization is uncertain near the bright upper neighbor.,assistant_visual_review,False
+C36,calibration,not_detected,not_detected,usable,Outlined body lacks convincing enrichment in either channel; adjacent left-side structures are brighter.,assistant_visual_review,False
+C37,calibration,positive,not_detected,usable,Green interior enrichment is consistent across the three sections; red remains dark apart from isolated peripheral spots.,assistant_visual_review,False
+C38,calibration,positive,positive,usable,Strong green and weaker red texture are both spatially enriched in the same body across sections; red is clearest in the enhanced views.,assistant_visual_review,False
+C39,calibration,not_detected,not_detected,usable,Sparse green interior and red texture no brighter than the surrounding field; bright red gradient lies below and right.,assistant_visual_review,False
+C40,calibration,positive,positive,usable,"Dim green and dim red enrichment are both localized to the rounded body across all sections, visible most clearly after local subtraction.",assistant_visual_review,False
+C41,calibration,positive,not_detected,questionable,Green is bright but the outline progressively misses much of its interior in deeper sections; red has no coherent internal enrichment.,assistant_visual_review,False
+C42,calibration,not_detected,ambiguous,questionable,Outline crosses the lower edge of a much larger bright red structure; ownership of red signal is uncertain and green is diffuse.,assistant_visual_review,False
+C43,calibration,positive,positive,usable,Dim green enrichment and clear red enrichment occupy the same curved body across sections relative to the darker adjacent background.,assistant_visual_review,False
+C44,calibration,not_detected,not_detected,questionable,Thin small outline follows a brightfield edge; green signal is adjacent on the left and red is not localized inside.,assistant_visual_review,False
+C45,calibration,positive,not_detected,questionable,Strong green body overlaps only part of the irregular outline and extends above it in deeper sections; red shows no internal enrichment.,assistant_visual_review,False
+C46,calibration,not_detected,not_detected,usable,"Both channels have less interior texture than adjacent regions, without convincing reporter enrichment.",assistant_visual_review,False
+C47,calibration,not_detected,not_detected,usable,Bright green neighbor lies outside the upper-left boundary; the outlined body is dark in both channels.,assistant_visual_review,False
+C48,calibration,not_detected,not_detected,usable,The main body in the two deeper sections is coherent but has no convincing interior enrichment in either channel.,assistant_visual_review,False
+C49,check,not_detected,not_detected,usable,Outlined interior is dark in both channels; strong green belongs to structures above the boundary.,assistant_visual_review,False
+C50,check,ambiguous,not_detected,usable,Sparse green interior patches are weak and inconsistent across sections; red texture is not convincingly enriched relative to neighboring pixels.,assistant_visual_review,False
+C51,check,not_detected,not_detected,usable,Small rounded interior is dark in both channels; green texture is brighter outside the left boundary.,assistant_visual_review,False
+C52,check,not_detected,not_detected,questionable,Small narrow wedge on a brightfield edge with no convincing interior signal; attribution to a complete object is unclear.,assistant_visual_review,False
+C53,check,ambiguous,positive,usable,Clear red occupies the upper body across sections; weak green patches overlap the body but are difficult to distinguish from nearby texture and the lower bright neighbor.,assistant_visual_review,False
+C54,check,positive,positive,questionable,"Dim green and strong red occupy an extended lobed region, but the outline spans or intersects adjacent brightfield/red lobes and may combine parts of different objects.",assistant_visual_review,False
+C55,check,not_detected,not_detected,usable,Dark outlined body contrasts with the bright green structure to the left; red lacks internal enrichment.,assistant_visual_review,False
+C56,check,not_detected,not_detected,usable,Sparse interior speckles in both channels without coherent enrichment over nearby background.,assistant_visual_review,False
+C57,check,positive,positive,usable,Dim green texture and strong red fluorescence both follow the same kidney-shaped body across all sections.,assistant_visual_review,False
+C58,check,positive,not_detected,usable,Green enrichment follows the small outlined body across sections; the bright red structure remains below the boundary.,assistant_visual_review,False
+C59,check,positive,positive,usable,Green and weaker red both show coherent enrichment throughout the outlined elongated body in all three sections.,assistant_visual_review,False
+C60,check,ambiguous,positive,usable,Red texture is enriched over the rounded body across sections; green is sparse and spatially uncertain near the bright lower-left neighboring structure.,assistant_visual_review,False
+C61,check,ambiguous,not_detected,usable,Weak green upper-left interior signal is difficult to separate from the neighboring gradient; red interior is not enriched.,assistant_visual_review,False
+C62,check,not_detected,not_detected,questionable,Irregular partial outline separates into distant small pieces in the final section; no convincing internal reporter enrichment.,assistant_visual_review,False
+C63,check,not_detected,not_detected,usable,Both channels show diffuse surrounding texture without a convincing increase inside the outlined body.,assistant_visual_review,False
+C64,check,positive,not_detected,usable,Strong green is localized to the outlined rounded body across sections; red remains dark internally.,assistant_visual_review,False

@@ -2,6 +2,8 @@
 
 The supplied `FoF5_241016_fucci.nucleus.zip` provides the first verified image–mask pair for this analysis. The figure uses the new Saeed feature table from `Archive (6).zip`. No pseudotime analysis or Fig. 1E reconstruction is included.
 
+**Latest, 2026-10-23:** [conditional lower thresholds](fucci_fof5_conditional_reporter_states.md) distinguish dim coexpression after identifying clear single-positive cells. Open the [new fluorescence/previous/conditional comparison](../figs4paper/fucci_fof5_recalibration/conditional/reporter_map_cluster_z35.png) and [reviewed successes and mismatches](../figs4paper/fucci_fof5_recalibration/conditional/reviewed_changes_and_mismatches.png). All 578 labels remain assigned to four states; background sensitivity and known mismatches are documented.
+
 **Update, 2026-10-21:** the [local-background recalibration pilot](fucci_fof5_recalibration.md) now provides new reporter-state maps, image reviews and stability results. Start with its [magnified fluorescence/map comparison](../figs4paper/fucci_fof5_recalibration/reporter_map_cluster_z35.png). The C1/C2 figures below preserve the earlier classifications for comparison.
 
 The subsequent user-requested [forced four-state output](fucci_fof5_forced_reporter_states.md) assigns every label to green only, red only, both or neither. Its [updated magnified map](../figs4paper/fucci_fof5_recalibration/forced/reporter_map_cluster_z35.png) has no unresolved assignments.
